@@ -25,3 +25,9 @@ proguard/
 
 # Log Files
 *.log
+
+app/app.iml
+WhereIsMyCurrency.iml
+app/build
+.idea
+.gradle
