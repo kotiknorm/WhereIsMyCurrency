@@ -6,10 +6,10 @@ import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import rx.Observable;
 
-public interface GMHService {
+public interface WimcService {
 
-    public Observable<List<Bank>> getAllBank(String requestUrl);
+    Observable<List<Bank>> getAllBank();
 
-    public Observable<List<Rate>> getRateFromBank(String bankName);
+    Observable<List<Rate>> getRateFromBank(String bankName);
 
 }

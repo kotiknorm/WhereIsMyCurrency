@@ -1,8 +1,8 @@
 package apps.makarov.com.whereismycurrency.modules;
 
-import apps.makarov.com.whereismycurrency.net.GMHService;
+import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
-import apps.makarov.com.whereismycurrency.presenters.RatePresenterIml;
+import apps.makarov.com.whereismycurrency.presenters.RatePresenterImpl;
 import apps.makarov.com.whereismycurrency.view.fragments.RateFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import dagger.Module;
@@ -14,7 +14,7 @@ import dagger.Provides;
 
 @Module(
         injects = RateFragment.class,
-        addsTo = GMHModule.class,
+        addsTo = WimcModule.class,
         complete = false
 )
 public final class RateModule {
@@ -32,7 +32,7 @@ public final class RateModule {
     }
 
     @Provides
-    public RatePresenter providePresenter(RateView rateView, GMHService gmhService) {
-        return new RatePresenterIml(rateView, gmhService);
+    public RatePresenter providePresenter(RateView rateView, WimcService wimcService) {
+        return new RatePresenterImpl(rateView, wimcService);
     }
 }

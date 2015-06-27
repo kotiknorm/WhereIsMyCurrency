@@ -21,4 +21,11 @@ public interface IStore {
     void commitTransaction();
 
     <E extends RealmObject>void saveObject(E obj);
+
+     List<Rate> getAllCurrencyWithBase(String baseCurrency);
+
+    void addUrlToCache(String url);
+
+    boolean isUrlInCache(String url);
 }
+

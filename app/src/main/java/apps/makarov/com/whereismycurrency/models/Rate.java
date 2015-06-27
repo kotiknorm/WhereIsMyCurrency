@@ -1,12 +1,20 @@
 package apps.makarov.com.whereismycurrency.models;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by makarov on 26/06/15.
  */
 
 public class Rate extends RealmObject {
+
+    @PrimaryKey
+    private String key;
+    private double buy;
+    private double sell;
+    private String baseCurrency;
+    private String compareCurrency;
 
     public void setBuy(double buy) {
         this.buy = buy;
@@ -15,10 +23,6 @@ public class Rate extends RealmObject {
     public void setSell(double sell) {
         this.sell = sell;
     }
-
-    private double buy;
-
-    private double sell;
 
     public String getBaseCurrency() {
         return baseCurrency;
@@ -36,17 +40,6 @@ public class Rate extends RealmObject {
         this.compareCurrency = compareCurrency;
     }
 
-    private String baseCurrency;
-
-    private String compareCurrency;
-
-//    public Rate(double buy, double sell, String baseCurrency, String compareCurrency ){
-//        this.buy = buy;
-//        this.sell = sell;
-//        this.baseCurrency = baseCurrency;
-//        this.compareCurrency = compareCurrency;
-//    }
-
     public double getSell() {
         return sell;
     }
@@ -55,6 +48,17 @@ public class Rate extends RealmObject {
         return buy;
     }
 
+    public String getKey() {
+        return key;
+    }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+
+    public static String generateKey(String bankName, Rate rate){
+        return rate.getBaseCurrency() + "_" + rate.getCompareCurrency() + "_" + bankName;
+    }
 
 }

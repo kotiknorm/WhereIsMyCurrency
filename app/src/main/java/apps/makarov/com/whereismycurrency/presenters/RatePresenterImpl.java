@@ -10,7 +10,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.net.GMHService;
+import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import rx.Observable;
 import rx.Observer;
@@ -22,39 +22,41 @@ import rx.schedulers.Schedulers;
  * Created by makarov on 26/06/15.
  */
 
-public class RatePresenterIml implements RatePresenter {
+public class RatePresenterImpl implements RatePresenter {
+
+    private static final String TAG = "RatePresenterImpl";
 
     private RateView mRateView;
     private Subscription mGetHotAnthologySubscription;
-    private GMHService mGMHService;
+    private WimcService mWimcService;
     private static Observable<List<Bank>> mGetHotAnthologyObservable;
 
     private Observer<List<Bank>> mGetHotAnthologyObserver = new Observer<List<Bank>>() {
         @Override
         public void onCompleted() {
-            Log.d("", "");
+            Log.d(TAG, "onCompleted");
         }
 
         @Override
         public void onError(Throwable e) {
-            Log.d("","");
+            Log.e(TAG,"onError", e);
             mRateView.setValue(0, 1);
         }
 
         @Override
         public void onNext(List<Bank> list) {
-            Log.d("","");
+            Log.d(TAG,"onNext");
 
             Bank firstBank = list.get(0);
-            Rate usdRate= firstBank.getRates().get(0);
+            Rate usdRate = firstBank.getRates().get(0);
 
             mRateView.setValue(usdRate.getBuy(), usdRate.getSell());
         }
     };
 
-    public RatePresenterIml(RateView hotView, GMHService gmhService) {
+    public RatePresenterImpl(RateView hotView, WimcService wimcService) {
         this.mRateView = hotView;
-        this.mGMHService = gmhService;
+        this.mWimcService = wimcService;
     }
 
     @Override
@@ -102,13 +104,14 @@ public class RatePresenterIml implements RatePresenter {
                 mGetHotAnthologySubscription = null;
             }
 
-            mGetHotAnthologyObservable = mGMHService
-                    .getAllBank("http://informer.kovalut.ru/webmaster/xml-table.php?kod=7701")
+            mGetHotAnthologyObservable = mWimcService
+                    .getAllBank()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .cache();
 
             mGetHotAnthologySubscription = mGetHotAnthologyObservable
+
                     .subscribe(mGetHotAnthologyObserver);
     }
 }

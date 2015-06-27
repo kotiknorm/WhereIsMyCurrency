@@ -20,12 +20,12 @@ import dagger.Provides;
                 WmcApplication.class
         }
 )
-public final class GMHModule {
-    public static final String TAG = GMHModule.class.getSimpleName();
+public final class WimcModule {
+    public static final String TAG = WimcModule.class.getSimpleName();
 
     private final WmcApplication mApplication;
 
-    public GMHModule(WmcApplication application) {
+    public WimcModule(WmcApplication application) {
         this.mApplication = application;
     }
 

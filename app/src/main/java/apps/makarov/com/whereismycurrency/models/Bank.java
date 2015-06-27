@@ -12,14 +12,23 @@ import io.realm.annotations.PrimaryKey;
 
 public class Bank extends RealmObject {
 
+    @PrimaryKey
+    private String key;
+    private String name;
+    private Date changeRate;
+    private RealmList<Rate> rates = new RealmList<>();
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     public void setRates(RealmList<Rate> rates) {
         this.rates = rates;
     }
-
-    private RealmList<Rate> rates = new RealmList<>();
-
-    @PrimaryKey
-    private String name;
 
     public RealmList<Rate> getRates() {
         return rates;
@@ -41,13 +50,10 @@ public class Bank extends RealmObject {
         this.changeRate = changeRate;
     }
 
-    private Date changeRate;
+    public static String generateKey(Bank bank){
+        return bank.getName();
+    }
 
 
-//    public Bank(String name, List<Rate> bankRates, Date changeRate){
-//        setRates(bankRates);
-//        this.name = name;
-//        this.changeRate = changeRate;
-//    }
 
 }

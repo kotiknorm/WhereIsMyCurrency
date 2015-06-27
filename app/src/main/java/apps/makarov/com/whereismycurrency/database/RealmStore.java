@@ -2,16 +2,20 @@ package apps.makarov.com.whereismycurrency.database;
 
 import android.app.Application;
 
+import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.CacheRequest;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Created by makarov on 27/06/15.
  */
+
 public class RealmStore implements IStore {
 
     private final Application application;
@@ -22,12 +26,14 @@ public class RealmStore implements IStore {
 
     @Override
     public List<Bank> getBanks() {
-        return Realm.getInstance(application).allObjects(Bank.class);
+        List<Bank> list = Realm.getInstance(application).where(Bank.class).findAll();
+        Realm.getInstance(application).close();
+        return list;
     }
 
     @Override
     public List<Rate> getRates(String bankName) {
-        return null;
+        return Realm.getInstance(application).where(Bank.class).equalTo("name", bankName).findFirst().getRates();
     }
 
     @Override
@@ -42,7 +48,32 @@ public class RealmStore implements IStore {
 
     @Override
     public <E extends RealmObject> void saveObject(E obj) {
+        beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(obj);
+        commitTransaction();
+    }
+
+    @Override
+    public List<Rate> getAllCurrencyWithBase(String baseCurrency){
+        RealmResults<Rate> contacts = Realm.getInstance(application).where(Rate.class).equalTo("baseCurrency", baseCurrency).findAll();
+        return contacts;
+    }
+
+    @Override
+    public void addUrlToCache(String url) {
+        CacheRequest cacheRequest = new CacheRequest();
+        cacheRequest.setUrl(url);
+        cacheRequest.setDate(new Date());
+
+
+        beginTransaction();
+        Realm.getInstance(application).copyToRealmOrUpdate(cacheRequest);
+        commitTransaction();
+    }
+
+    @Override
+    public boolean isUrlInCache(String url) {
+        return Realm.getInstance(application).where(CacheRequest.class).equalTo("url", url).findFirst() != null;
     }
 
 }
