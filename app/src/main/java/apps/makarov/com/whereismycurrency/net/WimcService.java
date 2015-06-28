@@ -14,8 +14,7 @@ public interface WimcService {
 
     Observable<List<Rate>> getRateFromBank(String bankName);
 
-    //Local data
-    List<UserHistory> getHistory();
+    Observable<List<UserHistory>> getHistory();
 
     void addHistoryItem(UserHistory historyItem);
 

@@ -64,8 +64,21 @@ public class WimcServiceImpl implements WimcService {
 
 
     @Override
-    public List<UserHistory> getHistory() {
-        return mStore.getUserHistory();
+    public Observable<List<UserHistory>> getHistory() {
+        return Observable.create(new Observable.OnSubscribe<List<UserHistory>>() {
+            @Override
+            public void call(Subscriber<? super List<UserHistory>> subscriber) {
+                try {
+                    List<UserHistory> list = mStore.getUserHistory();
+
+                    subscriber.onNext(list);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
