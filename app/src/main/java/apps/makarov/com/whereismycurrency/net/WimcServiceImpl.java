@@ -11,6 +11,7 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.database.IStore;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import io.realm.RealmObject;
@@ -40,6 +41,11 @@ public class WimcServiceImpl implements WimcService {
     }
 
     @Override
+    public Observable<List<UserHistory>> getHistory() {
+        return null;
+    }
+
+    @Override
     public Observable<List<Bank>> getAllBank() {
         final WimcRequest bankRequest = new BankRequest();
 
@@ -60,6 +66,12 @@ public class WimcServiceImpl implements WimcService {
 
         return getObservableRequest(bankRequest, observable);
     }
+
+
+
+
+
+
 
     private <T extends RealmObject> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
         boolean urlInCache = mStore.isUrlInCache(request.getPath());

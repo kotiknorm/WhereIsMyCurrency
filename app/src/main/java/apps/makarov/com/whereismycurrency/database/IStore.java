@@ -4,6 +4,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.UserHistory;
 import io.realm.RealmObject;
 
 /**
@@ -15,6 +16,8 @@ public interface IStore {
     List<Bank> getBanks();
 
     List<Rate> getRates(String bankName);
+
+    List<UserHistory> getUserHistory();
 
     void beginTransaction();
 

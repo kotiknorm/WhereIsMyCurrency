@@ -8,6 +8,7 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.CacheRequest;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.UserHistory;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
@@ -34,6 +35,11 @@ public class RealmStore implements IStore {
     @Override
     public List<Rate> getRates(String bankName) {
         return Realm.getInstance(application).where(Bank.class).equalTo("name", bankName).findFirst().getRates();
+    }
+
+    @Override
+    public List<UserHistory> getUserHistory() {
+        return Realm.getInstance(application).where(UserHistory.class).findAll();
     }
 
     @Override
