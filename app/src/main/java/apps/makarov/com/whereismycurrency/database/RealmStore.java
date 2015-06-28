@@ -17,7 +17,7 @@ import io.realm.RealmResults;
  * Created by makarov on 27/06/15.
  */
 
-public class RealmStore implements IStore {
+public class RealmStore implements IStore<RealmObject> {
 
     private final Application application;
 

@@ -5,13 +5,12 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
-import io.realm.RealmObject;
 
 /**
  * Created by makarov on 27/06/15.
  */
 
-public interface IStore {
+public interface IStore<T> {
 
     List<Bank> getBanks();
 
@@ -23,7 +22,7 @@ public interface IStore {
 
     void commitTransaction();
 
-    <E extends RealmObject>void saveObject(E obj);
+    <E extends T>void saveObject(E object);
 
      List<Rate> getAllCurrencyWithBase(String baseCurrency);
 
