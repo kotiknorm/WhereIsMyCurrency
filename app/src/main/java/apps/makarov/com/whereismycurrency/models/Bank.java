@@ -50,10 +50,9 @@ public class Bank extends RealmObject {
         this.changeRate = changeRate;
     }
 
-    public static String generateKey(Bank bank){
+    public static String generateKey(Bank bank) {
         return bank.getName();
     }
-
 
 
 }

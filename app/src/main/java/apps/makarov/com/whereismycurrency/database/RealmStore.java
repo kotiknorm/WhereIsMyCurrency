@@ -21,7 +21,7 @@ public class RealmStore implements IStore<RealmObject> {
 
     private final Application application;
 
-    public RealmStore(Application application){
+    public RealmStore(Application application) {
         this.application = application;
     }
 
@@ -60,7 +60,7 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
-    public List<Rate> getAllCurrencyWithBase(String baseCurrency){
+    public List<Rate> getAllCurrencyWithBase(String baseCurrency) {
         RealmResults<Rate> contacts = Realm.getInstance(application).where(Rate.class).equalTo("baseCurrency", baseCurrency).findAll();
         return contacts;
     }

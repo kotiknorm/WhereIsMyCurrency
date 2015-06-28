@@ -57,7 +57,7 @@ public class Rate extends RealmObject {
     }
 
 
-    public static String generateKey(String bankName, Rate rate){
+    public static String generateKey(String bankName, Rate rate) {
         return rate.getBaseCurrency() + "_" + rate.getCompareCurrency() + "_" + bankName;
     }
 

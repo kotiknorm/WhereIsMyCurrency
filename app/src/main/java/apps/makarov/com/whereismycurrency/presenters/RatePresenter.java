@@ -9,7 +9,7 @@ import android.view.MenuItem;
  * Created by makarov on 26/06/15.
  */
 
-public interface RatePresenter{
+public interface RatePresenter {
 
     void onActivityCreated(Bundle savedInstanceState);
 

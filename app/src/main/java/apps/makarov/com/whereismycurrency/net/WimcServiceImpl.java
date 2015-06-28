@@ -41,11 +41,6 @@ public class WimcServiceImpl implements WimcService {
     }
 
     @Override
-    public Observable<List<UserHistory>> getHistory() {
-        return null;
-    }
-
-    @Override
     public Observable<List<Bank>> getAllBank() {
         final WimcRequest bankRequest = new BankRequest();
 
@@ -68,9 +63,15 @@ public class WimcServiceImpl implements WimcService {
     }
 
 
+    @Override
+    public List<UserHistory> getHistory() {
+        return mStore.getUserHistory();
+    }
 
-
-
+    @Override
+    public void addHistoryItem(UserHistory historyItem) {
+        mStore.saveObject(historyItem);
+    }
 
 
     private <T extends RealmObject> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
@@ -78,24 +79,24 @@ public class WimcServiceImpl implements WimcService {
 
         return urlInCache ? observableDateFromLocalStore :
                 observableNetwork(request)
-                .flatMap(new Func1<JSONObject, Observable<List<? extends RealmObject>>>() {
-                    @Override
-                    public Observable<List<? extends RealmObject>> call(JSONObject s) {
-                        return request.observableJsonToStatusCode(s);
-                    }
-                })
-                .flatMap(new Func1<List<? extends RealmObject>, Observable<Exception>>() {
-                    @Override
-                    public Observable<Exception> call(List<? extends RealmObject> list) {
-                        return observableSaveObjects(list);
-                    }
-                })
-                .flatMap(new Func1<Exception, Observable<List<T>>>() {
-                    @Override
-                    public Observable<List<T>> call(Exception e) {
-                        return observableDateFromLocalStore;
-                    }
-                });
+                        .flatMap(new Func1<JSONObject, Observable<List<? extends RealmObject>>>() {
+                            @Override
+                            public Observable<List<? extends RealmObject>> call(JSONObject s) {
+                                return request.observableJsonToStatusCode(s);
+                            }
+                        })
+                        .flatMap(new Func1<List<? extends RealmObject>, Observable<Exception>>() {
+                            @Override
+                            public Observable<Exception> call(List<? extends RealmObject> list) {
+                                return observableSaveObjects(list);
+                            }
+                        })
+                        .flatMap(new Func1<Exception, Observable<List<T>>>() {
+                            @Override
+                            public Observable<List<T>> call(Exception e) {
+                                return observableDateFromLocalStore;
+                            }
+                        });
     }
 
     private Observable<JSONObject> observableNetwork(WimcRequest request) {

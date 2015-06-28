@@ -22,9 +22,9 @@ public interface IStore<T> {
 
     void commitTransaction();
 
-    <E extends T>void saveObject(E object);
+    <E extends T> void saveObject(E object);
 
-     List<Rate> getAllCurrencyWithBase(String baseCurrency);
+    List<Rate> getAllCurrencyWithBase(String baseCurrency);
 
     void addUrlToCache(String url);
 

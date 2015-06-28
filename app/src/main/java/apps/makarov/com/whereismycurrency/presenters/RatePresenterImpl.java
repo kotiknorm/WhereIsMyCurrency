@@ -39,13 +39,13 @@ public class RatePresenterImpl implements RatePresenter {
 
         @Override
         public void onError(Throwable e) {
-            Log.e(TAG,"onError", e);
+            Log.e(TAG, "onError", e);
             mRateView.setValue(0, 1);
         }
 
         @Override
         public void onNext(List<Bank> list) {
-            Log.d(TAG,"onNext");
+            Log.d(TAG, "onNext");
 
             Bank firstBank = list.get(0);
             Rate usdRate = firstBank.getRates().get(0);
@@ -99,19 +99,19 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     private void pullAllBankFromNetwork() {
-            if (mGetHotAnthologySubscription != null) {
-                mGetHotAnthologySubscription.unsubscribe();
-                mGetHotAnthologySubscription = null;
-            }
+        if (mGetHotAnthologySubscription != null) {
+            mGetHotAnthologySubscription.unsubscribe();
+            mGetHotAnthologySubscription = null;
+        }
 
-            mGetHotAnthologyObservable = mWimcService
-                    .getAllBank()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .cache();
+        mGetHotAnthologyObservable = mWimcService
+                .getAllBank()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
 
-            mGetHotAnthologySubscription = mGetHotAnthologyObservable
+        mGetHotAnthologySubscription = mGetHotAnthologyObservable
 
-                    .subscribe(mGetHotAnthologyObserver);
+                .subscribe(mGetHotAnthologyObserver);
     }
 }

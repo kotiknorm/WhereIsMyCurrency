@@ -9,10 +9,14 @@ import rx.Observable;
 
 public interface WimcService {
 
+    //Network data
     Observable<List<Bank>> getAllBank();
 
     Observable<List<Rate>> getRateFromBank(String bankName);
 
-    Observable<List<UserHistory>> getHistory();
+    //Local data
+    List<UserHistory> getHistory();
+
+    void addHistoryItem(UserHistory historyItem);
 
 }
