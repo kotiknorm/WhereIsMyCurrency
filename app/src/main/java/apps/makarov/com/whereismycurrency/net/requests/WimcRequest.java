@@ -22,11 +22,9 @@ public abstract class WimcRequest<T extends RealmObject> {
             @Override
             public void call(Subscriber<? super Response> subscriber) {
                 try {
-                    Request request = new Request.Builder()
-                            .url(getPath())
-                            .build();
-
+                    Request request = getRequest();
                     Response response = mClient.newCall(request).execute();
+
                     subscriber.onNext(response);
                     subscriber.onCompleted();
                 } catch (Throwable e) {
@@ -34,6 +32,12 @@ public abstract class WimcRequest<T extends RealmObject> {
                 }
             }
         });
+    }
+
+    public Request getRequest(){
+        return new Request.Builder()
+                .url(getPath())
+                .build();
     }
 
     public abstract String getPath();

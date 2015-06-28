@@ -4,7 +4,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,7 +71,6 @@ public class BankInterpreter implements Interpreter<Bank> {
             String nameBank = mJsonObject.getString("Name");
             String changeTime = mJsonObject.getString("ChangeTime");
             bank.setName(nameBank);
-            bank.setChangeRate(new Date());
         } catch (JSONException e) {
             e.printStackTrace();
         }

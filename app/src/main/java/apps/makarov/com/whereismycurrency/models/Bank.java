@@ -1,7 +1,5 @@
 package apps.makarov.com.whereismycurrency.models;
 
-import java.util.Date;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -15,7 +13,7 @@ public class Bank extends RealmObject {
     @PrimaryKey
     private String key;
     private String name;
-    private Date changeRate;
+
     private RealmList<Rate> rates = new RealmList<>();
 
     public String getKey() {
@@ -40,14 +38,6 @@ public class Bank extends RealmObject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Date getChangeRate() {
-        return changeRate;
-    }
-
-    public void setChangeRate(Date changeRate) {
-        this.changeRate = changeRate;
     }
 
     public static String generateKey(Bank bank) {

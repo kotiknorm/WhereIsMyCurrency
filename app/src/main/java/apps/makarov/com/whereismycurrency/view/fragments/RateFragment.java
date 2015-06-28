@@ -85,8 +85,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        mRatePresenter.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -106,8 +104,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        mRatePresenter.onSaveInstanceState(outState);
     }
 
     @Override
@@ -119,14 +115,12 @@ public class RateFragment extends BaseFragment implements RateView {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        mRatePresenter.onCreateOptionsMenu(menu, inflater);
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return mRatePresenter.onOptionsItemSelected(item);
+        return false;
     }
 
     @Override

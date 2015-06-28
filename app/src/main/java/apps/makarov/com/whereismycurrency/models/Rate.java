@@ -1,5 +1,7 @@
 package apps.makarov.com.whereismycurrency.models;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -15,6 +17,15 @@ public class Rate extends RealmObject {
     private double sell;
     private String baseCurrency;
     private String compareCurrency;
+    private Date changeRate;
+
+    public Date getChangeRate() {
+        return changeRate;
+    }
+
+    public void setChangeRate(Date changeRate) {
+        this.changeRate = changeRate;
+    }
 
     public void setBuy(double buy) {
         this.buy = buy;

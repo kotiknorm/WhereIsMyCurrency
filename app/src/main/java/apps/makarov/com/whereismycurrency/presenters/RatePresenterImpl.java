@@ -1,10 +1,6 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import java.util.List;
 
@@ -60,10 +56,6 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-    }
-
-    @Override
     public void onResume() {
         pullAllBankFromNetwork();
     }
@@ -74,24 +66,10 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-
-    }
-
-    @Override
     public void onDestroy() {
 
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
-    }
 
     @Override
     public void onRefresh() {

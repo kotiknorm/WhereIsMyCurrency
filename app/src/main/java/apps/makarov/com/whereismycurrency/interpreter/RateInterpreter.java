@@ -3,6 +3,8 @@ package apps.makarov.com.whereismycurrency.interpreter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
+
 import apps.makarov.com.whereismycurrency.Utils.StringUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
@@ -29,6 +31,7 @@ public class RateInterpreter implements Interpreter<Rate> {
 
             rate.setBuy(buyLong);
             rate.setSell(sellLong);
+            rate.setChangeRate(new Date());
         } catch (JSONException e) {
             e.printStackTrace();
         }
