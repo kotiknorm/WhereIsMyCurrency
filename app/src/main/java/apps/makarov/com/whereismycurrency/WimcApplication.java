@@ -10,9 +10,9 @@ import dagger.ObjectGraph;
 /**
  * Created by makarov on 26/06/15.
  */
-public class WmcApplication extends Application {
+public class WimcApplication extends Application {
 
-    public static final String TAG = WmcApplication.class.getSimpleName();
+    public static final String TAG = WimcApplication.class.getSimpleName();
 
     private ObjectGraph mObjectGraph;
 
@@ -24,8 +24,8 @@ public class WmcApplication extends Application {
         initializeStetho();
     }
 
-    public static WmcApplication getApplication(Context context) {
-        return (WmcApplication) context.getApplicationContext();
+    public static WimcApplication getApplication(Context context) {
+        return (WimcApplication) context.getApplicationContext();
     }
 
     public ObjectGraph buildInitialObjectGraph(Object... modules) {

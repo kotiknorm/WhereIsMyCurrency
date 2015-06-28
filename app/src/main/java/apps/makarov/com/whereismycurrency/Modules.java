@@ -15,7 +15,7 @@ public final class Modules {
         throw new AssertionError(TAG + ": Cannot be initialized.");
     }
 
-    public static List<Object> getModules(WmcApplication application) {
+    public static List<Object> getModules(WimcApplication application) {
         return Arrays.<Object>asList(
                 new WimcModule(application)
         );

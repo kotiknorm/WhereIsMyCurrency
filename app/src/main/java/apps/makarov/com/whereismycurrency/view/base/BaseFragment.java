@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import java.util.Arrays;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.WmcApplication;
+import apps.makarov.com.whereismycurrency.WimcApplication;
 import dagger.ObjectGraph;
 
 /**
@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mObjectGraph = WmcApplication.getApplication(getActivity()).buildScopedObjectGraph(getModules().toArray());
+        mObjectGraph = WimcApplication.getApplication(getActivity()).buildScopedObjectGraph(getModules().toArray());
         mObjectGraph.inject(this);
     }
 

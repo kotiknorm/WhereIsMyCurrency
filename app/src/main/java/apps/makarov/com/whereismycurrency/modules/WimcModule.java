@@ -4,7 +4,7 @@ import android.app.Application;
 
 import javax.inject.Singleton;
 
-import apps.makarov.com.whereismycurrency.WmcApplication;
+import apps.makarov.com.whereismycurrency.WimcApplication;
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,15 +17,15 @@ import dagger.Provides;
                 ApiModule.class
         },
         injects = {
-                WmcApplication.class
+                WimcApplication.class
         }
 )
 public final class WimcModule {
     public static final String TAG = WimcModule.class.getSimpleName();
 
-    private final WmcApplication mApplication;
+    private final WimcApplication mApplication;
 
-    public WimcModule(WmcApplication application) {
+    public WimcModule(WimcApplication application) {
         this.mApplication = application;
     }
 
