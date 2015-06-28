@@ -52,7 +52,7 @@ public class BankRequest extends WimcRequest {
 
         for (int i = 0; i < actualRates.length(); i++) {
 
-            BankInterpreter interpreter = new BankInterpreter(jsonObj);
+            BankInterpreter interpreter = new BankInterpreter(actualRates.getJSONObject(i));
             Bank bank = interpreter.parse();
             list.add(bank);
         }
