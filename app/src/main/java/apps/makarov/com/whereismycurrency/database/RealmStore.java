@@ -33,7 +33,7 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
-    public List<Rate> getRates(String bankName) {
+    public List<Rate> getRates(String baseCurrency, String compareCurrency, Date date, String bankName) {
         return Realm.getInstance(application).where(Bank.class).equalTo("name", bankName).findFirst().getRates();
     }
 

@@ -1,5 +1,6 @@
 package apps.makarov.com.whereismycurrency.database;
 
+import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
@@ -14,7 +15,7 @@ public interface IStore<T> {
 
     List<Bank> getBanks();
 
-    List<Rate> getRates(String bankName);
+    List<Rate> getRates(String baseCurrency, String compareCurrency, Date date, String bankName);
 
     List<UserHistory> getUserHistory();
 

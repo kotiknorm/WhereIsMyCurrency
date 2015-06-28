@@ -6,6 +6,7 @@ import com.squareup.okhttp.Response;
 import org.json.JSONObject;
 import org.json.XML;
 
+import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.database.IStore;
@@ -13,6 +14,7 @@ import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
+import apps.makarov.com.whereismycurrency.net.requests.HistoryRateRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import io.realm.RealmObject;
 import rx.Observable;
@@ -36,7 +38,7 @@ public class WimcServiceImpl implements WimcService {
     }
 
     @Override
-    public Observable<List<Rate>> getRateFromBank(String bankName) {
+    public Observable<List<Rate>> getRatesFromBank(String bankName) {
         return null;
     }
 
@@ -44,7 +46,7 @@ public class WimcServiceImpl implements WimcService {
     public Observable<List<Bank>> getAllBank() {
         final WimcRequest bankRequest = new BankRequest();
 
-        Observable<List<Bank>> observable = Observable.create(new Observable.OnSubscribe<List<Bank>>() {
+        Observable<List<Bank>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Bank>>() {
             @Override
             public void call(Subscriber<? super List<Bank>> subscriber) {
                 try {
@@ -59,7 +61,7 @@ public class WimcServiceImpl implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
 
-        return getObservableRequest(bankRequest, observable);
+        return getObservableRequest(bankRequest, localStoreObservable);
     }
 
 
@@ -80,6 +82,46 @@ public class WimcServiceImpl implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Observable<Rate> getRate(final String baseCurrency, final String compareCurrency, final Date date) {
+        final WimcRequest bankRequest = new HistoryRateRequest();
+
+        Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
+            @Override
+            public void call(Subscriber<? super List<Rate>> subscriber) {
+                try {
+                    List<Rate> list = mStore.getRates(baseCurrency, compareCurrency, date, Bank.DEFAULT);
+
+                    subscriber.onNext(list);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread());
+
+        return getObservableRequest(bankRequest, localStoreObservable).flatMap(new Func1<List<Rate>, Observable<Rate>>() {
+            @Override
+            public Observable<Rate> call(final List<Rate> rates) {
+                 return Observable.create(new Observable.OnSubscribe<Rate>() {
+
+                     @Override
+                     public void call(Subscriber<? super Rate> subscriber) {
+                         try {
+                             subscriber.onNext(rates.get(0));
+                             subscriber.onCompleted();
+
+                         } catch (Throwable e) {
+                             subscriber.onError(e);
+                         }
+                     }
+                 });
+            }
+        });
+    }
+
 
     @Override
     public void addHistoryItem(UserHistory historyItem) {

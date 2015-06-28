@@ -10,6 +10,8 @@ import io.realm.annotations.PrimaryKey;
 
 public class Bank extends RealmObject {
 
+    public static final String DEFAULT = "DEFAULT";
+
     @PrimaryKey
     private String key;
     private String name;

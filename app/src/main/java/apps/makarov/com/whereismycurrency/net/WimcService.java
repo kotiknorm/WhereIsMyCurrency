@@ -1,5 +1,6 @@
 package apps.makarov.com.whereismycurrency.net;
 
+import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
@@ -12,7 +13,9 @@ public interface WimcService {
     //Network data
     Observable<List<Bank>> getAllBank();
 
-    Observable<List<Rate>> getRateFromBank(String bankName);
+    Observable<List<Rate>> getRatesFromBank(String bankName);
+
+    Observable<Rate> getRate(String baseCurrency, String compareCurrency, Date date);
 
     Observable<List<UserHistory>> getHistory();
 
