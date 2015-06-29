@@ -80,7 +80,7 @@ public class RatePresenterImpl implements RatePresenter {
                         Log.d(TAG, "onNext");
 
                         Rate firstRate = list.get(0).getRates().first();
-                        double buy = firstRate.getBuy() * value;
+                        double buy = firstRate.getValue() * value;
                         double factValue = value * rate;
 
                         String result = (buy <= factValue

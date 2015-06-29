@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
  * Created by makarov on 28/06/15.
@@ -47,12 +46,9 @@ public class BankInterpreter implements Interpreter<Bank> {
                 if(!codesCurrency.contains(compareCurrency))
                     continue;
 
-                RateInterpreter parseRate = new RateInterpreter(mJsonObject.getJSONObject(compareCurrency));
-                Rate rate = parseRate.parse();
-                rate.setBaseCurrency(RUB_CODE);
-                rate.setCompareCurrency(compareCurrency);
-                rate.setKey(Rate.generateKey(bank.getName(), rate));
-                bank.getRates().add(rate);
+                RateInterpreter parseRate = new RateInterpreter(RUB_CODE, compareCurrency,
+                        mJsonObject.getJSONObject(compareCurrency), bank.getName());
+                bank.getRates().addAll(parseRate.parse());
 
             }
 

@@ -13,8 +13,7 @@ public class Rate extends RealmObject {
 
     @PrimaryKey
     private String key;
-    private double buy;
-    private double sell;
+    private double value;
     private String baseCurrency;
     private String compareCurrency;
     private Date changeRate;
@@ -27,12 +26,8 @@ public class Rate extends RealmObject {
         this.changeRate = changeRate;
     }
 
-    public void setBuy(double buy) {
-        this.buy = buy;
-    }
-
-    public void setSell(double sell) {
-        this.sell = sell;
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public String getBaseCurrency() {
@@ -51,12 +46,8 @@ public class Rate extends RealmObject {
         this.compareCurrency = compareCurrency;
     }
 
-    public double getSell() {
-        return sell;
-    }
-
-    public double getBuy() {
-        return buy;
+    public double getValue() {
+        return value;
     }
 
     public String getKey() {
