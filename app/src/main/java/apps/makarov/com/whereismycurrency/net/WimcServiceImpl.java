@@ -97,7 +97,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userRate.setBaseCurrency(baseCurrency);
         userRate.setValue(rateValue);
         userRate.setBank(Bank.USER_RATE);
-        userRate.setKey(Rate.generateKey(Bank.USER_RATE, userRate));
+        userRate.setKey(Rate.generateKey(userRate));
 
         userHistory.setDate(date);
         userHistory.setValue(value);

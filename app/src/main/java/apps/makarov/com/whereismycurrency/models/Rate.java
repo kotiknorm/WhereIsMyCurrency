@@ -83,8 +83,8 @@ public class Rate extends RealmObject {
     }
 
 
-    public static String generateKey(String bankName, Rate rate) {
-        return rate.getBaseCurrency() + "_" + rate.getCompareCurrency() + "_" + bankName;
+    public static String generateKey(Rate rate) {
+        return rate.getBaseCurrency() + "_" + rate.getCompareCurrency() + "_" + rate.getBank();
     }
 
 }

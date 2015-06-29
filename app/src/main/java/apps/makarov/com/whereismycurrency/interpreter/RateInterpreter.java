@@ -39,7 +39,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             rate.setBaseCurrency(baseCurrency);
             rate.setCompareCurrency(compareCurrency);
             rate.setBank(bankName);
-            rate.setKey(Rate.generateKey(bankName, rate));
+            rate.setKey(Rate.generateKey(rate));
             ratesList.add(rate);
 
             Rate rateInvert = new Rate();
@@ -50,7 +50,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             rateInvert.setBaseCurrency(compareCurrency);
             rateInvert.setCompareCurrency(baseCurrency);
             rate.setBank(bankName);
-            rateInvert.setKey(Rate.generateKey(bankName, rateInvert));
+            rateInvert.setKey(Rate.generateKey(rateInvert));
             ratesList.add(rateInvert);
 
         } catch (JSONException e) {
