@@ -4,11 +4,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:padding="@dimen/activity_horizontal_margin"
+        android:id="@+id/linearLayout">
 
         <EditText
             android:layout_width="wrap_content"
@@ -39,6 +41,23 @@
             android:layout_height="wrap_content"
             android:text="@string/title_enter_button"
             android:id="@+id/enter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout">
+
+        <android.support.v7.widget.RecyclerView
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:focusable="true"
+            android:id="@+id/history_list" />
+
     </LinearLayout>
 
 </RelativeLayout>

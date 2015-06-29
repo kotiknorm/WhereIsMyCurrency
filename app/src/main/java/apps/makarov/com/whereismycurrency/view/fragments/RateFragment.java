@@ -3,6 +3,9 @@ package apps.makarov.com.whereismycurrency.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +48,8 @@ public class RateFragment extends BaseFragment implements RateView {
     TextView rateTextView;
     @InjectView(R.id.enter)
     Button enterButton;
+    @InjectView(R.id.history_list)
+    RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,8 +103,14 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
+    public void setAdapterForRecyclerView(RecyclerView.Adapter adapter) {
+        mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initializeHistoryRecyclerView();
     }
 
     @Override
@@ -148,5 +159,11 @@ public class RateFragment extends BaseFragment implements RateView {
         return Arrays.<Object>asList(
                 new RateModule(this)
         );
+    }
+
+    public void initializeHistoryRecyclerView() {
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 }

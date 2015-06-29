@@ -8,7 +8,9 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.WimcService;
+import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import rx.Observable;
 import rx.Observer;
@@ -29,6 +31,7 @@ public class RatePresenterImpl implements RatePresenter {
     private WimcService mWimcService;
     private static Observable<List<Bank>> mGetBankObservable;
     private static Observable<List<Rate>> mGetRateObservable;
+    private static Observable<List<UserHistory>> mGetHistoryObservable;
 
     public RatePresenterImpl(RateView hotView, WimcService wimcService) {
         this.mRateView = hotView;
@@ -37,6 +40,7 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onResume() {
+        onRefresh();
     }
 
     @Override
@@ -49,9 +53,20 @@ public class RatePresenterImpl implements RatePresenter {
 
     }
 
-
     @Override
     public void onRefresh() {
+        mWimcService
+                .getHistory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache().subscribe(new Observer<List<UserHistory>>() {
+            @Override public void onCompleted() {}
+            @Override public void onError(Throwable e) {}
+            @Override
+            public void onNext(List<UserHistory> rates) {
+                mRateView.setAdapterForRecyclerView(new HistoryAdapter(mRateView.getContext(), rates));
+            }
+        });
 
     }
 

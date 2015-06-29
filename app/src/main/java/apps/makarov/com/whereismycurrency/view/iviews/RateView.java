@@ -1,5 +1,7 @@
 package apps.makarov.com.whereismycurrency.view.iviews;
 
+import android.support.v7.widget.RecyclerView;
+
 import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
 
 /**
@@ -17,5 +19,7 @@ public interface RateView extends BaseContextView {
     void hideSwipeRefreshLayout();
 
     void setResultOperation(String result);
+
+    void setAdapterForRecyclerView(RecyclerView.Adapter adapter);
 
 }
