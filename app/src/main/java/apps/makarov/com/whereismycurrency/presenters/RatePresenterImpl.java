@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 
 public class RatePresenterImpl implements RatePresenter {
 
-    private static final String TAG = "RatePresenterImpl";
+    private static final String TAG = RatePresenterImpl.class.getSimpleName();
 
     private RateView mRateView;
     private Subscription mGetRateSubscription;

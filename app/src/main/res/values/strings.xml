@@ -6,4 +6,5 @@
 
     <string name="win_result">Вы проебались и сейчас можете закрыть операцию потеряв </string>
     <string name="loser_result">Вы наварили бабла на </string>
+    <string name="title_enter_button">Увидеть результат</string>
 </resources>
