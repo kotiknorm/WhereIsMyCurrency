@@ -25,8 +25,6 @@ public interface IStore<T> {
 
     <E extends T> void saveObject(E object);
 
-    List<Rate> getAllCurrencyWithBase(String baseCurrency);
-
     void addUrlToCache(String url);
 
     boolean isUrlInCache(String url);

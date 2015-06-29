@@ -10,12 +10,10 @@ import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
-import apps.makarov.com.whereismycurrency.net.requests.HistoryRateRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 
 /**
  * Created by makarov on 26/06/15.
@@ -28,17 +26,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<Rate>> getRatesFromBank(String bankName) {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Rate>> getAllRates() {
-        return null;
-    }
-
-    @Override
-    public Observable<List<Bank>> getAllBank() {
+    public Observable<List<Bank>> getBanks() {
         final WimcRequest bankRequest = new BankRequest();
 
         Observable<List<Bank>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Bank>>() {
@@ -79,8 +67,9 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<Rate> getRate(final String baseCurrency, final String compareCurrency, final Date date) {
-        final WimcRequest bankRequest = new HistoryRateRequest();
+    public Observable<List<Rate>> getRates(final String baseCurrency, final String compareCurrency, final Date date, String bankName) {
+        final WimcRequest bankRequest = new BankRequest()
+                ;
 
         Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
@@ -97,24 +86,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
 
-        return getObservableRequest(bankRequest, localStoreObservable).flatMap(new Func1<List<Rate>, Observable<Rate>>() {
-            @Override
-            public Observable<Rate> call(final List<Rate> rates) {
-                return Observable.create(new Observable.OnSubscribe<Rate>() {
-
-                    @Override
-                    public void call(Subscriber<? super Rate> subscriber) {
-                        try {
-                            subscriber.onNext(rates.get(0));
-                            subscriber.onCompleted();
-
-                        } catch (Throwable e) {
-                            subscriber.onError(e);
-                        }
-                    }
-                });
-            }
-        });
+        return getObservableRequest(bankRequest, localStoreObservable);
     }
 
 

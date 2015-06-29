@@ -38,6 +38,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             rate.setChangeRate(new Date());
             rate.setBaseCurrency(baseCurrency);
             rate.setCompareCurrency(compareCurrency);
+            rate.setBank(bankName);
             rate.setKey(Rate.generateKey(bankName, rate));
             ratesList.add(rate);
 
@@ -48,6 +49,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             rateInvert.setChangeRate(new Date());
             rateInvert.setBaseCurrency(compareCurrency);
             rateInvert.setCompareCurrency(baseCurrency);
+            rate.setBank(bankName);
             rateInvert.setKey(Rate.generateKey(bankName, rateInvert));
             ratesList.add(rateInvert);
 

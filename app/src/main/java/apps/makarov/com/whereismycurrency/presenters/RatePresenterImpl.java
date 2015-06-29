@@ -2,6 +2,7 @@ package apps.makarov.com.whereismycurrency.presenters;
 
 import android.util.Log;
 
+import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
@@ -55,15 +56,15 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void enterOperation(final double value, final double rate) {
-        mGetBankObservable = mWimcService
-                .getAllBank()
+    public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rate) {
+        mGetRateObservable = mWimcService
+                .getRates(baseCurrency, compareCurrency, new Date(), Bank.DEFAULT)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
 
-        mGetRateSubscription = mGetBankObservable
-                .subscribe(new Observer<List<Bank>>() {
+        mGetRateSubscription = mGetRateObservable
+                .subscribe(new Observer<List<Rate>>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted");
@@ -76,11 +77,11 @@ public class RatePresenterImpl implements RatePresenter {
                     }
 
                     @Override
-                    public void onNext(List<Bank> list) {
+                    public void onNext(List<Rate> list) {
                         Log.d(TAG, "onNext");
 
-                        Rate firstRate = list.get(0).getRates().first();
-                        double buy = firstRate.getValue() * value;
+                        double valueRate = list.get(0).getValue();
+                        double buy = valueRate * value;
                         double factValue = value * rate;
 
                         String result = (buy <= factValue

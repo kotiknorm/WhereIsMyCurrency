@@ -11,7 +11,7 @@ import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import io.realm.Realm;
 import io.realm.RealmObject;
-import io.realm.RealmResults;
+import io.realm.RealmQuery;
 
 /**
  * Created by makarov on 27/06/15.
@@ -34,7 +34,14 @@ public class RealmStore implements IStore<RealmObject> {
 
     @Override
     public List<Rate> getRates(String baseCurrency, String compareCurrency, Date date, String bankName) {
-        return Realm.getInstance(application).where(Bank.class).equalTo("name", bankName).findFirst().getRates();
+
+        RealmQuery<Rate> query = Realm.getInstance(application).where(Rate.class)
+                .equalTo("baseCurrency", baseCurrency).equalTo("compareCurrency", compareCurrency);
+
+        if (bankName != Bank.DEFAULT)
+            query = query.equalTo("bank", bankName);
+
+        return query.findAll();
     }
 
     @Override
@@ -57,12 +64,6 @@ public class RealmStore implements IStore<RealmObject> {
         beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(obj);
         commitTransaction();
-    }
-
-    @Override
-    public List<Rate> getAllCurrencyWithBase(String baseCurrency) {
-        RealmResults<Rate> contacts = Realm.getInstance(application).where(Rate.class).equalTo("baseCurrency", baseCurrency).findAll();
-        return contacts;
     }
 
     @Override

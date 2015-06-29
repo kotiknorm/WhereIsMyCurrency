@@ -3,11 +3,10 @@ package apps.makarov.com.whereismycurrency.interpreter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
  * Created by makarov on 28/06/15.
@@ -15,17 +14,6 @@ import apps.makarov.com.whereismycurrency.models.Bank;
 
 public class BankInterpreter implements Interpreter<Bank> {
 
-    public static List<String> codesCurrency = new ArrayList<>();
-
-    public static final String RUB_CODE = "RUB";
-    public static final String EUR_CODE = "EUR";
-    public static final String USD_CODE = "USD";
-
-    static {
-        codesCurrency.add(RUB_CODE);
-        codesCurrency.add(EUR_CODE);
-        codesCurrency.add(USD_CODE);
-    }
 
     private final JSONObject mJsonObject;
 
@@ -43,10 +31,10 @@ public class BankInterpreter implements Interpreter<Bank> {
             while(iter.hasNext()){
                 String compareCurrency = iter.next();
 
-                if(!codesCurrency.contains(compareCurrency))
+                if(!Rate.codes.contains(compareCurrency))
                     continue;
 
-                RateInterpreter parseRate = new RateInterpreter(RUB_CODE, compareCurrency,
+                RateInterpreter parseRate = new RateInterpreter(Rate.RUB_CODE, compareCurrency,
                         mJsonObject.getJSONObject(compareCurrency), bank.getName());
                 bank.getRates().addAll(parseRate.parse());
 

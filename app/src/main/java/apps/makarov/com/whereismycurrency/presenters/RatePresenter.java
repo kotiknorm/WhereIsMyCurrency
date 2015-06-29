@@ -14,5 +14,5 @@ public interface RatePresenter {
 
     void onRefresh();
 
-    void enterOperation(double value, double rate);
+    void enterOperation(String baseCurrency, String compareCurrency, double value, double rate);
 }

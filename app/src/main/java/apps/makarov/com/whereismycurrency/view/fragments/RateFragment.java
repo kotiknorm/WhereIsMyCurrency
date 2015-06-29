@@ -18,6 +18,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.RateModule;
 import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
@@ -64,7 +65,7 @@ public class RateFragment extends BaseFragment implements RateView {
                 double value = Double.parseDouble(valueTextView.getEditableText().toString());
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
 
-                mRatePresenter.enterOperation(value, rate);
+                mRatePresenter.enterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
             }
         });
 

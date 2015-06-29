@@ -10,14 +10,9 @@ import rx.Observable;
 
 public interface WimcService {
 
-    //Network data
-    Observable<List<Bank>> getAllBank();
+    Observable<List<Bank>> getBanks();
 
-    Observable<List<Rate>> getRatesFromBank(String bankName);
-
-    Observable<List<Rate>> getAllRates();
-
-    Observable<Rate> getRate(String baseCurrency, String compareCurrency, Date date);
+    Observable<List<Rate>> getRates(String baseCurrency, String compareCurrency, Date date, String bankName);
 
     Observable<List<UserHistory>> getHistory();
 
