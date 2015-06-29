@@ -33,6 +33,11 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
+    public Observable<List<Rate>> getAllRates() {
+        return null;
+    }
+
+    @Override
     public Observable<List<Bank>> getAllBank() {
         final WimcRequest bankRequest = new BankRequest();
 

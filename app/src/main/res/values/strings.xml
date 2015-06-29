@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="win_result">Вы проебались и сейчас можете закрыть операцию потеряв </string>
+    <string name="loser_result">Вы наварили бабла на </string>
 </resources>

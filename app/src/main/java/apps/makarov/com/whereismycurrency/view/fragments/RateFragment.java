@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -35,10 +36,14 @@ public class RateFragment extends BaseFragment implements RateView {
     @Inject
     RatePresenter mRatePresenter;
 
-    @InjectView(R.id.sell)
-    TextView sellTextView;
-    @InjectView(R.id.buy)
-    TextView buyTextView;
+    @InjectView(R.id.result)
+    TextView resultTextView;
+    @InjectView(R.id.value)
+    TextView valueTextView;
+    @InjectView(R.id.rate)
+    TextView rateTextView;
+    @InjectView(R.id.enter)
+    Button enterButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,16 @@ public class RateFragment extends BaseFragment implements RateView {
         View hotView = LayoutInflater.from(getActivity()).inflate(R.layout.rate_fragment, container, false);
 
         ButterKnife.inject(this, hotView);
+
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double value = Double.parseDouble(valueTextView.getEditableText().toString());
+                double rate = Double.parseDouble(rateTextView.getEditableText().toString());
+
+                mRatePresenter.enterOperation(value, rate);
+            }
+        });
 
         return hotView;
     }
@@ -77,9 +92,8 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
-    public void setValue(double fistValue, double secondValue) {
-        sellTextView.setText(String.valueOf(fistValue));
-        buyTextView.setText(String.valueOf(secondValue));
+    public void setResultOperation(String result) {
+        resultTextView.setText(result);
     }
 
     @Override

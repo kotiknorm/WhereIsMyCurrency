@@ -13,4 +13,6 @@ public interface RatePresenter {
     void onDestroy();
 
     void onRefresh();
+
+    void enterOperation(double value, double rate);
 }

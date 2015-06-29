@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.net.WimcService;
@@ -23,32 +24,10 @@ public class RatePresenterImpl implements RatePresenter {
     private static final String TAG = "RatePresenterImpl";
 
     private RateView mRateView;
-    private Subscription mGetHotAnthologySubscription;
+    private Subscription mGetRateSubscription;
     private WimcService mWimcService;
-    private static Observable<List<Bank>> mGetHotAnthologyObservable;
-
-    private Observer<List<Bank>> mGetHotAnthologyObserver = new Observer<List<Bank>>() {
-        @Override
-        public void onCompleted() {
-            Log.d(TAG, "onCompleted");
-        }
-
-        @Override
-        public void onError(Throwable e) {
-            Log.e(TAG, "onError", e);
-            mRateView.setValue(0, 1);
-        }
-
-        @Override
-        public void onNext(List<Bank> list) {
-            Log.d(TAG, "onNext");
-
-            Bank firstBank = list.get(0);
-            Rate usdRate = firstBank.getRates().get(0);
-
-            mRateView.setValue(usdRate.getBuy(), usdRate.getSell());
-        }
-    };
+    private static Observable<List<Bank>> mGetBankObservable;
+    private static Observable<List<Rate>> mGetRateObservable;
 
     public RatePresenterImpl(RateView hotView, WimcService wimcService) {
         this.mRateView = hotView;
@@ -57,7 +36,6 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onResume() {
-        pullAllBankFromNetwork();
     }
 
     @Override
@@ -76,20 +54,43 @@ public class RatePresenterImpl implements RatePresenter {
 
     }
 
-    private void pullAllBankFromNetwork() {
-        if (mGetHotAnthologySubscription != null) {
-            mGetHotAnthologySubscription.unsubscribe();
-            mGetHotAnthologySubscription = null;
-        }
-
-        mGetHotAnthologyObservable = mWimcService
+    @Override
+    public void enterOperation(final double value, final double rate) {
+        mGetBankObservable = mWimcService
                 .getAllBank()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
 
-        mGetHotAnthologySubscription = mGetHotAnthologyObservable
+        mGetRateSubscription = mGetBankObservable
+                .subscribe(new Observer<List<Bank>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted");
+                    }
 
-                .subscribe(mGetHotAnthologyObserver);
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError", e);
+                        mRateView.setResultOperation(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Bank> list) {
+                        Log.d(TAG, "onNext");
+
+                        Rate firstRate = list.get(0).getRates().first();
+                        double buy = firstRate.getBuy() * value;
+                        double factValue = value * rate;
+
+                        String result = (buy <= factValue
+                                ? mRateView.getContext().getString(R.string.loser_result)
+                                : mRateView.getContext().getString(R.string.win_result)) + " " +
+                                Math.abs(buy - factValue);
+
+                        mRateView.setResultOperation(result);
+                    }
+                });
     }
+
 }

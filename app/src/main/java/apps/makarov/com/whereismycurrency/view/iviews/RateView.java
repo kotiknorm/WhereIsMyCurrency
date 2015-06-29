@@ -16,6 +16,6 @@ public interface RateView extends BaseContextView {
 
     void hideSwipeRefreshLayout();
 
-    void setValue(double fistValue, double secondValue);
+    void setResultOperation(String result);
 
 }

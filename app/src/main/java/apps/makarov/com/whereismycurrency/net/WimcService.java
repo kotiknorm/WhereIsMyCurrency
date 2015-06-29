@@ -15,6 +15,8 @@ public interface WimcService {
 
     Observable<List<Rate>> getRatesFromBank(String bankName);
 
+    Observable<List<Rate>> getAllRates();
+
     Observable<Rate> getRate(String baseCurrency, String compareCurrency, Date date);
 
     Observable<List<UserHistory>> getHistory();
