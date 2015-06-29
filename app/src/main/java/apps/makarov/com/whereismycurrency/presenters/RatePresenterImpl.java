@@ -57,6 +57,8 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rate) {
+        mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rate);
+
         mGetRateObservable = mWimcService
                 .getRates(baseCurrency, compareCurrency, new Date(), Bank.DEFAULT)
                 .subscribeOn(Schedulers.io())

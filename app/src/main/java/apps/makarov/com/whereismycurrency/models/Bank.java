@@ -11,11 +11,11 @@ import io.realm.annotations.PrimaryKey;
 public class Bank extends RealmObject {
 
     public static final String DEFAULT = "DEFAULT";
+    public static final String USER_RATE = "USER_RATE";
 
     @PrimaryKey
     private String key;
     private String name;
-
     private RealmList<Rate> rates = new RealmList<>();
 
     public String getKey() {

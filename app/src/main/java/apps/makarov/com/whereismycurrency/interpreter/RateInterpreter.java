@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.Utils.StringUtils;
+import apps.makarov.com.whereismycurrency.StringUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**

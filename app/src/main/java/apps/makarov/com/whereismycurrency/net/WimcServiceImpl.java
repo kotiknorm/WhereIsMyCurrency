@@ -68,8 +68,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
 
     @Override
     public Observable<List<Rate>> getRates(final String baseCurrency, final String compareCurrency, final Date date, String bankName) {
-        final WimcRequest bankRequest = new BankRequest()
-                ;
+        final WimcRequest bankRequest = new BankRequest();
 
         Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
@@ -89,13 +88,24 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         return getObservableRequest(bankRequest, localStoreObservable);
     }
 
-
     @Override
-    public void addHistoryItem(UserHistory historyItem) {
-        mStore.saveObject(historyItem);
+    public void addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value) {
+        UserHistory userHistory = new UserHistory();
+
+        Rate userRate = new Rate();
+        userRate.setCompareCurrency(compareCurrency);
+        userRate.setBaseCurrency(baseCurrency);
+        userRate.setValue(rateValue);
+        userRate.setBank(Bank.USER_RATE);
+        userRate.setKey(Rate.generateKey(Bank.USER_RATE, userRate));
+
+        userHistory.setDate(date);
+        userHistory.setValue(value);
+        userHistory.setRate(userRate);
+        userHistory.setKey(UserHistory.generateKey(userHistory));
+
+        mStore.saveObject(userHistory);
     }
-
-
 
 }
 

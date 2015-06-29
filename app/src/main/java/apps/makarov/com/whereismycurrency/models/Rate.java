@@ -31,8 +31,8 @@ public class Rate extends RealmObject {
     private double value;
     private String baseCurrency;
     private String compareCurrency;
-    private Date changeRate;
-    private String bank; // bank PK
+    private Date changeRate = new Date();
+    private String bank = Bank.DEFAULT; // bank PK
 
     public String getBank() {
         return bank;

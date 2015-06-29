@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.Utils;
+package apps.makarov.com.whereismycurrency;
 
 /**
  * Created by makarov on 27/06/15.

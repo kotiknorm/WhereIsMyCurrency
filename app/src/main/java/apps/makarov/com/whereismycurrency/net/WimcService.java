@@ -16,6 +16,6 @@ public interface WimcService {
 
     Observable<List<UserHistory>> getHistory();
 
-    void addHistoryItem(UserHistory historyItem);
+    void addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value);
 
 }
