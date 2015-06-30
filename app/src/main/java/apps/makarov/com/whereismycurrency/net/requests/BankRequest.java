@@ -5,6 +5,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.XML;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,9 @@ public class BankRequest extends WimcRequest<Bank> {
     }
 
     @Override
-    protected List<Bank> parseJsonToList(JSONObject jsonObj) throws JSONException {
+    protected List<Bank> parseStringToList(String str) throws JSONException {
 
+        JSONObject jsonObj = XML.toJSONObject(str);
         JSONArray actualRates = jsonObj.getJSONObject("Exchange_Rates").getJSONObject("Actual_Rates").getJSONArray("Bank");
         Log.d(TAG, actualRates.toString());
         List<Bank> list = new ArrayList<>();

@@ -5,12 +5,13 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import apps.makarov.com.whereismycurrency.interpreter.HistoryRateInterpreter;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
@@ -30,9 +31,14 @@ public class FixerRequest extends WimcRequest<Rate> {
         this.mDate = date;
     }
 
+    private String getCorrectDateFormat(){
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+        return dt.format(mDate);
+    }
+
     @Override
     public String getPath() {
-        return FIXER_RATES_URL + "/" + mDate.toString();
+        return FIXER_RATES_URL + "/" + getCorrectDateFormat();
     }
 
     @Override
@@ -48,11 +54,14 @@ public class FixerRequest extends WimcRequest<Rate> {
     }
 
     @Override
-    protected List<Rate> parseJsonToList(final JSONObject jsonObj) throws JSONException {
-        Log.d(TAG, jsonObj.toString());
-        List<Rate> list = new ArrayList<>();
+    protected List<Rate> parseStringToList(final String str) throws JSONException {
+        Log.d(TAG, str);
+        JSONObject result = new JSONObject(str);
 
+        HistoryRateInterpreter interpreter = new HistoryRateInterpreter(result);
+        List<Rate> list = interpreter.parse();
         return list;
     }
+
 
 }

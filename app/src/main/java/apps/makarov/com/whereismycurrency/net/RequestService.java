@@ -4,9 +4,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.json.JSONObject;
-import org.json.XML;
-
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.database.IStore;
@@ -40,12 +37,6 @@ public class RequestService {
 
         return urlInCache ? observableDateFromLocalStore :
                 observableNetwork(request)
-                        .flatMap(new Func1<JSONObject, Observable<List<? extends RealmObject>>>() {
-                            @Override
-                            public Observable<List<? extends RealmObject>> call(JSONObject s) {
-                                return request.observableJsonToObjectsList(s);
-                            }
-                        })
                         .flatMap(new Func1<List<? extends RealmObject>, Observable<Exception>>() {
                             @Override
                             public Observable<Exception> call(List<? extends RealmObject> list) {
@@ -60,7 +51,7 @@ public class RequestService {
                         });
     }
 
-    private Observable<JSONObject> observableNetwork(WimcRequest request) {
+    private Observable<List<? extends RealmObject>> observableNetwork(final WimcRequest request) {
         return getResponse(request)
                 .doOnNext(cachingRequest())
                 .flatMap(new Func1<Response, Observable<String>>() {
@@ -68,10 +59,10 @@ public class RequestService {
                     public Observable<String> call(Response response) {
                         return responseToString(response);
                     }
-                }).flatMap(new Func1<String, Observable<JSONObject>>() {
+                }).flatMap(new Func1<String, Observable<List<? extends RealmObject>>>() {
                     @Override
-                    public Observable<JSONObject> call(String s) {
-                        return stringToJson(s);
+                    public Observable<List<? extends RealmObject>> call(String s) {
+                        return request.observableStringToObjectsList(s);
                     }
                 });
     }
@@ -108,23 +99,6 @@ public class RequestService {
             public void call(Subscriber<? super String> subscriber) {
                 try {
                     subscriber.onNext(response.body().string());
-                    subscriber.onCompleted();
-
-                } catch (Throwable e) {
-                    subscriber.onError(e);
-                }
-            }
-        });
-    }
-
-    private Observable<JSONObject> stringToJson(final String xml) {
-        return Observable.create(new Observable.OnSubscribe<JSONObject>() {
-            @Override
-            public void call(Subscriber<? super JSONObject> subscriber) {
-                try {
-                    JSONObject jsonObj = XML.toJSONObject(xml);
-
-                    subscriber.onNext(jsonObj);
                     subscriber.onCompleted();
 
                 } catch (Throwable e) {

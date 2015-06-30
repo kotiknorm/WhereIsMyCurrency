@@ -3,7 +3,6 @@ package apps.makarov.com.whereismycurrency.net.requests;
 import com.squareup.okhttp.Request;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
@@ -23,12 +22,12 @@ public abstract class WimcRequest<T extends RealmObject> {
 
     public abstract String getPath();
 
-    public Observable<List<T>> observableJsonToObjectsList(final JSONObject jsonObject) {
+    public Observable<List<T>> observableStringToObjectsList(final String jsonObject) {
         return Observable.create(new Observable.OnSubscribe<List<T>>() {
             @Override
             public void call(Subscriber<? super List<T>> subscriber) {
                 try {
-                    List<T> list = parseJsonToList(jsonObject);
+                    List<T> list = parseStringToList(jsonObject);
                     subscriber.onNext(list);
                     subscriber.onCompleted();
                 } catch (Throwable e) {
@@ -53,7 +52,7 @@ public abstract class WimcRequest<T extends RealmObject> {
         return builder.build();
     }
 
-    protected abstract List<T> parseJsonToList(JSONObject jsonObj)  throws JSONException;
+    protected abstract List<T> parseStringToList(String jsonObj)  throws JSONException;
 
     protected abstract TYPE getType();
 
