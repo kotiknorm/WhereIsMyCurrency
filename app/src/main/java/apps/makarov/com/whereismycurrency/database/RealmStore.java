@@ -37,7 +37,8 @@ public class RealmStore implements IStore<RealmObject> {
 
         RealmQuery<Rate> query = Realm.getInstance(application).where(Rate.class)
                 .equalTo("baseCurrency", baseCurrency).equalTo("compareCurrency", compareCurrency)
-                .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date);
+                .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date)
+                ;
 
         if (bankName != Bank.DEFAULT)
             query = query.equalTo("bank", bankName);
@@ -47,7 +48,7 @@ public class RealmStore implements IStore<RealmObject> {
 
     @Override
     public List<UserHistory> getUserHistory() {
-        return Realm.getInstance(application).where(UserHistory.class).findAllSorted("date");
+        return Realm.getInstance(application).where(UserHistory.class).findAllSorted("date", false);
     }
 
     @Override

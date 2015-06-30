@@ -1,7 +1,6 @@
 package apps.makarov.com.whereismycurrency.net;
 
 import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Response;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +16,6 @@ import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 /**
  * Created by makarov on 26/06/15.
@@ -77,6 +75,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
+//                    getStore().addUrlToCache(bankRequest.getRequest().urlString());
                     List<Rate> list = getStore().getRates(baseCurrency, compareCurrency, DateUtils.getTodayDate(), Bank.DEFAULT);
 
                     subscriber.onNext(list);
@@ -88,7 +87,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
 
-        return getObservableRequest(bankRequest, localStoreObservable).doOnNext(cachingRequest());
+        return getObservableRequest(bankRequest, localStoreObservable);
     }
 
     @Override
@@ -110,14 +109,14 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         getStore().saveObject(userHistory);
     }
 
-    protected Action1 cachingRequest() {
-        return new Action1<Response>() {
-            @Override
-            public void call(Response response) {
-                getStore().addUrlToCache(response.request().urlString());
-            }
-        };
-    }
+//    protected Action1 cachingRequest() {
+//        return new Action1<Response>() {
+//            @Override
+//            public void call(Response response) {
+//                getStore().addUrlToCache(response.request().urlString());
+//            }
+//        };
+//    }
 
 }
 
