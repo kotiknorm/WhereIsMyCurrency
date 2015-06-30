@@ -23,6 +23,6 @@ public interface IStore<T> {
 
     void addUrlToCache(String url);
 
-    boolean isUrlInCache(String url);
+    boolean hasUrlInCache(String url);
 }
 

@@ -5,6 +5,7 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.database.IStore;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
@@ -108,7 +109,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     private WimcRequest getRateRequest(Date date) {
-        if (true) // TODO если нужен курс текущего дня
+        if (DateUtils.isToday(date))
             return new BankRequest();
         else
             return new FixerRequest();

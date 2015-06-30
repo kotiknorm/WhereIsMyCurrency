@@ -36,7 +36,8 @@ public class RealmStore implements IStore<RealmObject> {
     public List<Rate> getRates(String baseCurrency, String compareCurrency, Date date, String bankName) {
 
         RealmQuery<Rate> query = Realm.getInstance(application).where(Rate.class)
-                .equalTo("baseCurrency", baseCurrency).equalTo("compareCurrency", compareCurrency).notEqualTo("bank", Bank.USER_RATE);
+                .equalTo("baseCurrency", baseCurrency).equalTo("compareCurrency", compareCurrency)
+                .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date);
 
         if (bankName != Bank.DEFAULT)
             query = query.equalTo("bank", bankName);
@@ -69,7 +70,7 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
-    public boolean isUrlInCache(String url) {
+    public boolean hasUrlInCache(String url) {
         return Realm.getInstance(application).where(CacheRequest.class).equalTo("url", url).findFirst() != null;
     }
 

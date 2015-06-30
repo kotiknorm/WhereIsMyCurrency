@@ -19,6 +19,7 @@ import rx.Subscriber;
  */
 public class BankRequest extends WimcRequest<Bank> {
 
+    public static final String TAG = FixerRequest.class.getSimpleName();
     public static final String BANK_RATES_URL = "http://informer.kovalut.ru/webmaster/xml-table.php?kod=7701";
 
     @Override
@@ -45,7 +46,7 @@ public class BankRequest extends WimcRequest<Bank> {
     private List<Bank> parseJsonToList(JSONObject jsonObj) throws JSONException {
 
         JSONArray actualRates = jsonObj.getJSONObject("Exchange_Rates").getJSONObject("Actual_Rates").getJSONArray("Bank");
-        Log.d("JSON", actualRates.toString());
+        Log.d(TAG, actualRates.toString());
         List<Bank> list = new ArrayList<>();
 
         for (int i = 0; i < actualRates.length(); i++) {

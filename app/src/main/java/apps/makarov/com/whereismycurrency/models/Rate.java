@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -26,11 +27,11 @@ public class Rate extends RealmObject {
     }
 
     @PrimaryKey
-    private String key;
+    private String key;  // composite key (generateKey method)
     private double value;
     private String baseCurrency;
     private String compareCurrency;
-    private Date changeRate = new Date();
+    private Date changeRate = DateUtils.getTodayDate(); // today
     private String bank = Bank.DEFAULT; // bank PK
 
     public String getBank() {

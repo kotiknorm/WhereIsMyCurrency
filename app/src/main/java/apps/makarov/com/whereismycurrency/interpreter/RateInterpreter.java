@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.StringUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
@@ -35,7 +35,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             String buyStr = StringUtils.getGoodLong(mJsonObject.getString("Buy"));
             double buyLong = Double.parseDouble(buyStr);
             rate.setValue(buyLong);
-            rate.setChangeRate(new Date());
+            rate.setChangeRate(DateUtils.getTodayDate());
             rate.setBaseCurrency(baseCurrency);
             rate.setCompareCurrency(compareCurrency);
             rate.setBank(bankName);
@@ -46,7 +46,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             String sellStr = StringUtils.getGoodLong(mJsonObject.getString("Sell"));
             double sellLong = Double.parseDouble(sellStr);
             rateInvert.setValue(1/sellLong);
-            rateInvert.setChangeRate(new Date());
+            rateInvert.setChangeRate(DateUtils.getTodayDate());
             rateInvert.setBaseCurrency(compareCurrency);
             rateInvert.setCompareCurrency(baseCurrency);
             rate.setBank(bankName);

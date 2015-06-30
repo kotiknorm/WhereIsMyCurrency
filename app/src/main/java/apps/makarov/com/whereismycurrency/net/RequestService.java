@@ -31,7 +31,7 @@ public class RequestService {
     }
 
     protected <T extends RealmObject> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
-        boolean urlInCache = mStore.isUrlInCache(request.getPath());
+        boolean urlInCache = mStore.hasUrlInCache(request.getPath());
 
         return urlInCache ? observableDateFromLocalStore :
                 observableNetwork(request)

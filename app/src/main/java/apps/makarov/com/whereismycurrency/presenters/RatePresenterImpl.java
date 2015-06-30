@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
@@ -14,8 +15,10 @@ import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -28,9 +31,10 @@ public class RatePresenterImpl implements RatePresenter {
 
     private RateView mRateView;
     private Subscription mGetRateSubscription;
+    private Subscription mGetHistorySubscription;
     private WimcService mWimcService;
-    private static Observable<List<Bank>> mGetBankObservable;
-    private static Observable<List<Rate>> mGetRateObservable;
+
+    private static Observable<Rate> mGetRateObservable;
     private static Observable<List<UserHistory>> mGetHistoryObservable;
 
     public RatePresenterImpl(RateView hotView, WimcService wimcService) {
@@ -55,13 +59,17 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onRefresh() {
-        mWimcService
-                .getHistory()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .cache().subscribe(new Observer<List<UserHistory>>() {
-            @Override public void onCompleted() {}
-            @Override public void onError(Throwable e) {}
+        mGetHistoryObservable = getHistoryObservable();
+
+        mGetHistorySubscription = mGetHistoryObservable.subscribe(new Observer<List<UserHistory>>() {
+            @Override
+            public void onCompleted() {
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
             @Override
             public void onNext(List<UserHistory> rates) {
                 HistoryAdapter historyAdapter = new HistoryAdapter(mRateView.getContext(), rates);
@@ -72,17 +80,13 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rate) {
-        mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rate);
+    public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
+        mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
 
-        mGetRateObservable = mWimcService
-                .getRates(baseCurrency, compareCurrency, new Date(), Bank.DEFAULT)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .cache();
+        mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
 
         mGetRateSubscription = mGetRateObservable
-                .subscribe(new Observer<List<Rate>>() {
+                .subscribe(new Observer<Rate>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted");
@@ -95,12 +99,12 @@ public class RatePresenterImpl implements RatePresenter {
                     }
 
                     @Override
-                    public void onNext(List<Rate> list) {
+                    public void onNext(Rate rate) {
                         Log.d(TAG, "onNext");
 
-                        double valueRate = list.get(0).getValue();
+                        double valueRate = rate.getValue();
                         double buy = valueRate * value;
-                        double factValue = value * rate;
+                        double factValue = value * rateValue;
 
                         String result = (buy <= factValue
                                 ? mRateView.getContext().getString(R.string.loser_result)
@@ -110,6 +114,39 @@ public class RatePresenterImpl implements RatePresenter {
                         mRateView.setResultOperation(result);
                     }
                 });
+    }
+
+    private Observable<List<UserHistory>> getHistoryObservable(){
+        return mWimcService
+                .getHistory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
+    }
+
+    private Observable<Rate> getRateObservable(String baseCurrency, String compareCurrency){
+        return mWimcService
+                .getRates(baseCurrency, compareCurrency, DateUtils.getTodayDate(), Bank.DEFAULT)
+                .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
+                    @Override
+                    public Observable<Rate> call(final List<Rate> rates) {
+                        return Observable.create(new Observable.OnSubscribe<Rate>() {
+                            @Override
+                            public void call(Subscriber<? super Rate> subscriber) {
+                                try {
+                                    subscriber.onNext(rates.get(0));
+                                    subscriber.onCompleted();
+
+                                } catch (Throwable e) {
+                                    subscriber.onError(e);
+                                }
+                            }
+                        });
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
     }
 
 }
