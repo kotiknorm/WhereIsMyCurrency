@@ -47,7 +47,7 @@ public class RealmStore implements IStore<RealmObject> {
 
     @Override
     public List<UserHistory> getUserHistory() {
-        return Realm.getInstance(application).where(UserHistory.class).findAll();
+        return Realm.getInstance(application).where(UserHistory.class).findAllSorted("date");
     }
 
     @Override
