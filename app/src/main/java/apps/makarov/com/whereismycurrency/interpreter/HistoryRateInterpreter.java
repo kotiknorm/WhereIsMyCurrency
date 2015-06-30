@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
@@ -66,7 +67,7 @@ public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
 
     private Date parseFixerDate(String dateStr) {
         try {
-            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dt = DateUtils.getFixerIoDareFormat();
             return dt.parse(dateStr);
         } catch (ParseException e) {
             Log.e(TAG, "ParseException", e);

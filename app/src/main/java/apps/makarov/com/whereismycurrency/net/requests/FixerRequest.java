@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.interpreter.HistoryRateInterpreter;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
@@ -32,7 +33,7 @@ public class FixerRequest extends WimcRequest<Rate> {
     }
 
     private String getCorrectDateFormat(){
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dt = DateUtils.getFixerIoDareFormat();
         return dt.format(mDate);
     }
 

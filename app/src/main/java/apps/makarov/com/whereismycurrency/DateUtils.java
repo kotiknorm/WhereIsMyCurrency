@@ -1,5 +1,6 @@
 package apps.makarov.com.whereismycurrency;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +20,14 @@ public class DateUtils {
 
     public static boolean isToday(Date date){
         return getTodayDate().equals(date);
+    }
+
+    public static SimpleDateFormat getFixerIoDareFormat(){
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    public static SimpleDateFormat getWimcFormat(){
+        return new SimpleDateFormat("yyyy-MM-dd");
     }
 
 }
