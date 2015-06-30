@@ -1,6 +1,5 @@
 package apps.makarov.com.whereismycurrency.view.adapters.viewholders;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -31,9 +30,9 @@ public class UserHistoryViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.inject(this, itemView);
     }
 
-    public void bindStoryToView(Context context, UserHistory history) {
-        rateTextView.setText(getCurrencyOperationString(history));
-        valueTextView.setText(getRateString(history));
+    public void bindStoryToView(UserHistory history) {
+        rateTextView.setText(getRateString(history));
+        valueTextView.setText(getCurrencyOperationString(history));
         dateTextView.setText(getDate(history));
     }
 
@@ -43,10 +42,12 @@ public class UserHistoryViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String getCurrencyOperationString(UserHistory history){
-        return "Вы продали " + history.getValue() + " " + history.getRate().getBaseCurrency();
+        return itemView.getContext().getString(R.string.history_item_title,
+                history.getValue(), history.getRate().getBaseCurrency());
     }
 
     private String getRateString(UserHistory history){
-        return "по цене " + history.getRate().getValue() + " " + history.getRate().getCompareCurrency();
+        return itemView.getContext().getString(R.string.history_item_subtitle,
+                history.getRate().getValue(), history.getRate().getCompareCurrency());
     }
 }

@@ -32,7 +32,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<UserHistoryViewHolder> 
 
     @Override
     public void onBindViewHolder(UserHistoryViewHolder holder, int position) {
-        holder.bindStoryToView(mContext, mHistoryItems.get(position));
+        holder.bindStoryToView(mHistoryItems.get(position));
     }
 
     @Override
