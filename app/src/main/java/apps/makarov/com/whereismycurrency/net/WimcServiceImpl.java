@@ -35,7 +35,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             @Override
             public void call(Subscriber<? super List<Bank>> subscriber) {
                 try {
-                    List<Bank> list = mStore.getBanks();
+                    List<Bank> list = getStore().getBanks();
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -55,7 +55,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             @Override
             public void call(Subscriber<? super List<UserHistory>> subscriber) {
                 try {
-                    List<UserHistory> list = mStore.getUserHistory();
+                    List<UserHistory> list = getStore().getUserHistory();
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -75,7 +75,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
-                    List<Rate> list = mStore.getRates(baseCurrency, compareCurrency, date, bankName);
+                    List<Rate> list = getStore().getRates(baseCurrency, compareCurrency, date, bankName);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -105,7 +105,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userHistory.setRate(userRate);
         userHistory.setKey(UserHistory.generateKey(userHistory));
 
-        mStore.saveObject(userHistory);
+        getStore().saveObject(userHistory);
     }
 
     private WimcRequest getRateRequest(Date date, String baseCurrency) {

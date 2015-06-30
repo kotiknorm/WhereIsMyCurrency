@@ -24,11 +24,15 @@ import rx.functions.Func1;
 public class RequestService {
 
     private OkHttpClient mClient;
-    protected IStore mStore;
+    private IStore mStore;
 
     public RequestService(OkHttpClient client, IStore store) {
         this.mClient = client;
         this.mStore = store;
+    }
+
+    protected IStore getStore(){
+        return mStore;
     }
 
     protected <T extends RealmObject> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
