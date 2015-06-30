@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -43,9 +44,9 @@ public class RateFragment extends BaseFragment implements RateView {
     @InjectView(R.id.result)
     TextView resultTextView;
     @InjectView(R.id.value)
-    TextView valueTextView;
+    EditText valueTextView;
     @InjectView(R.id.rate)
-    TextView rateTextView;
+    EditText rateTextView;
     @InjectView(R.id.enter)
     Button enterButton;
     @InjectView(R.id.history_list)
@@ -105,6 +106,11 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void setAdapterForRecyclerView(RecyclerView.Adapter adapter) {
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void setAsyncRate(int rateValue) {
+        rateTextView.setText("" + rateValue);
     }
 
     @Override

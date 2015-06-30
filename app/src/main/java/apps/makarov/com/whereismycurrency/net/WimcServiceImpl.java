@@ -10,6 +10,7 @@ import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
+import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import rx.Observable;
 import rx.Subscriber;
@@ -47,7 +48,6 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         return getObservableRequest(bankRequest, localStoreObservable);
     }
 
-
     @Override
     public Observable<List<UserHistory>> getHistory() {
         return Observable.create(new Observable.OnSubscribe<List<UserHistory>>() {
@@ -67,14 +67,14 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<Rate>> getRates(final String baseCurrency, final String compareCurrency, final Date date, String bankName) {
-        final WimcRequest bankRequest = new BankRequest();
+    public Observable<List<Rate>> getRates(final String baseCurrency, final String compareCurrency, final Date date, final String bankName) {
+        final WimcRequest bankRequest = getRateRequest(date);
 
         Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
-                    List<Rate> list = mStore.getRates(baseCurrency, compareCurrency, date, Bank.DEFAULT);
+                    List<Rate> list = mStore.getRates(baseCurrency, compareCurrency, date, bankName);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -105,6 +105,13 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userHistory.setKey(UserHistory.generateKey(userHistory));
 
         mStore.saveObject(userHistory);
+    }
+
+    private WimcRequest getRateRequest(Date date) {
+        if (true) // TODO если нужен курс текущего дня
+            return new BankRequest();
+        else
+            return new FixerRequest();
     }
 
 }

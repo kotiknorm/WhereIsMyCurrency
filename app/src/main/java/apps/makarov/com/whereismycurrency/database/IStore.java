@@ -19,10 +19,6 @@ public interface IStore<T> {
 
     List<UserHistory> getUserHistory();
 
-    void beginTransaction();
-
-    void commitTransaction();
-
     <E extends T> void saveObject(E object);
 
     void addUrlToCache(String url);

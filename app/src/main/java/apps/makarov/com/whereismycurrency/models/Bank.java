@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 public class Bank extends RealmObject {
 
     public static final String DEFAULT = "DEFAULT";
-    public static final String USER_RATE = "USER_RATE";
+    public static final String USER_RATE = "USER_RATE";  // rates from user history
 
     @PrimaryKey
     private String key;

@@ -25,7 +25,6 @@ public class Rate extends RealmObject {
         codes.add(USD_CODE);
     }
 
-
     @PrimaryKey
     private String key;
     private double value;

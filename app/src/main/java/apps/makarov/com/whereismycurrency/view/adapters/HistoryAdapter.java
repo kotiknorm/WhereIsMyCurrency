@@ -20,9 +20,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<UserHistoryViewHolder> 
     private Context mContext;
     private List<UserHistory> mHistoryItems;
 
-    public HistoryAdapter(Context context, List<UserHistory>stories) {
+    public HistoryAdapter(Context context, List<UserHistory> historyItems) {
         this.mContext = context;
-        this.mHistoryItems = stories;
+        this.mHistoryItems = historyItems;
     }
 
     @Override

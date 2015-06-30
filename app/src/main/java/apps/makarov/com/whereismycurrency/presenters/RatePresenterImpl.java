@@ -64,7 +64,8 @@ public class RatePresenterImpl implements RatePresenter {
             @Override public void onError(Throwable e) {}
             @Override
             public void onNext(List<UserHistory> rates) {
-                mRateView.setAdapterForRecyclerView(new HistoryAdapter(mRateView.getContext(), rates));
+                HistoryAdapter historyAdapter = new HistoryAdapter(mRateView.getContext(), rates);
+                mRateView.setAdapterForRecyclerView(historyAdapter);
             }
         });
 

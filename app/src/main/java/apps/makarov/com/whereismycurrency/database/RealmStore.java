@@ -50,16 +50,6 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
-    public void beginTransaction() {
-        Realm.getInstance(application).beginTransaction();
-    }
-
-    @Override
-    public void commitTransaction() {
-        Realm.getInstance(application).commitTransaction();
-    }
-
-    @Override
     public <E extends RealmObject> void saveObject(E obj) {
         beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(obj);
@@ -81,6 +71,14 @@ public class RealmStore implements IStore<RealmObject> {
     @Override
     public boolean isUrlInCache(String url) {
         return Realm.getInstance(application).where(CacheRequest.class).equalTo("url", url).findFirst() != null;
+    }
+
+    private void beginTransaction() {
+        Realm.getInstance(application).beginTransaction();
+    }
+
+    private void commitTransaction() {
+        Realm.getInstance(application).commitTransaction();
     }
 
 }
