@@ -11,7 +11,6 @@ import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 /**
@@ -53,7 +52,6 @@ public class RequestService {
 
     private Observable<List<? extends RealmObject>> observableNetwork(final WimcRequest request) {
         return getResponse(request)
-                .doOnNext(cachingRequest())
                 .flatMap(new Func1<Response, Observable<String>>() {
                     @Override
                     public Observable<String> call(Response response) {
@@ -65,15 +63,6 @@ public class RequestService {
                         return request.observableStringToObjectsList(s);
                     }
                 });
-    }
-
-    private Action1 cachingRequest() {
-        return new Action1<Response>() {
-            @Override
-            public void call(Response response) {
-                mStore.addUrlToCache(response.request().urlString());
-            }
-        };
     }
 
     private final Observable<Response> getResponse(final WimcRequest wimcRequest) {

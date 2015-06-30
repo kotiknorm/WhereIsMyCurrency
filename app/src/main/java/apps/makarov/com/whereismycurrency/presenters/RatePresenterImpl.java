@@ -5,9 +5,7 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.WimcService;
@@ -126,7 +124,7 @@ public class RatePresenterImpl implements RatePresenter {
 
     private Observable<Rate> getRateObservable(String baseCurrency, String compareCurrency){
         return mWimcService
-                .getRates(baseCurrency, compareCurrency, DateUtils.getTodayDate(), Bank.DEFAULT)
+                .getRatesAllBank(baseCurrency, compareCurrency)
                 .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
                     @Override
                     public Observable<Rate> call(final List<Rate> rates) {
@@ -134,6 +132,7 @@ public class RatePresenterImpl implements RatePresenter {
                             @Override
                             public void call(Subscriber<? super Rate> subscriber) {
                                 try {
+                                    //search min rate
                                     subscriber.onNext(rates.get(0));
                                     subscriber.onCompleted();
 
