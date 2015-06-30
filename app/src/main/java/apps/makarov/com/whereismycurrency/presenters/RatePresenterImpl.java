@@ -28,12 +28,15 @@ public class RatePresenterImpl implements RatePresenter {
     private static final String TAG = RatePresenterImpl.class.getSimpleName();
 
     private RateView mRateView;
+    private WimcService mWimcService;
+
     private Subscription mGetRateSubscription;
     private Subscription mGetHistorySubscription;
-    private WimcService mWimcService;
+    private Subscription mGetOldRateSubscription;
 
     private static Observable<Rate> mGetRateObservable;
     private static Observable<List<UserHistory>> mGetHistoryObservable;
+    private static Observable<Rate> mGetOldRateObservable;
 
     public RatePresenterImpl(RateView hotView, WimcService wimcService) {
         this.mRateView = hotView;
@@ -80,7 +83,6 @@ public class RatePresenterImpl implements RatePresenter {
     @Override
     public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
         mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
-
         mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
 
         mGetRateSubscription = mGetRateObservable
@@ -117,6 +119,32 @@ public class RatePresenterImpl implements RatePresenter {
     private Observable<List<UserHistory>> getHistoryObservable(){
         return mWimcService
                 .getHistory()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
+    }
+
+    private Observable<Rate> getOldRateObservable(String baseCurrency, String compareCurrency, Date date){
+        return mWimcService
+                .getHistoryRates(baseCurrency, compareCurrency, date)
+                .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
+                    @Override
+                    public Observable<Rate> call(final List<Rate> rates) {
+                        return Observable.create(new Observable.OnSubscribe<Rate>() {
+                            @Override
+                            public void call(Subscriber<? super Rate> subscriber) {
+                                try {
+                                    // first rate
+                                    subscriber.onNext(rates.get(0));
+                                    subscriber.onCompleted();
+
+                                } catch (Throwable e) {
+                                    subscriber.onError(e);
+                                }
+                            }
+                        });
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
