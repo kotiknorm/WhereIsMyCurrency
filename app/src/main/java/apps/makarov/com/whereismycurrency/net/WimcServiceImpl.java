@@ -29,7 +29,6 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         super(client, store);
     }
 
-
     @Override
     public Observable<List<UserHistory>> getHistory() {
         return Observable.create(new Observable.OnSubscribe<List<UserHistory>>() {
