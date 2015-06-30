@@ -1,12 +1,12 @@
 package apps.makarov.com.whereismycurrency.net.requests;
 
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 
 import io.realm.RealmObject;
 import rx.Observable;
@@ -17,15 +17,19 @@ import rx.Subscriber;
  */
 public abstract class WimcRequest<T extends RealmObject> {
 
-    public Observable<Response> getResponse(final OkHttpClient mClient) {
-        return Observable.create(new Observable.OnSubscribe<Response>() {
-            @Override
-            public void call(Subscriber<? super Response> subscriber) {
-                try {
-                    Request request = getRequest();
-                    Response response = mClient.newCall(request).execute();
+    enum TYPE {
+        GET, POST
+    }
 
-                    subscriber.onNext(response);
+    public abstract String getPath();
+
+    public Observable<List<T>> observableJsonToObjectsList(final JSONObject jsonObject) {
+        return Observable.create(new Observable.OnSubscribe<List<T>>() {
+            @Override
+            public void call(Subscriber<? super List<T>> subscriber) {
+                try {
+                    List<T> list = parseJsonToList(jsonObject);
+                    subscriber.onNext(list);
                     subscriber.onCompleted();
                 } catch (Throwable e) {
                     subscriber.onError(e);
@@ -34,14 +38,42 @@ public abstract class WimcRequest<T extends RealmObject> {
         });
     }
 
-    public Request getRequest(){
-        return new Request.Builder()
-                .url(getPath())
-                .build();
+    public Request getRequest() {
+
+        Request.Builder builder = new Request.Builder();
+        TYPE typeRequest = getType();
+        switch (typeRequest) {
+            case GET:
+                builder = builder.url(getPath() + getStringUrlParams(getParams()));
+                break;
+            case POST:
+                builder = builder.url(getPath());
+                break;
+        }
+        return builder.build();
     }
 
-    public abstract String getPath();
+    protected abstract List<T> parseJsonToList(JSONObject jsonObj)  throws JSONException;
 
-    public abstract Observable<List<T>> observableJsonToStatusCode(final JSONObject jsonObject);
+    protected abstract TYPE getType();
+
+    protected Map<String, String> getParams() {
+        return null;
+    }
+
+    public static String getStringUrlParams(Map<String, String> params) {
+        StringBuilder paramsStr = new StringBuilder("");
+
+        if (params == null || params.size() == 0) {
+            return paramsStr.toString();
+        }
+
+        paramsStr.append("?");
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            paramsStr.append(entry.getKey() + "=" + entry.getValue());
+            paramsStr.append("&");
+        }
+        return paramsStr.substring(0, params.size() - 1);
+    }
 
 }

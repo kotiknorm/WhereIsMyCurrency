@@ -11,8 +11,6 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.interpreter.BankInterpreter;
 import apps.makarov.com.whereismycurrency.models.Bank;
-import rx.Observable;
-import rx.Subscriber;
 
 /**
  * Created by makarov on 28/06/15.
@@ -28,22 +26,12 @@ public class BankRequest extends WimcRequest<Bank> {
     }
 
     @Override
-    public Observable<List<Bank>> observableJsonToStatusCode(final JSONObject jsonObject) {
-        return Observable.create(new Observable.OnSubscribe<List<Bank>>() {
-            @Override
-            public void call(Subscriber<? super List<Bank>> subscriber) {
-                try {
-                    List<Bank> list = parseJsonToList(jsonObject);
-                    subscriber.onNext(list);
-                    subscriber.onCompleted();
-                } catch (Throwable e) {
-                    subscriber.onError(e);
-                }
-            }
-        });
+    public TYPE getType() {
+        return TYPE.GET;
     }
 
-    private List<Bank> parseJsonToList(JSONObject jsonObj) throws JSONException {
+    @Override
+    protected List<Bank> parseJsonToList(JSONObject jsonObj) throws JSONException {
 
         JSONArray actualRates = jsonObj.getJSONObject("Exchange_Rates").getJSONObject("Actual_Rates").getJSONArray("Bank");
         Log.d(TAG, actualRates.toString());

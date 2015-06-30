@@ -1,6 +1,7 @@
 package apps.makarov.com.whereismycurrency.net;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
@@ -38,7 +39,7 @@ public class RequestService {
                         .flatMap(new Func1<JSONObject, Observable<List<? extends RealmObject>>>() {
                             @Override
                             public Observable<List<? extends RealmObject>> call(JSONObject s) {
-                                return request.observableJsonToStatusCode(s);
+                                return request.observableJsonToObjectsList(s);
                             }
                         })
                         .flatMap(new Func1<List<? extends RealmObject>, Observable<Exception>>() {
@@ -56,7 +57,7 @@ public class RequestService {
     }
 
     private Observable<JSONObject> observableNetwork(WimcRequest request) {
-        return request.getResponse(mClient)
+        return getResponse(request)
                 .doOnNext(cachingRequest())
                 .flatMap(new Func1<Response, Observable<String>>() {
                     @Override
@@ -78,6 +79,23 @@ public class RequestService {
                 mStore.addUrlToCache(response.request().urlString());
             }
         };
+    }
+
+    private final Observable<Response> getResponse(final WimcRequest wimcRequest) {
+        return Observable.create(new Observable.OnSubscribe<Response>() {
+            @Override
+            public void call(Subscriber<? super Response> subscriber) {
+                try {
+                    Request request = wimcRequest.getRequest();
+                    Response response = mClient.newCall(request).execute();
+
+                    subscriber.onNext(response);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
     }
 
     private Observable<String> responseToString(final Response response) {
