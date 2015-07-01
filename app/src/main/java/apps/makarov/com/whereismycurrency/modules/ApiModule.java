@@ -3,6 +3,7 @@ package apps.makarov.com.whereismycurrency.modules;
 import android.app.Application;
 import android.util.Log;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -52,6 +53,7 @@ public final class ApiModule {
 
     private static OkHttpClient createOkHttpClient(Application application) {
         final OkHttpClient temporaryClient = new OkHttpClient();
+        temporaryClient.networkInterceptors().add(new StethoInterceptor());
 
         try {
             File cacheDirectory = application.getCacheDir();

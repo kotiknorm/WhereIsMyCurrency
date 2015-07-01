@@ -98,9 +98,9 @@ public class Rate extends RealmObject {
             case EUR_CODE:
             case RUB_CODE:
             case USD_CODE:
-                return contextView.getContext().getDrawable(R.drawable.shadow);
+                return contextView.getContext().getDrawable(R.drawable.abc_ab_share_pack_mtrl_alpha);
             default:
-                return contextView.getContext().getDrawable(R.drawable.shadow);
+                return contextView.getContext().getDrawable(R.drawable.abc_ab_share_pack_mtrl_alpha);
         }
     }
 
