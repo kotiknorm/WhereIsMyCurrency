@@ -3,6 +3,7 @@ package apps.makarov.com.whereismycurrency.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,10 @@ import com.appeaser.sublimepickerlibrary.SublimePicker;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeListenerAdapter;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import apps.makarov.com.whereismycurrency.R;
 
@@ -52,7 +57,7 @@ public class DatePickerFragment extends DialogFragment {
     public interface Callback {
         void onCancelled();
 
-        void onDateTimeRecurrenceSet(int year, int monthOfYear, int dayOfMonth);
+        void onDateTimeRecurrenceSet(Date date);
     }
 
     SublimeListenerAdapter mListener = new SublimeListenerAdapter() {
@@ -69,9 +74,24 @@ public class DatePickerFragment extends DialogFragment {
                                             int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption,
                                             String recurrenceRule) {
             if (mCallback != null) {
-                mCallback.onDateTimeRecurrenceSet(year, monthOfYear, dayOfMonth);
+                    Date date = getDatePickerFormat(year, monthOfYear, dayOfMonth);
+                    mCallback.onDateTimeRecurrenceSet(date);
             }
+
             dismiss();
         }
     };
+
+    private Date getDatePickerFormat(int year, int monthOfYear, int dayOfMonth){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateInString = dayOfMonth + "/" + monthOfYear + "/" + year;
+
+        try {
+            Date date = formatter.parse(dateInString);
+            return date;
+        } catch (ParseException e) {
+            Log.e("TAG", "error parse date from picker", e);
+            return new Date();
+        }
+    }
 }

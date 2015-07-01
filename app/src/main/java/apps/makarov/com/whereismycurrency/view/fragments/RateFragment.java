@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -76,7 +77,6 @@ public class RateFragment extends BaseFragment implements RateView {
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
 
                 mRatePresenter.enterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
-
             }
         });
 
@@ -182,8 +182,9 @@ public class RateFragment extends BaseFragment implements RateView {
         }
 
         @Override
-        public void onDateTimeRecurrenceSet(int year, int monthOfYear, int dayOfMonth) {
-            Log.d(TAG, "onDateTimeRecurrenceSet");
+        public void onDateTimeRecurrenceSet(Date date) {
+            Log.d(TAG, "date -" + date.toString());
+            onEnterDate(date);
         }
     };
 
@@ -207,6 +208,10 @@ public class RateFragment extends BaseFragment implements RateView {
         pickerFrag.setArguments(bundle);
         pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         pickerFrag.show(getActivity().getSupportFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
+    }
+
+    private void onEnterDate(Date date){
+
     }
 
 
