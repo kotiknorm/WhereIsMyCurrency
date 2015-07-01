@@ -1,5 +1,6 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
 
@@ -38,6 +39,7 @@ public class ResultPresenterImpl implements ResultPresenter {
 
     @Override
     public void setResult(String resultKey) {
-
+        ResultOperation  resultOperation = mWimcService.getResultOperation(resultKey);
+        mResultView.showResultOperation(resultOperation.getUserHistory().getValue() + "_ " + resultOperation.getUserHistory().getRate().getValue());
     }
 }

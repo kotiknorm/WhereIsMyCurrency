@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
@@ -32,6 +31,7 @@ import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.RateModule;
 import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
+import apps.makarov.com.whereismycurrency.view.iviews.MainView;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -47,8 +47,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Inject
     RatePresenter mRatePresenter;
 
-    @InjectView(R.id.result)
-    TextView resultTextView;
     @InjectView(R.id.value)
     EditText valueTextView;
     @InjectView(R.id.rate)
@@ -95,7 +93,9 @@ public class RateFragment extends BaseFragment implements RateView {
 
     @Override
     public void showResultOperation(String resultKey) {
-        resultTextView.setText(resultKey);
+        Bundle bundle = new Bundle();
+        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, resultKey);
+        ((MainView) getActivity()).showResultFragment(bundle);
     }
 
     @Override
