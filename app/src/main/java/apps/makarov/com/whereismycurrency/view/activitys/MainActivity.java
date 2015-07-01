@@ -13,26 +13,41 @@ import apps.makarov.com.whereismycurrency.view.iviews.MainView;
 
 public class MainActivity extends ActionBarActivity implements MainView {
 
+    private static final String DEFAULT_FRAGMENT_TAG = "DEFAULT_FRAGMENT_TAG";
+    private static final String DEFAULT_FRAGMENT_STACK_NAME = "DEFAULT_FRAGMENT_STACK_NAME";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showRateFragment(null);
+
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(DEFAULT_FRAGMENT_TAG);
+        if (fragment == null) {
+            showRateFragment(null);
+        }
+
     }
 
     @Override
     public void showRateFragment(Bundle bundle) {
         Fragment newFragment = new RateFragment();
         newFragment.setArguments(bundle);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, newFragment).commit();
+        setFragment(newFragment, false);
     }
 
     @Override
     public void showResultFragment(Bundle bundle) {
         Fragment newFragment = new ResultFragment();
         newFragment.setArguments(bundle);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, newFragment).commit();
+        setFragment(newFragment, true);
     }
+
+    private void setFragment(Fragment fragment, boolean saveInBackstack) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.container, fragment, DEFAULT_FRAGMENT_TAG);
+        if(saveInBackstack)
+            ft.addToBackStack(DEFAULT_FRAGMENT_STACK_NAME);
+        ft.commit();
+    }
+
 }
