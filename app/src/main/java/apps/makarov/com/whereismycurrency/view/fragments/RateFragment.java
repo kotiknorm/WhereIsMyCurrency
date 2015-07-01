@@ -3,9 +3,12 @@ package apps.makarov.com.whereismycurrency.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +60,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setHasOptionsMenu(true);
     }
 
@@ -72,6 +76,7 @@ public class RateFragment extends BaseFragment implements RateView {
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
 
                 mRatePresenter.enterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
+
             }
         });
 
@@ -129,7 +134,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onPause() {
         super.onPause();
-
         mRatePresenter.onPause();
     }
 
@@ -141,7 +145,6 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         mRatePresenter.onDestroy();
     }
 
@@ -167,9 +170,46 @@ public class RateFragment extends BaseFragment implements RateView {
         );
     }
 
-    public void initializeHistoryRecyclerView() {
+    private void initializeHistoryRecyclerView() {
         mRecyclerView.setHasFixedSize(false);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
+
+    DatePickerFragment.Callback mFragmentCallback = new DatePickerFragment.Callback() {
+        @Override
+        public void onCancelled() {
+        }
+
+        @Override
+        public void onDateTimeRecurrenceSet(int year, int monthOfYear, int dayOfMonth) {
+            Log.d(TAG, "onDateTimeRecurrenceSet");
+        }
+    };
+
+    private Pair<Boolean, SublimeOptions> getDatePickerOptions() {
+        SublimeOptions options = new SublimeOptions();
+        int displayOptions = 0;
+
+        displayOptions |= SublimeOptions.ACTIVATE_DATE_PICKER;
+        options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
+        options.setDisplayOptions(displayOptions);
+
+        return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
+    }
+
+    private void openDatePicker(){
+        DatePickerFragment pickerFrag = new DatePickerFragment();
+        pickerFrag.setCallback(mFragmentCallback);
+        Pair<Boolean, SublimeOptions> optionsPair = getDatePickerOptions();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(DatePickerFragment.OPTIONS_EXTRA, optionsPair.second);
+        pickerFrag.setArguments(bundle);
+        pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+        pickerFrag.show(getActivity().getSupportFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
+    }
+
+
+
+
 }

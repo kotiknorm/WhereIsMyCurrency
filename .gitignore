@@ -31,3 +31,5 @@ WhereIsMyCurrency.iml
 app/build
 .idea
 .gradle
+sublimepickerlibrary/sublimepickerlibrary.iml
+sublimepickerlibrary/build
