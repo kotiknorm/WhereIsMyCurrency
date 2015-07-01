@@ -81,8 +81,8 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void onEnterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
-        final UserHistory userHistory = mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
+    public void onEnterOperation(String baseCurrency, String compareCurrency, final double summa, final double rateValue) {
+        final UserHistory userHistory = mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), summa, rateValue);
 
         mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
 

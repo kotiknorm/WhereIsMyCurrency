@@ -92,7 +92,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public UserHistory addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value) {
+    public UserHistory addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double summa, double rateValue) {
         UserHistory userHistory = new UserHistory();
 
         Rate userRate = new Rate();
@@ -103,7 +103,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userRate.setKey(Rate.generateKey(userRate));
 
         userHistory.setDate(date);
-        userHistory.setValue(value);
+        userHistory.setValue(summa);
         userHistory.setRate(userRate);
         userHistory.setKey(UserHistory.generateKey(userHistory));
 
