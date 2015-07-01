@@ -105,15 +105,6 @@ public class RatePresenterImpl implements RatePresenter {
                         ResultOperation result = mWimcService.addResult(rate, userHistory);
                         String key = result.getKey();
                         mRateView.showResultOperation(key);
-
-//                        double valueRate = rate.getValue();
-//                        double buy = valueRate * value;
-//                        double factValue = value * rateValue;
-//
-//                        String resultStr = (buy <= factValue
-//                                ? mRateView.getContext().getString(R.string.loser_result)
-//                                : mRateView.getContext().getString(R.string.win_result)) + " " +
-//                                Math.abs(buy - factValue);
                     }
                 });
     }

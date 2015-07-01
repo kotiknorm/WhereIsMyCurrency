@@ -1,5 +1,7 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
+import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
@@ -39,7 +41,18 @@ public class ResultPresenterImpl implements ResultPresenter {
 
     @Override
     public void setResult(String resultKey) {
-        ResultOperation  resultOperation = mWimcService.getResultOperation(resultKey);
-        mResultView.showResultOperation(resultOperation.getUserHistory().getValue() + "_ " + resultOperation.getUserHistory().getRate().getValue());
+        ResultOperation resultOperation = mWimcService.getResultOperation(resultKey);
+        Rate rate = resultOperation.getExitRate();
+        double value = resultOperation.getUserHistory().getValue();
+        double rateValue = resultOperation.getUserHistory().getRate().getValue();
+
+        double buy = value * rate.getValue();
+        double factValue = value * rateValue;
+
+        String resultStr = (buy <= factValue
+                ? mResultView.getContext().getString(R.string.loser_result)
+                : mResultView.getContext().getString(R.string.win_result)) + " " +
+                Math.abs(buy - factValue);
+        mResultView.showResultOperation(resultStr);
     }
 }
