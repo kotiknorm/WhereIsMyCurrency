@@ -26,10 +26,5 @@ proguard/
 # Log Files
 *.log
 
-app/app.iml
-WhereIsMyCurrency.iml
-app/build
+*.iml
 .idea
-.gradle
-sublimepickerlibrary/sublimepickerlibrary.iml
-sublimepickerlibrary/build

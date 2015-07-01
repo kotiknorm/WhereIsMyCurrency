@@ -25,6 +25,8 @@ import apps.makarov.com.whereismycurrency.R;
 
 public class DatePickerFragment extends DialogFragment {
 
+    public static final String TAG = DatePickerFragment.class.getSimpleName();
+
     public static final String OPTIONS_EXTRA = "OPTIONS_EXTRA";
     public static final String DATE_PICKER_TAG = "DATE_PICKER_TAG";
 
@@ -56,7 +58,6 @@ public class DatePickerFragment extends DialogFragment {
 
     public interface Callback {
         void onCancelled();
-
         void onDateTimeRecurrenceSet(Date date);
     }
 
@@ -90,7 +91,7 @@ public class DatePickerFragment extends DialogFragment {
             Date date = formatter.parse(dateInString);
             return date;
         } catch (ParseException e) {
-            Log.e("TAG", "error parse date from picker", e);
+            Log.e(TAG, "error parse date from picker", e);
             return new Date();
         }
     }
