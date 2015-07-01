@@ -8,6 +8,7 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.CacheRequest;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -73,6 +74,11 @@ public class RealmStore implements IStore<RealmObject> {
     @Override
     public boolean hasUrlInCache(String url) {
         return Realm.getInstance(application).where(CacheRequest.class).equalTo("url", url).findFirst() != null;
+    }
+
+    @Override
+    public ResultOperation getResultOperation(String key) {
+        return Realm.getInstance(application).where(ResultOperation.class).equalTo("key", key).findFirst();
     }
 
     private void beginTransaction() {

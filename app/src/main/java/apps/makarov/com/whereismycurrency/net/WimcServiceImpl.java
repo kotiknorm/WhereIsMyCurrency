@@ -9,6 +9,7 @@ import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.database.IStore;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
@@ -91,7 +92,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public void addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value) {
+    public UserHistory addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value) {
         UserHistory userHistory = new UserHistory();
 
         Rate userRate = new Rate();
@@ -107,6 +108,23 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userHistory.setKey(UserHistory.generateKey(userHistory));
 
         getStore().saveObject(userHistory);
+        return userHistory;
+    }
+
+    @Override
+    public ResultOperation addResult(Rate rate, UserHistory userHistory) {
+        ResultOperation result = new ResultOperation();
+        result.setUserHistory(userHistory);
+        result.setExitRate(rate);
+        result.setDate(new Date());
+        result.setKey(ResultOperation.generateKey(result));
+        getStore().saveObject(result);
+        return result;
+    }
+
+    @Override
+    public ResultOperation getResultOperation(String key) {
+        return getStore().getResultOperation(key);
     }
 
 //    protected Action1 cachingRequest() {

@@ -94,18 +94,8 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
-    public void showSwipeRefreshLayout() {
-
-    }
-
-    @Override
-    public void hideSwipeRefreshLayout() {
-
-    }
-
-    @Override
-    public void setResultOperation(String result) {
-        resultTextView.setText(result);
+    public void showResultOperation(String resultKey) {
+        resultTextView.setText(resultKey);
     }
 
     @Override

@@ -14,11 +14,7 @@ public interface RateView extends BaseContextView {
 
     void hideProgressDialog();
 
-    void showSwipeRefreshLayout();
-
-    void hideSwipeRefreshLayout();
-
-    void setResultOperation(String result);
+    void showResultOperation(String resultKey);
 
     void setAdapterForRecyclerView(RecyclerView.Adapter adapter);
 

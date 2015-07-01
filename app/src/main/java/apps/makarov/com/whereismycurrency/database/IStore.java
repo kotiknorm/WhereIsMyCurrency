@@ -5,6 +5,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 
 /**
@@ -24,5 +25,7 @@ public interface IStore<T> {
     void addUrlToCache(String url);
 
     boolean hasUrlInCache(String url);
+
+    ResultOperation getResultOperation(String key);
 }
 

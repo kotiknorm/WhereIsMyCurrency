@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import rx.Observable;
 
@@ -15,6 +16,10 @@ public interface WimcService {
 
     Observable<List<UserHistory>> getHistory();
 
-    void addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value);
+    UserHistory addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double rateValue, double value);
+
+    ResultOperation addResult(Rate rate, UserHistory userHistory);
+
+    ResultOperation getResultOperation(String key);
 
 }

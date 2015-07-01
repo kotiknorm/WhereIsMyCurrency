@@ -7,6 +7,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
@@ -82,7 +83,8 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onEnterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
-        mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
+        final UserHistory userHistory = mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
+
         mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
 
         mGetRateSubscription = mGetRateObservable
@@ -95,23 +97,25 @@ public class RatePresenterImpl implements RatePresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError", e);
-                        mRateView.setResultOperation(e.getMessage());
                     }
 
                     @Override
                     public void onNext(Rate rate) {
                         Log.d(TAG, "onNext");
 
+                        ResultOperation result = mWimcService.addResult(rate, userHistory);
+                        String key = result.getKey();
+
                         double valueRate = rate.getValue();
                         double buy = valueRate * value;
                         double factValue = value * rateValue;
 
-                        String result = (buy <= factValue
+                        String resultStr = (buy <= factValue
                                 ? mRateView.getContext().getString(R.string.loser_result)
                                 : mRateView.getContext().getString(R.string.win_result)) + " " +
                                 Math.abs(buy - factValue);
 
-                        mRateView.setResultOperation(result);
+                        mRateView.showResultOperation(resultStr);
                     }
                 });
     }
