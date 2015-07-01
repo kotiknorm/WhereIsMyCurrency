@@ -76,7 +76,7 @@ public class RateFragment extends BaseFragment implements RateView {
                 double value = Double.parseDouble(valueTextView.getEditableText().toString());
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
 
-                mRatePresenter.enterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
+                mRatePresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
             }
         });
 
@@ -114,7 +114,7 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
-    public void setAsyncRate(int rateValue) {
+    public void setOldRate(double rateValue) {
         rateTextView.setText("" + rateValue);
     }
 
@@ -211,7 +211,7 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     private void onEnterDate(Date date){
-
+        mRatePresenter.onEnterDateOperation(Rate.RUB_CODE, Rate.EUR_CODE, date);
     }
 
 

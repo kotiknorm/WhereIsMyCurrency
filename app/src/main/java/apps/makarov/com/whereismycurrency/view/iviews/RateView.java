@@ -22,6 +22,6 @@ public interface RateView extends BaseContextView {
 
     void setAdapterForRecyclerView(RecyclerView.Adapter adapter);
 
-    void setAsyncRate(int rateValue);
+    void setOldRate(double rateValue);
 
 }

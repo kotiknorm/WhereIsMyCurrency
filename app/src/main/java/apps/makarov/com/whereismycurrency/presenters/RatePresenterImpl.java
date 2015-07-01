@@ -81,7 +81,7 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void enterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
+    public void onEnterOperation(String baseCurrency, String compareCurrency, final double value, final double rateValue) {
         mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), value, rateValue);
         mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
 
@@ -112,6 +112,30 @@ public class RatePresenterImpl implements RatePresenter {
                                 Math.abs(buy - factValue);
 
                         mRateView.setResultOperation(result);
+                    }
+                });
+    }
+
+    @Override
+    public void onEnterDateOperation(String baseCurrency, String compareCurrency, Date date) {
+        mGetOldRateObservable = getOldRateObservable(baseCurrency, compareCurrency, date);
+
+        mGetOldRateSubscription = mGetOldRateObservable
+                .subscribe(new Observer<Rate>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError", e);
+                    }
+
+                    @Override
+                    public void onNext(Rate rate) {
+                        Log.d(TAG, "onNext");
+                        mRateView.setOldRate(rate.getValue());
                     }
                 });
     }
