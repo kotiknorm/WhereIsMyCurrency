@@ -193,9 +193,11 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     private void processOldRate() {
-        if (mCurrencyPair != null && mDate != null)
+        if (mCurrencyPair == null || mDate == null)
+            return;
 
-            mGetOldRateObservable = getOldRateObservable(mCurrencyPair, mDate);
+
+        mGetOldRateObservable = getOldRateObservable(mCurrencyPair, mDate);
         mGetOldRateSubscription = mGetOldRateObservable
                 .subscribe(new Observer<Rate>() {
                     @Override

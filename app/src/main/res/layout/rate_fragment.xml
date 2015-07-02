@@ -12,28 +12,40 @@
         android:padding="@dimen/activity_horizontal_margin"
         android:id="@+id/linearLayout">
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/value"
-            android:hint="Введите значение" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rate"
-            android:hint="Введите значение операции" />
-
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/value"
+                android:hint="Сумма"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rate"
+                android:hint="Курс"
+                android:layout_weight="1" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/result"
-                android:hint="Результат" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Дата"
+                android:id="@+id/date"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Валютная пара"
+                android:id="@+id/pair"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <Button

@@ -53,7 +53,7 @@ public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
                 rate.setValue(value);
                 rate.setChangeRate(date);
                 rate.setBank(Bank.DEFAULT);
-                CurrencyPair pair = CurrencyPair.createPair(compareCurrency, baseCurrency);
+                CurrencyPair pair = CurrencyPair.createPair(baseCurrency, compareCurrency);
                 rate.setCurrencyPair(pair);
                 rate.setKey(Rate.generateKey(rate));
                 ratesList.add(rate);

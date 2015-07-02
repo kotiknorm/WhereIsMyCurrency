@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
@@ -57,6 +58,10 @@ public class RateFragment extends BaseFragment implements RateView {
     EditText rateTextView;
     @InjectView(R.id.enter)
     Button enterButton;
+    @InjectView(R.id.date)
+    TextView dateTextView;
+    @InjectView(R.id.pair)
+    TextView pairTextView;
     @InjectView(R.id.history_list)
     RecyclerView mRecyclerView;
 
@@ -79,6 +84,20 @@ public class RateFragment extends BaseFragment implements RateView {
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
 //
                 mRatePresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
+            }
+        });
+
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDatePicker();
+            }
+        });
+
+        pairTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCurrencyListView();
             }
         });
 
@@ -120,6 +139,7 @@ public class RateFragment extends BaseFragment implements RateView {
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         CurrencyPair pair = Rate.getPairCodesList().get(which);
                         mRatePresenter.onEnterCurrencyPair(pair);
+                        pairTextView.setText(pair.getBaseCurrency() + "_" + pair.getCompareCurrency());
                         dialog.dismiss();
                     }
                 })
@@ -207,6 +227,7 @@ public class RateFragment extends BaseFragment implements RateView {
         @Override
         public void onDateTimeRecurrenceSet(Date date) {
             Log.d(TAG, "date -" + date.toString());
+            dateTextView.setText(date.toString());
             onEnterDate(date);
         }
     };
