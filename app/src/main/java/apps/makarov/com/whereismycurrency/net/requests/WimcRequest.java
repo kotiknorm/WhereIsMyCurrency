@@ -72,7 +72,7 @@ public abstract class WimcRequest<T extends RealmObject> {
             paramsStr.append(entry.getKey() + "=" + entry.getValue());
             paramsStr.append("&");
         }
-        return paramsStr.substring(0, params.size() - 1);
+        return paramsStr.substring(0, paramsStr.length() - 1);
     }
 
 }

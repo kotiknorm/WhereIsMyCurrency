@@ -17,7 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
 import java.util.Arrays;
@@ -30,6 +32,7 @@ import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.RateModule;
 import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
+import apps.makarov.com.whereismycurrency.view.adapters.CurrencyAdapter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
@@ -189,7 +192,7 @@ public class RateFragment extends BaseFragment implements RateView {
         return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
     }
 
-    private void openDatePicker(){
+    private void openDatePicker() {
         DatePickerFragment pickerFrag = new DatePickerFragment();
         pickerFrag.setCallback(mFragmentCallback);
         Pair<Boolean, SublimeOptions> optionsPair = getDatePickerOptions();
@@ -200,11 +203,21 @@ public class RateFragment extends BaseFragment implements RateView {
         pickerFrag.show(getActivity().getSupportFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
     }
 
-    private void onEnterDate(Date date){
+    private void onEnterDate(Date date) {
         mRatePresenter.onEnterDateOperation(Rate.RUB_CODE, Rate.EUR_CODE, date);
     }
 
-
-
+    private void openCurrencyDialog() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.currency_dialog_title)
+                .adapter(new CurrencyAdapter(getContext()), new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        Toast.makeText(getContext(), "Clicked item " + which, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
 
 }

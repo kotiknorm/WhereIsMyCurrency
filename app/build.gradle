@@ -47,6 +47,8 @@ dependencies {
     compile 'com.squareup.okio:okio:1.2.0'
     // View Injection:
     compile 'com.jakewharton:butterknife:6.1.0'
+    // UI
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
     //Database realm
     compile 'io.realm:realm-android:0.81.1'
     // Debugging:
