@@ -1,6 +1,7 @@
 package apps.makarov.com.whereismycurrency.view.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,9 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
@@ -29,10 +30,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.RateModule;
 import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
-import apps.makarov.com.whereismycurrency.view.adapters.CurrencyAdapter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
@@ -67,7 +68,7 @@ public class RateFragment extends BaseFragment implements RateView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View hotView = LayoutInflater.from(getActivity()).inflate(R.layout.rate_fragment, container, false);
+        View hotView = LayoutInflater.from(getContext()).inflate(R.layout.rate_fragment, container, false);
 
         ButterKnife.inject(this, hotView);
 
@@ -76,7 +77,7 @@ public class RateFragment extends BaseFragment implements RateView {
             public void onClick(View v) {
                 double value = Double.parseDouble(valueTextView.getEditableText().toString());
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
-
+//
                 mRatePresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
             }
         });
@@ -106,9 +107,38 @@ public class RateFragment extends BaseFragment implements RateView {
         mRecyclerView.setAdapter(adapter);
     }
 
+    private void openCurrencyListView(){
+        mRatePresenter.onProcessLoadCurrencyPairs();
+    }
+
     @Override
-    public void setOldRate(double rateValue) {
+    public void setCurrencyPairList(BaseAdapter adapter) {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.currency_dialog_title)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        CurrencyPair pair = Rate.getPairCodesList().get(which);
+                        mRatePresenter.onEnterCurrencyPair(pair);
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    public void setOldRate(String rateValue) {
         rateTextView.setText("" + rateValue);
+    }
+
+    @Override
+    public void setBaseCurrency(String currency, Drawable icon) {
+
+    }
+
+    @Override
+    public void setCompareCurrency(String currency, Drawable icon) {
+
     }
 
     @Override
@@ -165,7 +195,7 @@ public class RateFragment extends BaseFragment implements RateView {
 
     private void initializeHistoryRecyclerView() {
         mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -200,24 +230,12 @@ public class RateFragment extends BaseFragment implements RateView {
         bundle.putParcelable(DatePickerFragment.OPTIONS_EXTRA, optionsPair.second);
         pickerFrag.setArguments(bundle);
         pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
-        pickerFrag.show(getActivity().getSupportFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
+        pickerFrag.show(getFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
     }
 
     private void onEnterDate(Date date) {
-        mRatePresenter.onEnterDateOperation(Rate.RUB_CODE, Rate.EUR_CODE, date);
+        mRatePresenter.onEnterDateOperation(date);
     }
 
-    private void openCurrencyDialog() {
-        new MaterialDialog.Builder(getContext())
-                .title(R.string.currency_dialog_title)
-                .adapter(new CurrencyAdapter(getContext()), new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        Toast.makeText(getContext(), "Clicked item " + which, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
 }

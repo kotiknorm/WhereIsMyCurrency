@@ -5,10 +5,12 @@ import android.util.Log;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.WimcService;
+import apps.makarov.com.whereismycurrency.view.adapters.CurrencyAdapter;
 import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
 import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import rx.Observable;
@@ -29,6 +31,9 @@ public class RatePresenterImpl implements RatePresenter {
 
     private RateView mRateView;
     private WimcService mWimcService;
+
+    private CurrencyPair mCurrencyPair;
+    private Date mDate;
 
     private Subscription mGetRateSubscription;
     private Subscription mGetHistorySubscription;
@@ -82,9 +87,10 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onEnterOperation(String baseCurrency, String compareCurrency, final double summa, final double rateValue) {
-        final UserHistory userHistory = mWimcService.addHistoryItem(baseCurrency, compareCurrency, new Date(), summa, rateValue);
+        CurrencyPair pair = CurrencyPair.createPair(compareCurrency, baseCurrency);
+        final UserHistory userHistory = mWimcService.addHistoryItem(pair, new Date(), summa, rateValue);
 
-        mGetRateObservable = getRateObservable(baseCurrency, compareCurrency);
+        mGetRateObservable = getRateObservable(pair);
 
         mGetRateSubscription = mGetRateObservable
                 .subscribe(new Observer<Rate>() {
@@ -110,30 +116,23 @@ public class RatePresenterImpl implements RatePresenter {
     }
 
     @Override
-    public void onEnterDateOperation(String baseCurrency, String compareCurrency, Date date) {
-        mGetOldRateObservable = getOldRateObservable(baseCurrency, compareCurrency, date);
-
-        mGetOldRateSubscription = mGetOldRateObservable
-                .subscribe(new Observer<Rate>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "onError", e);
-                    }
-
-                    @Override
-                    public void onNext(Rate rate) {
-                        Log.d(TAG, "onNext");
-                        mRateView.setOldRate(rate.getValue());
-                    }
-                });
+    public void onEnterDateOperation(Date date) {
+        mDate = date;
+        processOldRate();
     }
 
-    private Observable<List<UserHistory>> getHistoryObservable(){
+    @Override
+    public void onEnterCurrencyPair(CurrencyPair pair) {
+        mCurrencyPair = pair;
+        processOldRate();
+    }
+
+    @Override
+    public void onProcessLoadCurrencyPairs() {
+        mRateView.setCurrencyPairList(new CurrencyAdapter(mRateView.getContext(), Rate.getPairCodesList()));
+    }
+
+    private Observable<List<UserHistory>> getHistoryObservable() {
         return mWimcService
                 .getHistory()
                 .subscribeOn(Schedulers.io())
@@ -141,9 +140,9 @@ public class RatePresenterImpl implements RatePresenter {
                 .cache();
     }
 
-    private Observable<Rate> getOldRateObservable(String baseCurrency, String compareCurrency, Date date){
+    private Observable<Rate> getOldRateObservable(CurrencyPair currencyPair, Date date) {
         return mWimcService
-                .getHistoryRates(baseCurrency, compareCurrency, date)
+                .getHistoryRates(currencyPair, date)
                 .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
                     @Override
                     public Observable<Rate> call(final List<Rate> rates) {
@@ -167,9 +166,9 @@ public class RatePresenterImpl implements RatePresenter {
                 .cache();
     }
 
-    private Observable<Rate> getRateObservable(String baseCurrency, String compareCurrency){
+    private Observable<Rate> getRateObservable(CurrencyPair currencyPair) {
         return mWimcService
-                .getRatesAllBank(baseCurrency, compareCurrency)
+                .getRatesAllBank(currencyPair)
                 .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
                     @Override
                     public Observable<Rate> call(final List<Rate> rates) {
@@ -191,6 +190,31 @@ public class RatePresenterImpl implements RatePresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
+    }
+
+    private void processOldRate() {
+        if (mCurrencyPair != null && mDate != null)
+
+            mGetOldRateObservable = getOldRateObservable(mCurrencyPair, mDate);
+        mGetOldRateSubscription = mGetOldRateObservable
+                .subscribe(new Observer<Rate>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError", e);
+                        mRateView.setOldRate("");
+                    }
+
+                    @Override
+                    public void onNext(Rate rate) {
+                        Log.d(TAG, "onNext");
+                        mRateView.setOldRate(String.valueOf(rate.getValue()));
+                    }
+                });
     }
 
 }

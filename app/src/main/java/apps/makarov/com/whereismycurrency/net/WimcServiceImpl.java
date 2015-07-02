@@ -7,6 +7,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.database.IStore;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
@@ -47,14 +48,14 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<Rate>> getHistoryRates(final String baseCurrency, final String compareCurrency, final Date date) {
-        final WimcRequest bankRequest = new FixerRequest(baseCurrency, date);
+    public Observable<List<Rate>> getHistoryRates(final CurrencyPair currencyPair, final Date date) {
+        final WimcRequest bankRequest = new FixerRequest(currencyPair.getBaseCurrency(), date);
 
         Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
-                    List<Rate> list = getStore().getRates(baseCurrency, compareCurrency, date, Bank.DEFAULT);
+                    List<Rate> list = getStore().getRates(currencyPair, date, Bank.DEFAULT);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -69,7 +70,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<Rate>> getRatesAllBank(final String baseCurrency, final String compareCurrency) {
+    public Observable<List<Rate>> getRatesAllBank(final CurrencyPair currencyPair) {
         final WimcRequest bankRequest = new BankRequest();
 
         Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
@@ -77,7 +78,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
 //                    getStore().addUrlToCache(bankRequest.getRequest().urlString());
-                    List<Rate> list = getStore().getRates(baseCurrency, compareCurrency, DateUtils.getTodayDate(), Bank.DEFAULT);
+                    List<Rate> list = getStore().getRates(currencyPair, DateUtils.getTodayDate(), Bank.DEFAULT);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -92,12 +93,11 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public UserHistory addHistoryItem(final String baseCurrency, final String compareCurrency, final Date date, double summa, double rateValue) {
+    public UserHistory addHistoryItem(final CurrencyPair currencyPair,  final Date date, double summa, double rateValue) {
         UserHistory userHistory = new UserHistory();
 
         Rate userRate = new Rate();
-        userRate.setCompareCurrency(compareCurrency);
-        userRate.setBaseCurrency(baseCurrency);
+        userRate.setCurrencyPair(currencyPair);
         userRate.setValue(rateValue);
         userRate.setBank(Bank.USER_RATE);
         userRate.setKey(Rate.generateKey(userRate));

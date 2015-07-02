@@ -43,11 +43,11 @@ public class UserHistoryViewHolder extends RecyclerView.ViewHolder {
 
     private String getCurrencyOperationString(UserHistory history){
         return itemView.getContext().getString(R.string.history_item_title,
-                history.getValue(), history.getRate().getBaseCurrency());
+                history.getValue(), history.getRate().getCurrencyPair().getBaseCurrency());
     }
 
     private String getRateString(UserHistory history){
         return itemView.getContext().getString(R.string.history_item_subtitle,
-                history.getRate().getValue(), history.getRate().getCompareCurrency());
+                history.getRate().getValue(), history.getRate().getCurrencyPair().getCompareCurrency());
     }
 }

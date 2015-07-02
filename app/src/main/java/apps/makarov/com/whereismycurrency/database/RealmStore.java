@@ -5,6 +5,7 @@ import android.app.Application;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.CacheRequest;
 import apps.makarov.com.whereismycurrency.models.Rate;
@@ -34,10 +35,10 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
-    public List<Rate> getRates(String baseCurrency, String compareCurrency, Date date, String bankName) {
+    public List<Rate> getRates(CurrencyPair pair, Date date, String bankName) {
 
-        RealmQuery<Rate> query = Realm.getInstance(application).where(Rate.class)
-                .equalTo("baseCurrency", baseCurrency).equalTo("compareCurrency", compareCurrency)
+        RealmQuery<Rate> query = Realm.getInstance(application)
+                .where(Rate.class).equalTo("currencyPair.key", pair.getKey())
                 .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date)
                 ;
 

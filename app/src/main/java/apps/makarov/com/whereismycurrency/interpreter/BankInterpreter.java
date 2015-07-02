@@ -31,7 +31,7 @@ public class BankInterpreter implements Interpreter<Bank> {
             while(iter.hasNext()){
                 String compareCurrency = iter.next();
 
-                if(!Rate.codes.contains(compareCurrency))
+                if(!Rate.getCodesList().contains(compareCurrency))
                     continue;
 
                 RateInterpreter parseRate = new RateInterpreter(Rate.RUB_CODE, compareCurrency,

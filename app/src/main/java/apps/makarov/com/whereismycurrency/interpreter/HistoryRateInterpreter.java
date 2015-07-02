@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
@@ -51,9 +52,9 @@ public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
                 Rate rate = new Rate();
                 rate.setValue(value);
                 rate.setChangeRate(date);
-                rate.setBaseCurrency(baseCurrency);
-                rate.setCompareCurrency(compareCurrency);
                 rate.setBank(Bank.DEFAULT);
+                CurrencyPair pair = CurrencyPair.createPair(compareCurrency, baseCurrency);
+                rate.setCurrencyPair(pair);
                 rate.setKey(Rate.generateKey(rate));
                 ratesList.add(rate);
             }

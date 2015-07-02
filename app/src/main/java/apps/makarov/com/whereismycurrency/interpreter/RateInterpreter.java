@@ -8,6 +8,7 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.StringUtils;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
@@ -36,8 +37,7 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             double buyLong = Double.parseDouble(buyStr);
             rate.setValue(buyLong);
             rate.setChangeRate(DateUtils.getTodayDate());
-            rate.setBaseCurrency(baseCurrency);
-            rate.setCompareCurrency(compareCurrency);
+            rate.setCurrencyPair(CurrencyPair.createPair(baseCurrency, compareCurrency));
             rate.setBank(bankName);
             rate.setKey(Rate.generateKey(rate));
             ratesList.add(rate);
@@ -45,10 +45,9 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
             Rate rateInvert = new Rate();
             String sellStr = StringUtils.getGoodLong(mJsonObject.getString("Sell"));
             double sellLong = Double.parseDouble(sellStr);
-            rateInvert.setValue(1/sellLong);
+            rateInvert.setValue(1 / sellLong);
             rateInvert.setChangeRate(DateUtils.getTodayDate());
-            rateInvert.setBaseCurrency(compareCurrency);
-            rateInvert.setCompareCurrency(baseCurrency);
+            rateInvert.setCurrencyPair(CurrencyPair.createPair(compareCurrency, baseCurrency));
             rate.setBank(bankName);
             rateInvert.setKey(Rate.generateKey(rateInvert));
             ratesList.add(rateInvert);

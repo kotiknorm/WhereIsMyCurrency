@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,8 @@ import io.realm.annotations.PrimaryKey;
 
 public class Rate extends RealmObject {
 
-    public static List<String> codes = new ArrayList<>();
+    private static List<String> codes = new ArrayList<>();
+    private static List<CurrencyPair> listPairCodes = new ArrayList<>();
 
     public static final String RUB_CODE = "RUB";
     public static final String EUR_CODE = "EUR";
@@ -30,15 +32,39 @@ public class Rate extends RealmObject {
         codes.add(RUB_CODE);
         codes.add(EUR_CODE);
         codes.add(USD_CODE);
+
+        for(String baseCodes : codes){
+            for(String compareCodes : codes){
+                if(!baseCodes.equals(compareCodes)){
+                    CurrencyPair pair =  CurrencyPair.createPair(baseCodes, compareCodes);
+                    listPairCodes.add(pair);
+                }
+            }
+        }
+    }
+
+    public static List<String> getCodesList(){
+        return Collections.unmodifiableList(codes);
+    }
+
+    public static List<CurrencyPair> getPairCodesList(){
+        return Collections.unmodifiableList(listPairCodes);
     }
 
     @PrimaryKey
     private String key;  // composite key (generateKey method)
     private double value;
-    private String baseCurrency;
-    private String compareCurrency;
+    private CurrencyPair currencyPair;
     private Date changeRate = DateUtils.getTodayDate(); // today
     private String bank = Bank.DEFAULT; // bank PK
+
+    public CurrencyPair getCurrencyPair() {
+        return currencyPair;
+    }
+
+    public void setCurrencyPair(CurrencyPair currencyPair) {
+        this.currencyPair = currencyPair;
+    }
 
     public String getBank() {
         return bank;
@@ -60,22 +86,6 @@ public class Rate extends RealmObject {
         this.value = value;
     }
 
-    public String getBaseCurrency() {
-        return baseCurrency;
-    }
-
-    public String getCompareCurrency() {
-        return compareCurrency;
-    }
-
-    public void setBaseCurrency(String baseCurrency) {
-        this.baseCurrency = baseCurrency;
-    }
-
-    public void setCompareCurrency(String compareCurrency) {
-        this.compareCurrency = compareCurrency;
-    }
-
     public double getValue() {
         return value;
     }
@@ -89,11 +99,11 @@ public class Rate extends RealmObject {
     }
 
     public static String generateKey(Rate rate) {
-        return rate.getBaseCurrency() + "_" + rate.getCompareCurrency() + "_" + rate.getBank() + "_" + rate.getValue();
+        return rate.getCurrencyPair().getBaseCurrency() + "_" + rate.getCurrencyPair().getCompareCurrency() + "_" + rate.getBank() + "_" + rate.getValue();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static Drawable getRateIcon(BaseContextView contextView, String currency) {
+    public static Drawable getCurrencyIcon(BaseContextView contextView, String currency) {
         switch (currency) {
             case EUR_CODE:
             case RUB_CODE:
