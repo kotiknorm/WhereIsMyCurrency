@@ -1,6 +1,7 @@
 package apps.makarov.com.whereismycurrency.view.base;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -14,7 +15,7 @@ import dagger.ObjectGraph;
  * Created by makarov on 26/06/15.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements BaseContextView {
     public static final String TAG = BaseFragment.class.getSimpleName();
 
     private ObjectGraph mObjectGraph;
@@ -31,6 +32,11 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mObjectGraph = null;
+    }
+
+    @Override
+    public Context getContext(){
+        return getActivity();
     }
 
     protected List<Object> getModules() {

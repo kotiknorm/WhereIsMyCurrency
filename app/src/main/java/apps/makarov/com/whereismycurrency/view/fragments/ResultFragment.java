@@ -1,6 +1,5 @@
 package apps.makarov.com.whereismycurrency.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -96,8 +95,4 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     }
 
-    @Override
-    public Context getContext() {
-        return getActivity();
-    }
 }

@@ -1,6 +1,5 @@
 package apps.makarov.com.whereismycurrency.view.fragments;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -187,11 +186,6 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return false;
-    }
-
-    @Override
-    public Context getContext() {
-        return this.getActivity();
     }
 
     @Override

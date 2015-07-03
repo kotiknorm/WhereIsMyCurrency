@@ -1,6 +1,5 @@
 package apps.makarov.com.whereismycurrency.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,7 +18,6 @@ import javax.inject.Inject;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.modules.ListOperationModule;
 import apps.makarov.com.whereismycurrency.presenters.ListOperationPresenter;
-import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ListOperationView;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
@@ -29,7 +27,7 @@ import butterknife.InjectView;
 /**
  * Created by makarov on 03/07/15.
  */
-public class ListOperationFragment extends BaseFragment implements ListOperationView, BaseContextView {
+public class ListOperationFragment extends BaseFragment implements ListOperationView{
 
     public static final String TAG = ListOperationFragment.class.getSimpleName();
 
@@ -91,12 +89,6 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
     public void startAddOperation() {
         ((MainView) getActivity()).showEnterOperationFragment(null);
     }
-
-    @Override
-    public Context getContext() {
-        return getActivity();
-    }
-
 
     private void initializeHistoryRecyclerView() {
         mRecyclerView.setHasFixedSize(false);
