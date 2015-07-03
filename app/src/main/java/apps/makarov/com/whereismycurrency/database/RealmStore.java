@@ -54,6 +54,13 @@ public class RealmStore implements IStore<RealmObject> {
     }
 
     @Override
+    public List<ResultOperation> getAllResultOperation() {
+        List<ResultOperation> list = Realm.getInstance(application).where(ResultOperation.class).findAll();
+        Realm.getInstance(application).close();
+        return list;
+    }
+
+    @Override
     public <E extends RealmObject> void saveObject(E obj) {
         beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(obj);

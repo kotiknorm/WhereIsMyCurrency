@@ -7,8 +7,10 @@ import android.os.Bundle;
  */
 public interface MainView {
 
-    void showRateFragment(Bundle bundle);
+    void showEnterOperationFragment(Bundle bundle);
 
     void showResultFragment(Bundle bundle);
+
+    void showListOperationFragment(Bundle bundle);
 
 }

@@ -48,6 +48,24 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
+    public Observable<List<ResultOperation>> getAllResultOperation() {
+        return Observable.create(new Observable.OnSubscribe<List<ResultOperation>>() {
+            @Override
+            public void call(Subscriber<? super List<ResultOperation>> subscriber) {
+                try {
+                    List<ResultOperation> list = getStore().getAllResultOperation();
+
+                    subscriber.onNext(list);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Observable<List<Rate>> getHistoryRates(final CurrencyPair currencyPair, final Date date) {
         final WimcRequest bankRequest = new FixerRequest(currencyPair.getBaseCurrency(), date);
 

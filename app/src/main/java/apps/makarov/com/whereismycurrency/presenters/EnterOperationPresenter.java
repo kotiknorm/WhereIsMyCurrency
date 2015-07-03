@@ -8,7 +8,7 @@ import apps.makarov.com.whereismycurrency.models.CurrencyPair;
  * Created by makarov on 26/06/15.
  */
 
-public interface RatePresenter {
+public interface EnterOperationPresenter {
 
     void onResume();
 

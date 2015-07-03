@@ -11,8 +11,7 @@ import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.adapters.CurrencyAdapter;
-import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
-import apps.makarov.com.whereismycurrency.view.iviews.RateView;
+import apps.makarov.com.whereismycurrency.view.iviews.EnterOperationView;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
@@ -25,26 +24,24 @@ import rx.schedulers.Schedulers;
  * Created by makarov on 26/06/15.
  */
 
-public class RatePresenterImpl implements RatePresenter {
+public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
-    private static final String TAG = RatePresenterImpl.class.getSimpleName();
+    private static final String TAG = EnterOperationPresenterImpl.class.getSimpleName();
 
-    private RateView mRateView;
+    private EnterOperationView mEnterOperationView;
     private WimcService mWimcService;
 
     private CurrencyPair mCurrencyPair;
     private Date mDate;
 
     private Subscription mGetRateSubscription;
-    private Subscription mGetHistorySubscription;
     private Subscription mGetOldRateSubscription;
 
     private static Observable<Rate> mGetRateObservable;
-    private static Observable<List<UserHistory>> mGetHistoryObservable;
     private static Observable<Rate> mGetOldRateObservable;
 
-    public RatePresenterImpl(RateView hotView, WimcService wimcService) {
-        this.mRateView = hotView;
+    public EnterOperationPresenterImpl(EnterOperationView hotView, WimcService wimcService) {
+        this.mEnterOperationView = hotView;
         this.mWimcService = wimcService;
     }
 
@@ -65,24 +62,6 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onRefresh() {
-        mGetHistoryObservable = getHistoryObservable();
-
-        mGetHistorySubscription = mGetHistoryObservable.subscribe(new Observer<List<UserHistory>>() {
-            @Override
-            public void onCompleted() {
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onNext(List<UserHistory> rates) {
-                HistoryAdapter historyAdapter = new HistoryAdapter(mRateView.getContext(), rates);
-                mRateView.setAdapterForRecyclerView(historyAdapter);
-            }
-        });
-
     }
 
     @Override
@@ -110,7 +89,7 @@ public class RatePresenterImpl implements RatePresenter {
 
                         ResultOperation result = mWimcService.addResult(rate, userHistory);
                         String key = result.getKey();
-                        mRateView.showResultOperation(key);
+                        mEnterOperationView.addOperation(key);
                     }
                 });
     }
@@ -129,15 +108,7 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onProcessLoadCurrencyPairs() {
-        mRateView.setCurrencyPairList(new CurrencyAdapter(mRateView.getContext(), Rate.getPairCodesList()));
-    }
-
-    private Observable<List<UserHistory>> getHistoryObservable() {
-        return mWimcService
-                .getHistory()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .cache();
+        mEnterOperationView.setCurrencyPairList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getPairCodesList()));
     }
 
     private Observable<Rate> getOldRateObservable(CurrencyPair currencyPair, Date date) {
@@ -208,13 +179,13 @@ public class RatePresenterImpl implements RatePresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError", e);
-                        mRateView.setOldRate("");
+                        mEnterOperationView.setOldRate("");
                     }
 
                     @Override
                     public void onNext(Rate rate) {
                         Log.d(TAG, "onNext");
-                        mRateView.setOldRate(String.valueOf(rate.getValue()));
+                        mEnterOperationView.setOldRate(String.valueOf(rate.getValue()));
                     }
                 });
     }

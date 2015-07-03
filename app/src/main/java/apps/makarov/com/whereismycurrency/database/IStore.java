@@ -21,6 +21,8 @@ public interface IStore<T> {
 
     List<UserHistory> getUserHistory();
 
+    List<ResultOperation> getAllResultOperation();
+
     <E extends T> void saveObject(E object);
 
     void addUrlToCache(String url);

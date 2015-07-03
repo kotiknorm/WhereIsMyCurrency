@@ -8,15 +8,15 @@ import java.text.SimpleDateFormat;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
  * Created by makarov on 30/06/15.
  */
-public class UserHistoryViewHolder extends RecyclerView.ViewHolder {
-    public static final String TAG = UserHistoryViewHolder.class.getSimpleName();
+public class ResultOperationViewHolder extends RecyclerView.ViewHolder {
+    public static final String TAG = ResultOperationViewHolder.class.getSimpleName();
 
     @InjectView(R.id.rate)
     TextView rateTextView;
@@ -25,29 +25,29 @@ public class UserHistoryViewHolder extends RecyclerView.ViewHolder {
     @InjectView(R.id.date)
     TextView dateTextView;
 
-    public UserHistoryViewHolder(View itemView) {
+    public ResultOperationViewHolder(View itemView) {
         super(itemView);
         ButterKnife.inject(this, itemView);
     }
 
-    public void bindStoryToView(UserHistory history) {
+    public void bindStoryToView(ResultOperation history) {
         rateTextView.setText(getRateString(history));
         valueTextView.setText(getCurrencyOperationString(history));
         dateTextView.setText(getDate(history));
     }
 
-    private String getDate(UserHistory history){
+    private String getDate(ResultOperation history){
         SimpleDateFormat df = DateUtils.getWimcFormat();
         return df.format(history.getDate());
     }
 
-    private String getCurrencyOperationString(UserHistory history){
+    private String getCurrencyOperationString(ResultOperation operation){
         return itemView.getContext().getString(R.string.history_item_title,
-                history.getValue(), history.getRate().getCurrencyPair().getBaseCurrency());
+                operation.getUserHistory().getValue(), operation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
     }
 
-    private String getRateString(UserHistory history){
+    private String getRateString(ResultOperation operation){
         return itemView.getContext().getString(R.string.history_item_subtitle,
-                history.getRate().getValue(), history.getRate().getCurrencyPair().getCompareCurrency());
+                operation.getUserHistory().getRate().getValue(), operation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
     }
 }

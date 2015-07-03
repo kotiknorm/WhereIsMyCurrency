@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,11 +30,11 @@ import javax.inject.Inject;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.modules.RateModule;
-import apps.makarov.com.whereismycurrency.presenters.RatePresenter;
+import apps.makarov.com.whereismycurrency.modules.EnterOperationModule;
+import apps.makarov.com.whereismycurrency.presenters.EnterOperationPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
+import apps.makarov.com.whereismycurrency.view.iviews.EnterOperationView;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
-import apps.makarov.com.whereismycurrency.view.iviews.RateView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -45,12 +42,12 @@ import butterknife.InjectView;
  * Created by makarov on 26/06/15.
  */
 
-public class RateFragment extends BaseFragment implements RateView {
+public class EnterOperationFragment extends BaseFragment implements EnterOperationView {
 
-    public static final String TAG = RateFragment.class.getSimpleName();
+    public static final String TAG = EnterOperationFragment.class.getSimpleName();
 
     @Inject
-    RatePresenter mRatePresenter;
+    EnterOperationPresenter mEnterOperationPresenter;
 
     @InjectView(R.id.value)
     EditText valueTextView;
@@ -62,8 +59,6 @@ public class RateFragment extends BaseFragment implements RateView {
     TextView dateTextView;
     @InjectView(R.id.pair)
     TextView pairTextView;
-    @InjectView(R.id.history_list)
-    RecyclerView mRecyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,7 +68,7 @@ public class RateFragment extends BaseFragment implements RateView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View hotView = LayoutInflater.from(getContext()).inflate(R.layout.rate_fragment, container, false);
+        View hotView = LayoutInflater.from(getContext()).inflate(R.layout.enter_operation_fragment, container, false);
 
         ButterKnife.inject(this, hotView);
 
@@ -82,8 +77,7 @@ public class RateFragment extends BaseFragment implements RateView {
             public void onClick(View v) {
                 double value = Double.parseDouble(valueTextView.getEditableText().toString());
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
-//
-                mRatePresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
+                mEnterOperationPresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
             }
         });
 
@@ -115,22 +109,6 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
-    public void showResultOperation(String resultKey) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, resultKey);
-        ((MainView) getActivity()).showResultFragment(bundle);
-    }
-
-    @Override
-    public void setAdapterForRecyclerView(RecyclerView.Adapter adapter) {
-        mRecyclerView.setAdapter(adapter);
-    }
-
-    private void openCurrencyListView(){
-        mRatePresenter.onProcessLoadCurrencyPairs();
-    }
-
-    @Override
     public void setCurrencyPairList(BaseAdapter adapter) {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.currency_dialog_title)
@@ -138,7 +116,7 @@ public class RateFragment extends BaseFragment implements RateView {
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                         CurrencyPair pair = Rate.getPairCodesList().get(which);
-                        mRatePresenter.onEnterCurrencyPair(pair);
+                        mEnterOperationPresenter.onEnterCurrencyPair(pair);
                         pairTextView.setText(pair.getBaseCurrency() + "_" + pair.getCompareCurrency());
                         dialog.dismiss();
                     }
@@ -162,22 +140,32 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initializeHistoryRecyclerView();
+    public void setValue(String value) {
+        valueTextView.setText(value);
+    }
+
+    @Override
+    public void setDateView(String date) {
+        dateTextView.setText(date);
+    }
+
+    @Override
+    public void addOperation(String resultKey) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, resultKey);
+        ((MainView) getActivity()).showListOperationFragment(bundle);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        mRatePresenter.onResume();
+        mEnterOperationPresenter.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mRatePresenter.onPause();
+        mEnterOperationPresenter.onPause();
     }
 
     @Override
@@ -188,7 +176,7 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mRatePresenter.onDestroy();
+        mEnterOperationPresenter.onDestroy();
     }
 
     @Override
@@ -209,14 +197,8 @@ public class RateFragment extends BaseFragment implements RateView {
     @Override
     protected List<Object> getModules() {
         return Arrays.<Object>asList(
-                new RateModule(this)
+                new EnterOperationModule(this)
         );
-    }
-
-    private void initializeHistoryRecyclerView() {
-        mRecyclerView.setHasFixedSize(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     DatePickerFragment.Callback mFragmentCallback = new DatePickerFragment.Callback() {
@@ -255,8 +237,13 @@ public class RateFragment extends BaseFragment implements RateView {
     }
 
     private void onEnterDate(Date date) {
-        mRatePresenter.onEnterDateOperation(date);
+        mEnterOperationPresenter.onEnterDateOperation(date);
     }
+
+    private void openCurrencyListView(){
+        mEnterOperationPresenter.onProcessLoadCurrencyPairs();
+    }
+
 
 
 }
