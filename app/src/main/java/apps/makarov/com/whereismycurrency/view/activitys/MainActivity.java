@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.view.fragments.EnterOperationFragment;
@@ -22,9 +23,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(DEFAULT_FRAGMENT_TAG);
         if (fragment == null) {
-            showEnterOperationFragment(null);
+            showListOperationFragment(null);
         }
     }
 
@@ -32,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public void showEnterOperationFragment(Bundle bundle) {
         Fragment newFragment = new EnterOperationFragment();
         newFragment.setArguments(bundle);
-        setFragment(newFragment, false);
+        setFragment(newFragment, true);
     }
 
     @Override

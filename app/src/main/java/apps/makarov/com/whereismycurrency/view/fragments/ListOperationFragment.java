@@ -3,6 +3,7 @@ package apps.makarov.com.whereismycurrency.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,13 +37,23 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
     ListOperationPresenter mListOperationPresenter;
 
     @InjectView(R.id.history_list)
-    RecyclerView mRecyclerView;;
+    RecyclerView mRecyclerView;
+    @InjectView(R.id.add_button)
+    FloatingActionButton addButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View hotView = LayoutInflater.from(getContext()).inflate(R.layout.list_operation_fragment, container, false);
 
         ButterKnife.inject(this, hotView);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAddOperation();
+            }
+        });
+
         return hotView;
     }
 
