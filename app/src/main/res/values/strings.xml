@@ -9,8 +9,8 @@
     <string name="title_enter_button">Увидеть результат</string>
 
 
-    <string name="history_item_title">Вы продали %1$s %2$s</string>
-    <string name="history_item_subtitle">По цене %1$s %2$s</string>
+    <string name="history_item_title">%1$s %2$s</string>
+    <string name="history_item_subtitle">%1$s %2$s</string>
 
     <string name="currency_dialog_title">Выберите валютную пару открытия операции</string>
 </resources>

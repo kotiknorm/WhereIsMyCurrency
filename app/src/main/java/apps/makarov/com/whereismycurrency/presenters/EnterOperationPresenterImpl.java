@@ -17,8 +17,10 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by makarov on 26/06/15.
@@ -33,6 +35,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     private CurrencyPair mCurrencyPair;
     private Date mDate;
+
+    private PublishSubject<Integer> publishSubject = PublishSubject.create();
 
     private Subscription mGetRateSubscription;
     private Subscription mGetOldRateSubscription;
@@ -65,11 +69,23 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     }
 
     @Override
-    public void onEnterOperation(String baseCurrency, String compareCurrency, final double summa, final double rateValue) {
-        CurrencyPair pair = CurrencyPair.createPair(compareCurrency, baseCurrency);
+    public void onEnterOperation(final double summa, final double rateValue) {
+        if (mCurrencyPair == null || mDate == null)
+            return;
+
+        CurrencyPair pair = CurrencyPair.createPair(mCurrencyPair.getCompareCurrency(), mCurrencyPair.getBaseCurrency());
         final UserHistory userHistory = mWimcService.addHistoryItem(pair, new Date(), summa, rateValue);
 
         mGetRateObservable = getRateObservable(pair);
+
+        PublishSubject<Integer> publishSubject = PublishSubject.create();
+        Subscription subscription = publishSubject.subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                System.out.println(integer);
+            }
+        });
+
 
         mGetRateSubscription = mGetRateObservable
                 .subscribe(new Observer<Rate>() {

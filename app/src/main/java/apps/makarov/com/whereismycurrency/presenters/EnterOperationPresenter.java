@@ -18,7 +18,7 @@ public interface EnterOperationPresenter {
 
     void onRefresh();
 
-    void onEnterOperation(String baseCurrency, String compareCurrency, double value, double rate);
+    void onEnterOperation(double value, double rate);
 
     void onEnterDateOperation(Date date);
 

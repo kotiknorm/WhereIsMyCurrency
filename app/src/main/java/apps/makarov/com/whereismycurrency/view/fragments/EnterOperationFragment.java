@@ -34,8 +34,8 @@ import apps.makarov.com.whereismycurrency.presenters.EnterOperationPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.EnterOperationView;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by makarov on 26/06/15.
@@ -48,15 +48,15 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     @Inject
     EnterOperationPresenter mEnterOperationPresenter;
 
-    @InjectView(R.id.value)
+    @Bind(R.id.value)
     EditText valueTextView;
-    @InjectView(R.id.rate)
+    @Bind(R.id.rate)
     EditText rateTextView;
-    @InjectView(R.id.enter)
+    @Bind(R.id.enter)
     Button enterButton;
-    @InjectView(R.id.date)
+    @Bind(R.id.date)
     TextView dateTextView;
-    @InjectView(R.id.pair)
+    @Bind(R.id.pair)
     TextView pairTextView;
 
     @Override
@@ -69,14 +69,14 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View hotView = LayoutInflater.from(getContext()).inflate(R.layout.enter_operation_fragment, container, false);
 
-        ButterKnife.inject(this, hotView);
+        ButterKnife.bind(this, hotView);
 
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 double value = Double.parseDouble(valueTextView.getEditableText().toString());
                 double rate = Double.parseDouble(rateTextView.getEditableText().toString());
-                mEnterOperationPresenter.onEnterOperation(Rate.RUB_CODE, Rate.EUR_CODE, value, rate);
+                mEnterOperationPresenter.onEnterOperation(value, rate);
             }
         });
 

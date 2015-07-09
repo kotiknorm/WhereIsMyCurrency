@@ -17,8 +17,8 @@ import apps.makarov.com.whereismycurrency.modules.ResultModule;
 import apps.makarov.com.whereismycurrency.presenters.ResultPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by makarov on 01/07/15.
@@ -31,7 +31,7 @@ public class ResultFragment extends BaseFragment implements ResultView {
     @Inject
     ResultPresenter mResultPresenter;
 
-    @InjectView(R.id.result_res)
+    @Bind(R.id.result_res)
     TextView resultTextView;
 
     @Override
@@ -43,7 +43,7 @@ public class ResultFragment extends BaseFragment implements ResultView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View hotView = LayoutInflater.from(getActivity()).inflate(R.layout.result_fragment, container, false);
-        ButterKnife.inject(this, hotView);
+        ButterKnife.bind(this, hotView);
 
         String resultKey = getResultKeyExtra(getArguments());
         mResultPresenter.setResult(resultKey);

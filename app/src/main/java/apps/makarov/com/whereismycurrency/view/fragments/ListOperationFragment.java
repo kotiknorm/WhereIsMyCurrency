@@ -21,8 +21,8 @@ import apps.makarov.com.whereismycurrency.presenters.ListOperationPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ListOperationView;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by makarov on 03/07/15.
@@ -34,16 +34,16 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
     @Inject
     ListOperationPresenter mListOperationPresenter;
 
-    @InjectView(R.id.history_list)
+    @Bind(R.id.history_list)
     RecyclerView mRecyclerView;
-    @InjectView(R.id.add_button)
+    @Bind(R.id.add_button)
     FloatingActionButton addButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View hotView = LayoutInflater.from(getContext()).inflate(R.layout.list_operation_fragment, container, false);
 
-        ButterKnife.inject(this, hotView);
+        ButterKnife.bind(this, hotView);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override

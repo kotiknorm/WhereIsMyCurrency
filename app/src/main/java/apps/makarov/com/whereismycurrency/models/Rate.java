@@ -1,6 +1,7 @@
 package apps.makarov.com.whereismycurrency.models;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 
@@ -11,7 +12,6 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -103,14 +103,16 @@ public class Rate extends RealmObject {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static Drawable getCurrencyIcon(BaseContextView contextView, String currency) {
+    public static Drawable getCurrencyIcon(Context context, String currency) {
         switch (currency) {
             case EUR_CODE:
+                return context.getDrawable(R.drawable.eur);
             case RUB_CODE:
+                return context.getDrawable(R.drawable.rub);
             case USD_CODE:
-                return contextView.getContext().getDrawable(R.drawable.abc_ab_share_pack_mtrl_alpha);
+                return context.getDrawable(R.drawable.usd);
             default:
-                return contextView.getContext().getDrawable(R.drawable.abc_ab_share_pack_mtrl_alpha);
+                return context.getDrawable(R.drawable.eur);
         }
     }
 
