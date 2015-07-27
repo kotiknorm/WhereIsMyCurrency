@@ -3,9 +3,583 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Результат"
-        android:id="@+id/result_res" />
+        android:id="@+id/linearLayout">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="#009688"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Открытие операции"
+                    android:id="@+id/textView32"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:id="@+id/textView10"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Апрель"
+                    android:id="@+id/textView9"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015"
+                    android:id="@+id/textView13"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Российский рубль"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView12"
+                        android:textSize="12dp"
+                        android:textColor="#af000000" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:id="@+id/imageView2"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/rub" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1000"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:id="@+id/textView14"
+                            android:textSize="28dp"
+                            android:textColor="#af000000"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Курс"
+                    android:id="@+id/textView16"
+                    android:textSize="12dp"
+                    android:textColor="#af000000"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.037"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:id="@+id/textView18"
+                    android:textSize="16dp"
+                    android:textColor="#af000000"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Американский доллар"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView15"
+                        android:textSize="12dp"
+                        android:textColor="#af000000" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginTop="8dp" >
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:id="@+id/imageView4"
+                            android:src="@drawable/usd"
+                            android:layout_marginRight="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="33.7"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:id="@+id/textView17"
+                            android:textSize="28dp"
+                            android:textColor="#af000000"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="#009688"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Закрытие операции"
+                    android:id="@+id/textView19"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23"
+                    android:id="@+id/textView20"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Июль"
+                    android:id="@+id/textView21"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2015"
+                    android:id="@+id/textView33"
+                    android:textSize="12dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Американский доллар"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView22"
+                        android:textSize="12dp"
+                        android:textColor="#af000000" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginTop="8dp" >
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:id="@+id/imageView5"
+                            android:src="@drawable/usd"
+                            android:layout_marginRight="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="33.7"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:id="@+id/textView23"
+                            android:textSize="28dp"
+                            android:textColor="#af000000"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Курс"
+                    android:id="@+id/textView24"
+                    android:textSize="12dp"
+                    android:textColor="#af000000"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="32"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:id="@+id/textView25"
+                    android:textSize="16dp"
+                    android:textColor="#af000000"
+                    android:gravity="center_horizontal"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="16dp"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_weight="1" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Российский рубль"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView26"
+                        android:textSize="12dp"
+                        android:textColor="#af000000" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginTop="8dp" >
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:id="@+id/imageView6"
+                            android:src="@drawable/rub"
+                            android:layout_marginRight="8dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="984"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:id="@+id/textView27"
+                            android:textSize="28dp"
+                            android:textColor="#af000000"
+                            android:gravity="center_horizontal"
+                            android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Закрытии операции на 23.07.2015"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:id="@+id/textView30"
+                android:textSize="12dp"
+                android:textColor="#af000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:id="@+id/textView29"
+                android:textSize="36dp"
+                android:textIsSelectable="false"
+                android:textColor="#ffb9262d"
+                android:text="-16 RUB" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Наилучшая цена &quot;Банк Петрокоммерц&quot;"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:id="@+id/textView28"
+                    android:textSize="12dp"
+                    android:textColor="#af000000"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="36.7"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView36"
+                        android:textSize="14dp"
+                        android:textColor="#ff000000"
+                        android:gravity="center_vertical|center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+4.7"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView37"
+                        android:textSize="12dp"
+                        android:textColor="#009688"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginLeft="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Валютная пара падает в цене"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:id="@+id/textView31"
+                    android:textSize="12dp"
+                    android:textColor="#af000000"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4 дня"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView34"
+                        android:textSize="14dp"
+                        android:textColor="#ff000000"
+                        android:gravity="center_vertical|center_horizontal" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-0.95"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/textView35"
+                        android:textSize="12dp"
+                        android:textColor="#ffb9262d"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:layout_marginLeft="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_exit_operation_button"
+            android:id="@+id/button"
+            android:background="@drawable/bg_enter_operation_btn"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            android:padding="4dp" />
+    </LinearLayout>
+
 </LinearLayout>

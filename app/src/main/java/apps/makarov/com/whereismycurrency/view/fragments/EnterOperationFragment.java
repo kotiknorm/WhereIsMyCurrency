@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.util.Pair;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,19 +16,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.EnterOperationModule;
 import apps.makarov.com.whereismycurrency.presenters.EnterOperationPresenter;
@@ -48,16 +51,35 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     @Inject
     EnterOperationPresenter mEnterOperationPresenter;
 
-    @Bind(R.id.value)
-    EditText valueTextView;
-    @Bind(R.id.rate)
-    EditText rateTextView;
-    @Bind(R.id.enter)
-    Button enterButton;
     @Bind(R.id.date)
-    TextView dateTextView;
-    @Bind(R.id.pair)
-    TextView pairTextView;
+    View dateView;
+    @Bind(R.id.date_day)
+    TextView dateDay;
+    @Bind(R.id.date_month)
+    TextView dateMonth;
+    @Bind(R.id.date_year)
+    TextView dateYear;
+    @Bind(R.id.rate_field)
+    EditText rateField;
+
+    @Bind(R.id.base_currency_field)
+    ImageView baseCurrency;
+    @Bind(R.id.compare_currency_field)
+    ImageView compareCurrency;
+
+    @Bind(R.id.base_currency_name)
+    TextView baseCurrencyName;
+    @Bind(R.id.compare_currency_name)
+    TextView compareCurrencyName;
+
+    @Bind(R.id.enter)
+    Button enterBrn;
+
+    @Bind(R.id.base_value)
+    EditText baseValue;
+    @Bind(R.id.compare_value)
+    EditText compareValue;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,28 +93,38 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
 
         ButterKnife.bind(this, hotView);
 
-        enterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double value = Double.parseDouble(valueTextView.getEditableText().toString());
-                double rate = Double.parseDouble(rateTextView.getEditableText().toString());
-                mEnterOperationPresenter.onEnterOperation(value, rate);
-            }
-        });
-
-        dateTextView.setOnClickListener(new View.OnClickListener() {
+        dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDatePicker();
             }
         });
 
-        pairTextView.setOnClickListener(new View.OnClickListener() {
+        compareCurrency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openCurrencyListView();
+                mEnterOperationPresenter.onOpenCompareCurrencyDialog();
             }
         });
+
+        baseCurrency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEnterOperationPresenter.onOpenBaseCurrencyDialog();
+            }
+        });
+
+        enterBrn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEnterOperationPresenter.onEnterOperation();
+            }
+        });
+
+        baseValue.addTextChangedListener(textWatcherBaseValue);
+        compareValue.addTextChangedListener(textWatcherCompareValue);
+        rateField.addTextChangedListener(textWatcherRate);
+
 
         return hotView;
     }
@@ -108,44 +140,68 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     }
 
     @Override
-    public void setCurrencyPairList(BaseAdapter adapter) {
+    public void setBuyCurrencyList(BaseAdapter adapter) {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.currency_dialog_title)
                 .adapter(adapter, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        CurrencyPair pair = Rate.getPairCodesList().get(which);
-                        mEnterOperationPresenter.onEnterCurrencyPair(pair);
-                        pairTextView.setText(pair.getBaseCurrency() + "_" + pair.getCompareCurrency());
+                        String currency = Rate.getCodesList().get(which);
+                        mEnterOperationPresenter.onEnterBaseCurrency(currency);
                         dialog.dismiss();
                     }
-                })
-                .show();
+                }).show();
+    }
+
+    @Override
+    public void setSellCurrencyList(BaseAdapter adapter) {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.currency_dialog_title)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        String currency = Rate.getCodesList().get(which);
+                        mEnterOperationPresenter.onEnterCompareCurrency(currency);
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     @Override
     public void setOldRate(String rateValue) {
-        rateTextView.setText("" + rateValue);
+        rateField.setText("" + rateValue);
     }
 
     @Override
     public void setBaseCurrency(String currency, Drawable icon) {
-
+        baseCurrency.setImageDrawable(icon);
+        baseCurrencyName.setText(currency);
     }
 
     @Override
     public void setCompareCurrency(String currency, Drawable icon) {
-
+        compareCurrency.setImageDrawable(icon);
+        compareCurrencyName.setText(currency);
     }
 
     @Override
-    public void setValue(String value) {
-        valueTextView.setText(value);
+    public void setBaseValue(double value) {
+        baseValue.setText(value + "");
     }
 
     @Override
-    public void setDateView(String date) {
-        dateTextView.setText(date);
+    public void setCompareValue(double value) {
+        compareValue.setText(value + "");
+    }
+
+    @Override
+    public void setDateView(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        dateMonth.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
+        dateDay.setText(c.get(Calendar.DAY_OF_MONTH) + "");
+        dateYear.setText(c.get(Calendar.YEAR) + "");
     }
 
     @Override
@@ -202,8 +258,6 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
 
         @Override
         public void onDateTimeRecurrenceSet(Date date) {
-            Log.d(TAG, "date -" + date.toString());
-            dateTextView.setText(date.toString());
             onEnterDate(date);
         }
     };
@@ -234,10 +288,68 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
         mEnterOperationPresenter.onEnterDateOperation(date);
     }
 
-    private void openCurrencyListView(){
-        mEnterOperationPresenter.onProcessLoadCurrencyPairs();
-    }
+    private TextWatcher textWatcherRate = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            try {
+                mEnterOperationPresenter.onEnterRate(Double.parseDouble(s.toString()));
+            } catch (NumberFormatException e) {
+
+            }
+        }
+    };
+
+    private TextWatcher textWatcherBaseValue = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            try {
+                mEnterOperationPresenter.onEnterBaseValue(Double.parseDouble(s.toString()));
+            } catch (NumberFormatException e) {
+
+            }
+        }
+    };
+
+    private TextWatcher textWatcherCompareValue = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            try {
+                mEnterOperationPresenter.onEnterCompareValue(Double.parseDouble(s.toString()));
+            } catch (NumberFormatException e) {
+
+            }
+        }
+    };
 
 
 }

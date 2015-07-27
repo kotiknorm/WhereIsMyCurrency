@@ -3,6 +3,8 @@ package apps.makarov.com.whereismycurrency.view.iviews;
 import android.graphics.drawable.Drawable;
 import android.widget.BaseAdapter;
 
+import java.util.Date;
+
 import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
 
 /**
@@ -15,7 +17,9 @@ public interface EnterOperationView extends BaseContextView {
 
     void hideProgressDialog();
 
-    void setCurrencyPairList(BaseAdapter adapter);
+    void setBuyCurrencyList(BaseAdapter adapter);
+
+    void setSellCurrencyList(BaseAdapter adapter);
 
     void setOldRate(String rateValue);
 
@@ -23,9 +27,11 @@ public interface EnterOperationView extends BaseContextView {
 
     void setCompareCurrency(String currency, Drawable icon);
 
-    void setValue(String value);
+    void setBaseValue(double value);
 
-    void setDateView(String date);
+    void setCompareValue(double value);
+
+    void setDateView(Date date);
 
     void addOperation(String resultKey);
 

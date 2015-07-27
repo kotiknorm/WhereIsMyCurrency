@@ -42,8 +42,8 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
 
     @Override
     public void onRefresh() {
-        mGetHistoryObservable = getHistoryObservable();
 
+        mGetHistoryObservable = getHistoryObservable();
         mGetHistorySubscription = mGetHistoryObservable.subscribe(new Observer<List<ResultOperation>>() {
             @Override
             public void onCompleted() {
@@ -69,7 +69,7 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
 
     private Observable<List<ResultOperation>> getHistoryObservable() {
         return mWimcService
-                .getAllResultOperation()
+                .getResultOperations()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();

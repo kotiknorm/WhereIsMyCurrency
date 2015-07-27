@@ -2,8 +2,6 @@ package apps.makarov.com.whereismycurrency.presenters;
 
 import java.util.Date;
 
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-
 /**
  * Created by makarov on 26/06/15.
  */
@@ -18,11 +16,26 @@ public interface EnterOperationPresenter {
 
     void onRefresh();
 
-    void onEnterOperation(double value, double rate);
+    void onEnterOperation();
+
+    void onEnterRate(double rate);
+
+    void onEnterBaseValue(double rate);
+
+    void onEnterCompareValue(double rate);
 
     void onEnterDateOperation(Date date);
 
-    void onEnterCurrencyPair(CurrencyPair pair);
+    void onEnterCompareCurrency(String pair);
 
-    void onProcessLoadCurrencyPairs();
+    void onEnterBaseCurrency(String pair);
+
+    void updateResults(Date date);
+
+    void onOpenCompareCurrencyDialog();
+
+    void onOpenBaseCurrencyDialog();
+
+    void correctingValue();
+
 }

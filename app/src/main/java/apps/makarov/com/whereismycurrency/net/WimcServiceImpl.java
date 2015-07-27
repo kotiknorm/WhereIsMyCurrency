@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.database.IStore;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
@@ -25,7 +25,7 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WimcServiceImpl extends RequestService implements WimcService {
 
-    public WimcServiceImpl(OkHttpClient client, IStore store) {
+    public WimcServiceImpl(OkHttpClient client, IRepository store) {
         super(client, store);
     }
 
@@ -48,7 +48,25 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<ResultOperation>> getAllResultOperation() {
+    public Observable<List<ResultOperation>> getResultOperations() {
+        return Observable.create(new Observable.OnSubscribe<List<ResultOperation>>() {
+            @Override
+            public void call(Subscriber<? super List<ResultOperation>> subscriber) {
+                try {
+                    List<ResultOperation> list = getStore().getAllResultOperation();
+
+                    subscriber.onNext(list);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<ResultOperation>> getUpdateResultOperations() {
         return Observable.create(new Observable.OnSubscribe<List<ResultOperation>>() {
             @Override
             public void call(Subscriber<? super List<ResultOperation>> subscriber) {
@@ -153,6 +171,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
 //            }
 //        };
 //    }
+
 
 }
 

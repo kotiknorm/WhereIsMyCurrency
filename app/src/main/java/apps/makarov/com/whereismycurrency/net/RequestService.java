@@ -6,7 +6,7 @@ import com.squareup.okhttp.Response;
 
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.database.IStore;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import io.realm.RealmObject;
 import rx.Observable;
@@ -20,14 +20,14 @@ import rx.functions.Func1;
 public class RequestService {
 
     private OkHttpClient mClient;
-    private IStore mStore;
+    private IRepository mStore;
 
-    public RequestService(OkHttpClient client, IStore store) {
+    public RequestService(OkHttpClient client, IRepository store) {
         this.mClient = client;
         this.mStore = store;
     }
 
-    protected IStore getStore(){
+    protected IRepository getStore(){
         return mStore;
     }
 

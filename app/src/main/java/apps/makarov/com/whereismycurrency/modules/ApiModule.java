@@ -12,8 +12,8 @@ import java.io.File;
 import javax.inject.Singleton;
 
 import apps.makarov.com.whereismycurrency.BuildConfig;
-import apps.makarov.com.whereismycurrency.database.IStore;
-import apps.makarov.com.whereismycurrency.database.RealmStore;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
+import apps.makarov.com.whereismycurrency.repository.RealmRepository;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.net.WimcServiceImpl;
 import dagger.Module;
@@ -41,13 +41,13 @@ public final class ApiModule {
 
     @Provides
     @Singleton
-    public IStore provideIStore(Application application) {
-        return new RealmStore(application);
+    public IRepository provideIStore(Application application) {
+        return new RealmRepository(application);
     }
 
     @Provides
     @Singleton
-    public WimcService provideGMHService(OkHttpClient client, IStore store) {
+    public WimcService provideGMHService(OkHttpClient client, IRepository store) {
         return new WimcServiceImpl(client, store);
     }
 

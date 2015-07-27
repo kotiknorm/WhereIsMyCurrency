@@ -1,7 +1,9 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,10 +19,8 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
 
 /**
  * Created by makarov on 26/06/15.
@@ -33,10 +33,12 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     private EnterOperationView mEnterOperationView;
     private WimcService mWimcService;
 
-    private CurrencyPair mCurrencyPair;
+    private String mBaseCurrency;
+    private String mCompareCurrency;
     private Date mDate;
-
-    private PublishSubject<Integer> publishSubject = PublishSubject.create();
+    private double mRate = 0;
+    private double mBaseValue = 0;
+    private double mCompareValue = 0;
 
     private Subscription mGetRateSubscription;
     private Subscription mGetOldRateSubscription;
@@ -51,7 +53,9 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onResume() {
-        onRefresh();
+        onEnterBaseCurrency(Rate.RUB_CODE);
+        onEnterCompareCurrency(Rate.EUR_CODE);
+        onEnterDateOperation(Calendar.getInstance().getTime());
     }
 
     @Override
@@ -68,24 +72,21 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     public void onRefresh() {
     }
 
+    private boolean isValidData(){
+        if (mCompareCurrency == null || mBaseCurrency == null || mDate == null || mBaseValue == 0 || mRate == 0)
+            return false;
+        return true;
+    }
+
     @Override
-    public void onEnterOperation(final double summa, final double rateValue) {
-        if (mCurrencyPair == null || mDate == null)
+    public void onEnterOperation() {
+        if (!isValidData())
             return;
 
-        CurrencyPair pair = CurrencyPair.createPair(mCurrencyPair.getCompareCurrency(), mCurrencyPair.getBaseCurrency());
-        final UserHistory userHistory = mWimcService.addHistoryItem(pair, new Date(), summa, rateValue);
+        CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
+        final UserHistory userHistory = mWimcService.addHistoryItem(pair, new Date(), mBaseValue, mRate);
 
         mGetRateObservable = getRateObservable(pair);
-
-        PublishSubject<Integer> publishSubject = PublishSubject.create();
-        Subscription subscription = publishSubject.subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-                System.out.println(integer);
-            }
-        });
-
 
         mGetRateSubscription = mGetRateObservable
                 .subscribe(new Observer<Rate>() {
@@ -111,20 +112,79 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     }
 
     @Override
+    public void onEnterRate(double rate) {
+        mRate =  rate;
+        correctingValue();
+    }
+
+    @Override
+    public void onEnterBaseValue(double rate) {
+        if(mBaseValue != rate) {
+            mBaseValue = rate;
+            correctingValue();
+        }
+    }
+
+    @Override
+    public void onEnterCompareValue(double rate) {
+        if(rate != mCompareValue) {
+            mCompareValue = rate;
+            correctingValue();
+        }
+    }
+
+    @Override
     public void onEnterDateOperation(Date date) {
         mDate = date;
+        mEnterOperationView.setDateView(date);
         processOldRate();
     }
 
     @Override
-    public void onEnterCurrencyPair(CurrencyPair pair) {
-        mCurrencyPair = pair;
+    public void onEnterCompareCurrency(String currency) {
+        Drawable iconDrawable = Rate.getCurrencyIcon(mEnterOperationView.getContext(), currency);
+        String nameCurrency = Rate.getCurrencyName(mEnterOperationView.getContext(), currency);
+
+        mCompareCurrency = currency;
+        mEnterOperationView.setCompareCurrency(nameCurrency, iconDrawable);
+
         processOldRate();
     }
 
     @Override
-    public void onProcessLoadCurrencyPairs() {
-        mEnterOperationView.setCurrencyPairList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getPairCodesList()));
+    public void onEnterBaseCurrency(String currency) {
+        Drawable iconDrawable = Rate.getCurrencyIcon(mEnterOperationView.getContext(), currency);
+        String nameCurrency = Rate.getCurrencyName(mEnterOperationView.getContext(), currency);
+
+        mBaseCurrency = currency;
+        mEnterOperationView.setBaseCurrency(nameCurrency, iconDrawable);
+
+        processOldRate();
+    }
+
+    @Override
+    public void updateResults(Date date) {
+        // взять курс по дате и обновить всю историю с exitRete этого курса
+    }
+
+    @Override
+    public void onOpenCompareCurrencyDialog() {
+        mEnterOperationView.setSellCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getCodesList()));
+    }
+
+    @Override
+    public void onOpenBaseCurrencyDialog() {
+        mEnterOperationView.setBuyCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getCodesList()));
+
+    }
+
+    @Override
+    public void correctingValue() {
+        if(mBaseValue != 0 && mRate != 0){
+            mCompareValue = mBaseValue * mRate;
+            mEnterOperationView.setCompareValue(mCompareValue);
+        }
+
     }
 
     private Observable<Rate> getOldRateObservable(CurrencyPair currencyPair, Date date) {
@@ -180,11 +240,12 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     }
 
     private void processOldRate() {
-        if (mCurrencyPair == null || mDate == null)
+        if (mCompareCurrency == null || mBaseCurrency == null || mDate == null)
             return;
 
+        CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
 
-        mGetOldRateObservable = getOldRateObservable(mCurrencyPair, mDate);
+        mGetOldRateObservable = getOldRateObservable(pair, mDate);
         mGetOldRateSubscription = mGetOldRateObservable
                 .subscribe(new Observer<Rate>() {
                     @Override

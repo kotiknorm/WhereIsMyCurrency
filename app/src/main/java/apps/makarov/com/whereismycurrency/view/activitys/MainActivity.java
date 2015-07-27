@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(DEFAULT_FRAGMENT_TAG);
         if (fragment == null) {
-            showListOperationFragment(null);
+            setBaseFragment(new ListOperationFragment());
         }
     }
 
@@ -59,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if(saveInBackstack)
             ft.addToBackStack(DEFAULT_FRAGMENT_STACK_NAME);
         ft.commit();
+    }
+
+    private void setBaseFragment(Fragment fragment) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.container, fragment, DEFAULT_FRAGMENT_TAG)
+                .commit();
     }
 
 }

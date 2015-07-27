@@ -116,4 +116,18 @@ public class Rate extends RealmObject {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public static String getCurrencyName(Context context, String currency) {
+        switch (currency) {
+            case EUR_CODE:
+                return context.getString(R.string.eur);
+            case RUB_CODE:
+                return context.getString(R.string.rub);
+            case USD_CODE:
+                return context.getString(R.string.usd);
+            default:
+                return context.getString(R.string.eur);
+        }
+    }
+
 }

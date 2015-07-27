@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.database;
+package apps.makarov.com.whereismycurrency.repository;
 
 import android.app.Application;
 
@@ -19,11 +19,11 @@ import io.realm.RealmQuery;
  * Created by makarov on 27/06/15.
  */
 
-public class RealmStore implements IStore<RealmObject> {
+public class RealmRepository implements IRepository<RealmObject> {
 
     private final Application application;
 
-    public RealmStore(Application application) {
+    public RealmRepository(Application application) {
         this.application = application;
     }
 
@@ -55,7 +55,7 @@ public class RealmStore implements IStore<RealmObject> {
 
     @Override
     public List<ResultOperation> getAllResultOperation() {
-        List<ResultOperation> list = Realm.getInstance(application).where(ResultOperation.class).findAll();
+        List<ResultOperation> list = Realm.getInstance(application).where(ResultOperation.class).findAllSorted("date", false);
         Realm.getInstance(application).close();
         return list;
     }

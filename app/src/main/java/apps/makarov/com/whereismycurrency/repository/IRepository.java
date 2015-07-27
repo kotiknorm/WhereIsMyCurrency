@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.database;
+package apps.makarov.com.whereismycurrency.repository;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +13,7 @@ import apps.makarov.com.whereismycurrency.models.UserHistory;
  * Created by makarov on 27/06/15.
  */
 
-public interface IStore<T> {
+public interface IRepository<T> {
 
     List<Bank> getBanks();
 

@@ -7,10 +7,21 @@
     <string name="win_result">Вы проебались и сейчас можете закрыть операцию потеряв </string>
     <string name="loser_result">Вы наварили бабла на </string>
     <string name="title_enter_button">Увидеть результат</string>
+    <string name="title_exit_operation_button">Закрыть операцию</string>
 
 
     <string name="history_item_title">%1$s %2$s</string>
     <string name="history_item_subtitle">%1$s %2$s</string>
 
-    <string name="currency_dialog_title">Выберите валютную пару открытия операции</string>
+    <string name="history_base_value">%1$d %2$s</string>
+    <string name="history_balance">остаток %1$s</string>
+
+    <string name="currency_dialog_title">Выберите валюту продажи</string>
+
+    <string name="usd">Американский доллар</string>
+    <string name="rub">Российский рубль</string>
+    <string name="eur">Европейский евро</string>
+
+
+
 </resources>

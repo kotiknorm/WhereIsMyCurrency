@@ -17,7 +17,9 @@ public interface WimcService {
 
     Observable<List<UserHistory>> getHistory();
 
-    Observable<List<ResultOperation>> getAllResultOperation();
+    Observable<List<ResultOperation>> getResultOperations();
+
+    Observable<List<ResultOperation>> getUpdateResultOperations();
 
     ResultOperation getResultOperation(String key);
 

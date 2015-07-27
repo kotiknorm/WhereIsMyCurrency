@@ -75,7 +75,7 @@ public class DatePickerFragment extends DialogFragment {
                                             int hourOfDay, int minute, SublimeRecurrencePicker.RecurrenceOption recurrenceOption,
                                             String recurrenceRule) {
             if (mCallback != null) {
-                    Date date = getDatePickerFormat(year, monthOfYear, dayOfMonth);
+                    Date date = getDatePickerFormat(year, monthOfYear + 1, dayOfMonth);
                     mCallback.onDateTimeRecurrenceSet(date);
             }
 

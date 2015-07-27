@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +16,6 @@ import apps.makarov.com.whereismycurrency.modules.ResultModule;
 import apps.makarov.com.whereismycurrency.presenters.ResultPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -31,8 +29,6 @@ public class ResultFragment extends BaseFragment implements ResultView {
     @Inject
     ResultPresenter mResultPresenter;
 
-    @Bind(R.id.result_res)
-    TextView resultTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +49,6 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     @Override
     public void showResultOperation(String resultKey) {
-        resultTextView.setText(resultKey);
     }
 
     @Override

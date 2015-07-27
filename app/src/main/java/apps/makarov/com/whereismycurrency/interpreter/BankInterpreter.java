@@ -14,7 +14,6 @@ import apps.makarov.com.whereismycurrency.models.Rate;
 
 public class BankInterpreter implements Interpreter<Bank> {
 
-
     private final JSONObject mJsonObject;
 
     public BankInterpreter(JSONObject jsonObject){

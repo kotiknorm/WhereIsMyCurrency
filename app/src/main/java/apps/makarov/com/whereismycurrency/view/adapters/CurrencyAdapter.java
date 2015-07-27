@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.view.adapters.viewholders.CurrencyPairHolder;
 
 /**
@@ -19,17 +18,17 @@ public class CurrencyAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<CurrencyPair> mListPairs;
+    private List<String> mListCurrency;
 
-    public CurrencyAdapter(Context context, List<CurrencyPair> listPairs){
+    public CurrencyAdapter(Context context, List<String> listCurrency){
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
-        mListPairs = listPairs;
+        mListCurrency = listCurrency;
     }
 
     @Override
     public int getCount() {
-        return mListPairs.size();
+        return mListCurrency.size();
     }
 
     @Override
@@ -55,7 +54,7 @@ public class CurrencyAdapter extends BaseAdapter {
             holder = (CurrencyPairHolder) rowView.getTag();
         }
 
-        holder.bindCurrencyToView(mListPairs.get(position));
+        holder.bindCurrencyToView(mContext, mListCurrency.get(position));
 
         return rowView;
     }

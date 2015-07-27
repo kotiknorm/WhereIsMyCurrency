@@ -14,4 +14,13 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+
+    <color name="negative_color">#ffb9262d</color>
+    <color name="positive_color">#009688</color>
+
+
+    <color name="date">#009688</color>
+    <color name="date_1">#009688</color>
+    <color name="date_2">#000000</color>
+
 </resources>
