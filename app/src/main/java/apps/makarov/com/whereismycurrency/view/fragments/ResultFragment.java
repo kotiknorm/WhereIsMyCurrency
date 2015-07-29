@@ -1,10 +1,13 @@
 package apps.makarov.com.whereismycurrency.view.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +19,7 @@ import apps.makarov.com.whereismycurrency.modules.ResultModule;
 import apps.makarov.com.whereismycurrency.presenters.ResultPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -28,6 +32,92 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     @Inject
     ResultPresenter mResultPresenter;
+
+    @Bind(R.id.diff_operation)
+    TextView diffValueField;
+
+    @Bind(R.id.open_operation_base_icon)
+    ImageView openBaseIcon;
+    @Bind(R.id.open_operation_compare_icon)
+    ImageView openCompareIcon;
+    @Bind(R.id.exit_operarion_base_icon)
+    ImageView exitBaseIcon;
+    @Bind(R.id.exit_operation_compare_icon)
+    ImageView exitCompareIcon;
+
+    @Bind(R.id.open_operation_base_value)
+    TextView openOperaionBaseValue;
+    @Bind(R.id.open_operation_compare_value)
+    TextView openOperaionCompareValue;
+    @Bind(R.id.exit_operation_base_value)
+    TextView exitOperaionBaseValue;
+    @Bind(R.id.exit_operation_compare_value)
+    TextView exitOperaionCompareValue;
+
+    public void setOpenOperationBaseCurrencyName(String value) {
+        this.openOperationBaseCurrencyName.setText(value);
+    }
+
+    public void setOpenOperationCompareCurrencyName(String value) {
+        this.openOperationCompareCurrencyName.setText(value);
+    }
+
+    public void setExitOperationBaseCurrencyName(String value) {
+        this.exitOperationBaseCurrencyName.setText(value);
+    }
+
+    public void setExitOperationCompareCurrencyName(String value) {
+        this.exitOperationCompareCurrencyName.setText(value);
+    }
+
+    @Bind(R.id.open_operation_base_currency_name)
+    TextView openOperationBaseCurrencyName;
+    @Bind(R.id.open_operation_compare_currency_name)
+    TextView openOperationCompareCurrencyName;
+    @Bind(R.id.exit_operation_base_currency_name)
+    TextView exitOperationBaseCurrencyName;
+    @Bind(R.id.exit_operation_compare_currency_name)
+    TextView exitOperationCompareCurrencyName;
+
+    @Override
+    public void setExitCompareIcon(Drawable drawableRes) {
+        this.exitCompareIcon.setImageDrawable(drawableRes);
+    }
+
+    @Override
+    public void setExitBaseIcon(Drawable drawableRes) {
+        this.exitBaseIcon.setImageDrawable(drawableRes);
+    }
+
+    @Override
+    public void setOpenCompareIcon(Drawable drawableRes) {
+        this.openCompareIcon.setImageDrawable(drawableRes);
+    }
+
+    @Override
+    public void setOpenBaseIcon(Drawable drawableRes) {
+        this.openBaseIcon.setImageDrawable(drawableRes);
+    }
+
+    @Override
+    public void setExitOperaionCompareValue(double exitOperaionCompareValue) {
+        this.exitOperaionCompareValue.setText(exitOperaionCompareValue + "");
+    }
+
+    @Override
+    public void setExitOperaionBaseValue(double exitOperaionBaseValue) {
+        this.exitOperaionBaseValue.setText(exitOperaionBaseValue + "");
+    }
+
+    @Override
+    public void setOpenOperaionCompareValue(double openOperaionCompareValue) {
+        this.openOperaionCompareValue.setText(openOperaionCompareValue + "");
+    }
+
+    @Override
+    public void setOpenOperaionBaseValue(double openOperaionBaseValue) {
+        this.openOperaionBaseValue.setText(openOperaionBaseValue + "");
+    }
 
 
     @Override
@@ -48,7 +138,14 @@ public class ResultFragment extends BaseFragment implements ResultView {
     }
 
     @Override
-    public void showResultOperation(String resultKey) {
+    public void setDiffValue(double diff) {
+        diffValueField.setText(diff + "");
+    }
+
+    @Override
+    public void setColorForResult(int colorRes) {
+        diffValueField.setTextColor(getResources().getColor(colorRes));
+
     }
 
     @Override

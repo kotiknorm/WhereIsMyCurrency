@@ -84,7 +84,7 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
             return;
 
         CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
-        final UserHistory userHistory = mWimcService.addHistoryItem(pair, new Date(), mBaseValue, mRate);
+        final UserHistory userHistory = mWimcService.addHistoryItem(pair, mDate, mBaseValue, mRate);
 
         mGetRateObservable = getRateObservable(pair);
 

@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:text="Российский рубль"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:id="@+id/textView12"
+                        android:id="@+id/open_operation_base_currency_name"
                         android:textSize="12dp"
                         android:textColor="#af000000" />
 
@@ -113,7 +113,7 @@
                         <ImageView
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:id="@+id/imageView2"
+                            android:id="@+id/open_operation_base_icon"
                             android:layout_marginRight="8dp"
                             android:src="@drawable/rub" />
 
@@ -122,11 +122,11 @@
                             android:layout_height="wrap_content"
                             android:text="1000"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:id="@+id/textView14"
-                            android:textSize="28dp"
+                            android:textSize="24dp"
                             android:textColor="#af000000"
                             android:gravity="center_horizontal"
-                            android:layout_marginLeft="8dp" />
+                            android:layout_marginLeft="8dp"
+                            android:id="@+id/open_operation_base_value" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -180,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:text="Американский доллар"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:id="@+id/textView15"
+                        android:id="@+id/open_operation_compare_currency_name"
                         android:textSize="12dp"
                         android:textColor="#af000000" />
 
@@ -194,7 +194,7 @@
                         <ImageView
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:id="@+id/imageView4"
+                            android:id="@+id/open_operation_compare_icon"
                             android:src="@drawable/usd"
                             android:layout_marginRight="8dp" />
 
@@ -203,8 +203,8 @@
                             android:layout_height="wrap_content"
                             android:text="33.7"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:id="@+id/textView17"
-                            android:textSize="28dp"
+                            android:id="@+id/open_operation_compare_value"
+                            android:textSize="24dp"
                             android:textColor="#af000000"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="8dp" />
@@ -310,7 +310,7 @@
                         android:layout_height="wrap_content"
                         android:text="Американский доллар"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:id="@+id/textView22"
+                        android:id="@+id/exit_operation_base_currency_name"
                         android:textSize="12dp"
                         android:textColor="#af000000" />
 
@@ -324,7 +324,7 @@
                         <ImageView
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:id="@+id/imageView5"
+                            android:id="@+id/exit_operarion_base_icon"
                             android:src="@drawable/usd"
                             android:layout_marginRight="8dp" />
 
@@ -333,8 +333,8 @@
                             android:layout_height="wrap_content"
                             android:text="33.7"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:id="@+id/textView23"
-                            android:textSize="28dp"
+                            android:id="@+id/exit_operation_base_value"
+                            android:textSize="24dp"
                             android:textColor="#af000000"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="8dp" />
@@ -389,7 +389,7 @@
                         android:layout_height="wrap_content"
                         android:text="Российский рубль"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:id="@+id/textView26"
+                        android:id="@+id/exit_operation_compare_currency_name"
                         android:textSize="12dp"
                         android:textColor="#af000000" />
 
@@ -403,7 +403,7 @@
                         <ImageView
                             android:layout_width="28dp"
                             android:layout_height="28dp"
-                            android:id="@+id/imageView6"
+                            android:id="@+id/exit_operation_compare_icon"
                             android:src="@drawable/rub"
                             android:layout_marginRight="8dp" />
 
@@ -412,8 +412,8 @@
                             android:layout_height="wrap_content"
                             android:text="984"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                            android:id="@+id/textView27"
-                            android:textSize="28dp"
+                            android:id="@+id/exit_operation_compare_value"
+                            android:textSize="24dp"
                             android:textColor="#af000000"
                             android:gravity="center_horizontal"
                             android:layout_marginLeft="8dp" />
@@ -450,8 +450,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:id="@+id/textView29"
-                android:textSize="36dp"
+                android:id="@+id/diff_operation"
+                android:textSize="32dp"
                 android:textIsSelectable="false"
                 android:textColor="#ffb9262d"
                 android:text="-16 RUB" />

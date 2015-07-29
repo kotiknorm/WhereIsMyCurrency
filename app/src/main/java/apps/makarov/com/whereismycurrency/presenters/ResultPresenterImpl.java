@@ -1,6 +1,11 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
+import android.graphics.drawable.Drawable;
+
+import java.util.Date;
+
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
@@ -42,17 +47,45 @@ public class ResultPresenterImpl implements ResultPresenter {
     @Override
     public void setResult(String resultKey) {
         ResultOperation resultOperation = mWimcService.getResultOperation(resultKey);
-        Rate rate = resultOperation.getExitRate();
-        double value = resultOperation.getUserHistory().getValue();
-        double rateValue = resultOperation.getUserHistory().getRate().getValue();
 
-        double buy = value * rate.getValue();
-        double factValue = value * rateValue;
+        double diff = ResultUtils.getDiff(resultOperation);
+        mResultView.setDiffValue(diff);
 
-        String resultStr = (buy <= factValue
-                ? mResultView.getContext().getString(R.string.loser_result)
-                : mResultView.getContext().getString(R.string.win_result)) + " " +
-                Math.abs(buy - factValue);
-        mResultView.showResultOperation(resultStr);
+        if(diff > 0){
+            mResultView.setColorForResult(R.color.positive_color);
+        }else{
+            mResultView.setColorForResult(R.color.negative_color);
+        }
+
+        Drawable openBaseIcon = Rate.getCurrencyIcon(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
+        Drawable openCompareIcon = Rate.getCurrencyIcon(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
+
+        mResultView.setOpenBaseIcon(openBaseIcon);
+        mResultView.setOpenCompareIcon(openCompareIcon);
+        mResultView.setExitBaseIcon(openCompareIcon);
+        mResultView.setExitCompareIcon(openBaseIcon);
+
+        double startValue = ResultUtils.getOpenOperaionBaseValue(resultOperation);
+        double finishFirstOperationValue = ResultUtils.getFinishFirstOperationValue(resultOperation);
+        double finishOperationValue = ResultUtils.getFinishValue(resultOperation);
+
+        mResultView.setOpenOperaionBaseValue(startValue);
+        mResultView.setOpenOperaionCompareValue(finishFirstOperationValue);
+        mResultView.setExitOperaionBaseValue(finishFirstOperationValue);
+        mResultView.setExitOperaionCompareValue(finishOperationValue);
+
+        String nameBaseCurrency = Rate.getCurrencyName(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
+        String nameCompareCurrency = Rate.getCurrencyName(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
+
+        mResultView.setOpenOperationBaseCurrencyName(nameBaseCurrency);
+        mResultView.setOpenOperationCompareCurrencyName(nameCompareCurrency);
+        mResultView.setExitOperationBaseCurrencyName(nameCompareCurrency);
+        mResultView.setExitOperationCompareCurrencyName(nameBaseCurrency);
+
+        Date openOperation = resultOperation.getUserHistory().getRate().getChangeRate();
+        Date exitOperation = resultOperation.getExitRate().getChangeRate();
+
+
+
     }
 }
