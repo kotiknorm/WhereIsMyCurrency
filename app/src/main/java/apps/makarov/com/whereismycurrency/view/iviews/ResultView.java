@@ -37,4 +37,10 @@ public interface ResultView extends BaseContextView {
 
     void setExitOperationCompareCurrencyName(String value);
 
+    void setVisibilatyHistoryBtn(boolean isShown);
+
+    void onAddedResultToHistory();
+
+    void onRemovedResult();
+
 }

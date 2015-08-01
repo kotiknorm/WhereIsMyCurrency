@@ -6,15 +6,15 @@ import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.repository.IRepository;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -156,6 +156,16 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         result.setKey(ResultOperation.generateKey(result));
         getStore().saveObject(result);
         return result;
+    }
+
+    @Override
+    public ResultOperation addResultInHistory(ResultOperation resultOperation) {
+        return getStore().resultToHistory(resultOperation);
+    }
+
+    @Override
+    public void removeResult(ResultOperation resultOperation) {
+        getStore().removeResult(resultOperation);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class ResultOperation extends RealmObject {
     private Rate exitRate;
     private UserHistory userHistory;
     private Date date;
+    private boolean isHistory;
 
     public UserHistory getUserHistory() {
         return userHistory;
@@ -46,6 +47,14 @@ public class ResultOperation extends RealmObject {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public boolean isHistory() {
+        return isHistory;
+    }
+
+    public void setIsHistory(boolean isHistory) {
+        this.isHistory = isHistory;
     }
 
     public static String generateKey(ResultOperation resultOperation) {

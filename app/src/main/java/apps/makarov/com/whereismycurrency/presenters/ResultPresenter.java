@@ -14,4 +14,8 @@ public interface ResultPresenter {
     void onRefresh();
 
     void setResult(String resultKey);
+
+    void addResultInHistory();
+
+    void removeResult();
 }

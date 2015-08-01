@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,6 +55,12 @@ public class ResultFragment extends BaseFragment implements ResultView {
     @Bind(R.id.exit_operation_compare_value)
     TextView exitOperaionCompareValue;
 
+    @Bind(R.id.exit_operation_btn)
+    Button exitOperaionBtn;
+
+    @Bind(R.id.remove_operation_btn)
+    Button removeOperaionBtn;
+
     public void setOpenOperationBaseCurrencyName(String value) {
         this.openOperationBaseCurrencyName.setText(value);
     }
@@ -68,6 +75,21 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     public void setExitOperationCompareCurrencyName(String value) {
         this.exitOperationCompareCurrencyName.setText(value);
+    }
+
+    @Override
+    public void setVisibilatyHistoryBtn(boolean isShown) {
+        exitOperaionBtn.setVisibility(isShown ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onAddedResultToHistory() {
+        exitOperaionBtn.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRemovedResult() {
+        getFragmentManager().popBackStack();
     }
 
     @Bind(R.id.open_operation_base_currency_name)
@@ -133,6 +155,20 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
         String resultKey = getResultKeyExtra(getArguments());
         mResultPresenter.setResult(resultKey);
+
+        exitOperaionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mResultPresenter.addResultInHistory();
+            }
+        });
+
+        removeOperaionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mResultPresenter.removeResult();
+            }
+        });
 
         return hotView;
     }

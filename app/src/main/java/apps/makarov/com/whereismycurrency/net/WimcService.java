@@ -27,4 +27,8 @@ public interface WimcService {
 
     ResultOperation addResult(Rate rate, UserHistory userHistory);
 
+    ResultOperation addResultInHistory(ResultOperation resultOperation);
+
+    void removeResult(ResultOperation resultOperation);
+
 }

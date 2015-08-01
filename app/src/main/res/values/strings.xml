@@ -8,6 +8,7 @@
     <string name="loser_result">Вы наварили бабла на </string>
     <string name="title_enter_button">Увидеть результат</string>
     <string name="title_exit_operation_button">Закрыть операцию</string>
+    <string name="title_remove_operation_button">Удалить операцию</string>
 
 
     <string name="history_item_title">%1$s %2$s</string>

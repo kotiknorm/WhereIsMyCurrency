@@ -41,9 +41,13 @@ public class BankRequest extends WimcRequest<Bank> {
 
         for (int i = 0; i < actualRates.length(); i++) {
 
-            BankInterpreter interpreter = new BankInterpreter(actualRates.getJSONObject(i));
-            Bank bank = interpreter.parse();
-            list.add(bank);
+            try {
+                BankInterpreter interpreter = new BankInterpreter(actualRates.getJSONObject(i));
+                Bank bank = interpreter.parse();
+                list.add(bank);
+            }catch (Exception e){
+                Log.e(TAG, "parse error", e);
+            }
         }
 
         return list;

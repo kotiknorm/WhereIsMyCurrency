@@ -14,6 +14,7 @@ import apps.makarov.com.whereismycurrency.models.UserHistory;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Created by makarov on 27/06/15.
@@ -55,9 +56,14 @@ public class RealmRepository implements IRepository<RealmObject> {
 
     @Override
     public List<ResultOperation> getAllResultOperation() {
-        List<ResultOperation> list = Realm.getInstance(application).where(ResultOperation.class).findAllSorted("date", false);
+
+        RealmResults<ResultOperation> result = Realm.getInstance(application).where(ResultOperation.class)
+                .findAllSorted("date", false);
+
+        result.sort("isHistory", true);
         Realm.getInstance(application).close();
-        return list;
+
+        return result;
     }
 
     @Override
@@ -68,11 +74,17 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
+    public <E extends RealmObject> void removeObject(E obj) {
+        beginTransaction();
+        obj.removeFromRealm();
+        commitTransaction();
+    }
+
+    @Override
     public void addUrlToCache(String url) {
         CacheRequest cacheRequest = new CacheRequest();
         cacheRequest.setUrl(url);
         cacheRequest.setDate(new Date());
-
 
         beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(cacheRequest);
@@ -87,6 +99,20 @@ public class RealmRepository implements IRepository<RealmObject> {
     @Override
     public ResultOperation getResultOperation(String key) {
         return Realm.getInstance(application).where(ResultOperation.class).equalTo("key", key).findFirst();
+    }
+
+    @Override
+    public ResultOperation resultToHistory(ResultOperation resultOperation) {
+        beginTransaction();
+        resultOperation.setIsHistory(true);
+        commitTransaction();
+        return resultOperation;
+    }
+
+    @Override
+    public ResultOperation removeResult(ResultOperation resultOperation) {
+        removeObject(resultOperation);
+        return resultOperation;
     }
 
     private void beginTransaction() {

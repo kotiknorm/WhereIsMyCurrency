@@ -19,6 +19,8 @@ public class ResultPresenterImpl implements ResultPresenter {
     private ResultView mResultView;
     private WimcService mWimcService;
 
+    private ResultOperation mResultOperation;
+
     public ResultPresenterImpl(ResultView resultView, WimcService wimcService) {
         this.mResultView = resultView;
         this.mWimcService = wimcService;
@@ -46,9 +48,9 @@ public class ResultPresenterImpl implements ResultPresenter {
 
     @Override
     public void setResult(String resultKey) {
-        ResultOperation resultOperation = mWimcService.getResultOperation(resultKey);
+        mResultOperation = mWimcService.getResultOperation(resultKey);
 
-        double diff = ResultUtils.getDiff(resultOperation);
+        double diff = ResultUtils.getDiff(mResultOperation);
         mResultView.setDiffValue(diff);
 
         if(diff > 0){
@@ -57,35 +59,48 @@ public class ResultPresenterImpl implements ResultPresenter {
             mResultView.setColorForResult(R.color.negative_color);
         }
 
-        Drawable openBaseIcon = Rate.getCurrencyIcon(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
-        Drawable openCompareIcon = Rate.getCurrencyIcon(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
+        Drawable openBaseIcon = Rate.getCurrencyIcon(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
+        Drawable openCompareIcon = Rate.getCurrencyIcon(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
 
         mResultView.setOpenBaseIcon(openBaseIcon);
         mResultView.setOpenCompareIcon(openCompareIcon);
         mResultView.setExitBaseIcon(openCompareIcon);
         mResultView.setExitCompareIcon(openBaseIcon);
 
-        double startValue = ResultUtils.getOpenOperaionBaseValue(resultOperation);
-        double finishFirstOperationValue = ResultUtils.getFinishFirstOperationValue(resultOperation);
-        double finishOperationValue = ResultUtils.getFinishValue(resultOperation);
+        double startValue = ResultUtils.getOpenOperaionBaseValue(mResultOperation);
+        double finishFirstOperationValue = ResultUtils.getFinishFirstOperationValue(mResultOperation);
+        double finishOperationValue = ResultUtils.getFinishValue(mResultOperation);
 
         mResultView.setOpenOperaionBaseValue(startValue);
         mResultView.setOpenOperaionCompareValue(finishFirstOperationValue);
         mResultView.setExitOperaionBaseValue(finishFirstOperationValue);
         mResultView.setExitOperaionCompareValue(finishOperationValue);
 
-        String nameBaseCurrency = Rate.getCurrencyName(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
-        String nameCompareCurrency = Rate.getCurrencyName(mResultView.getContext(), resultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
+        String nameBaseCurrency = Rate.getCurrencyName(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
+        String nameCompareCurrency = Rate.getCurrencyName(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
 
         mResultView.setOpenOperationBaseCurrencyName(nameBaseCurrency);
         mResultView.setOpenOperationCompareCurrencyName(nameCompareCurrency);
         mResultView.setExitOperationBaseCurrencyName(nameCompareCurrency);
         mResultView.setExitOperationCompareCurrencyName(nameBaseCurrency);
 
-        Date openOperation = resultOperation.getUserHistory().getRate().getChangeRate();
-        Date exitOperation = resultOperation.getExitRate().getChangeRate();
+        Date openOperation = mResultOperation.getUserHistory().getRate().getChangeRate();
+        Date exitOperation = mResultOperation.getExitRate().getChangeRate();
 
-
-
+        mResultView.setVisibilatyHistoryBtn(mResultOperation.isHistory() ? false : true);
     }
+
+    @Override
+    public void addResultInHistory() {
+        mResultOperation = mWimcService.addResultInHistory(mResultOperation);
+        mResultView.onAddedResultToHistory();
+    }
+
+    @Override
+    public void removeResult() {
+        mWimcService.removeResult(mResultOperation);
+        mResultView.onRemovedResult();
+    }
+
+
 }
