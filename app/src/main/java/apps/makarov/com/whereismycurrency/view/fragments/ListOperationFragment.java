@@ -102,4 +102,5 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
                 new ListOperationModule(this)
         );
     }
+
 }

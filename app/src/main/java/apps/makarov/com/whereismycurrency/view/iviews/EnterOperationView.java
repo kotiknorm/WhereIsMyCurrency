@@ -35,4 +35,6 @@ public interface EnterOperationView extends BaseContextView {
 
     void addOperation(String resultKey);
 
+    void showErrorView(String message);
+
 }

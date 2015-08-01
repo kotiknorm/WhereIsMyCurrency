@@ -23,5 +23,9 @@
     <string name="eur">Европейский евро</string>
 
 
+    <string name="error_not_all_fields">Введите все данные операции</string>
+    <string name="error_not_data">Проверьте подключение к интернету</string>
+
+
 
 </resources>

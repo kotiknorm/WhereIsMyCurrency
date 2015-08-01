@@ -74,4 +74,5 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .cache();
     }
+
 }

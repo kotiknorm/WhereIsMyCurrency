@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
@@ -80,8 +81,10 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onEnterOperation() {
-        if (!isValidData())
+        if (!isValidData()) {
+            mEnterOperationView.showErrorView(mEnterOperationView.getContext().getString(R.string.error_not_all_fields));
             return;
+        }
 
         CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
         final UserHistory userHistory = mWimcService.addHistoryItem(pair, mDate, mBaseValue, mRate);
@@ -98,6 +101,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.e(TAG, "onError", e);
+                        mEnterOperationView.showErrorView(mEnterOperationView.getContext().getString(R.string.error_not_data));
+
                     }
 
                     @Override

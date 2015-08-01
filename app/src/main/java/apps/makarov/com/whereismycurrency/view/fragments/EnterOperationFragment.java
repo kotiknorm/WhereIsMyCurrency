@@ -212,6 +212,11 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
     }
 
     @Override
+    public void showErrorView(String message) {
+        showSnackbar(message);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mEnterOperationPresenter.onResume();
