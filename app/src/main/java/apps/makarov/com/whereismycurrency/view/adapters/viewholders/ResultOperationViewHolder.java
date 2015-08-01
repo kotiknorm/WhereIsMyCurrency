@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
@@ -30,6 +32,8 @@ public class ResultOperationViewHolder extends RecyclerView.ViewHolder {
     TextView diffBaseCurrencyValue;
     @Bind(R.id.balance_field)
     TextView balanceField;
+    @Bind(R.id.open_date)
+    TextView openDate;
 
     public ResultOperationViewHolder(View itemView) {
         super(itemView);
@@ -50,6 +54,9 @@ public class ResultOperationViewHolder extends RecyclerView.ViewHolder {
         }
 
         balanceField.setText(ResultUtils.getFinishValueStr(itemView.getContext(), history));
+
+        Date date = history.getUserHistory().getDate();
+        openDate.setText(date.toString());
     }
 
 

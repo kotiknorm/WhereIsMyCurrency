@@ -152,7 +152,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         ResultOperation result = new ResultOperation();
         result.setUserHistory(userHistory);
         result.setExitRate(rate);
-        result.setDate(new Date());
+        result.setDate(userHistory.getDate());
         result.setKey(ResultOperation.generateKey(result));
         getStore().saveObject(result);
         return result;

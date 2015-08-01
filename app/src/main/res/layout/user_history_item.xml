@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="14 августа 2015"
-                android:id="@+id/textView3"
+                android:id="@+id/open_date"
                 android:textSize="12sp"
                 android:textColor="#af000000" />
         </LinearLayout>
