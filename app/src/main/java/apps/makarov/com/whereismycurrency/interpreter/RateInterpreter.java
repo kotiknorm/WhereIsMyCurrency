@@ -8,13 +8,13 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.StringUtils;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
+import apps.makarov.com.whereismycurrency.models.RateData;
 
 /**
  * Created by makarov on 28/06/15.
  */
-public class RateInterpreter implements Interpreter<List<Rate>> {
+public class RateInterpreter implements Interpreter<List<RateData>> {
 
     private final JSONObject mJsonObject;
     private final String baseCurrency;
@@ -29,27 +29,25 @@ public class RateInterpreter implements Interpreter<List<Rate>> {
     }
 
     @Override
-    public List<Rate> parse() {
-        List<Rate> ratesList = new ArrayList<>();
+    public List<RateData> parse() {
+        List<RateData> ratesList = new ArrayList<>();
         try {
-            Rate rate = new Rate();
+            RateData rate = new RateData();
             String buyStr = StringUtils.getGoodLong(mJsonObject.getString("Buy"));
             double buyLong = Double.parseDouble(buyStr);
             rate.setValue(buyLong);
             rate.setChangeRate(DateUtils.getTodayDate());
-            rate.setCurrencyPair(CurrencyPair.createPair(baseCurrency, compareCurrency));
+            rate.setCurrencyPair(CurrencyPairData.createPair(baseCurrency, compareCurrency));
             rate.setBank(bankName);
-            rate.setKey(Rate.generateKey(rate));
             ratesList.add(rate);
 
-            Rate rateInvert = new Rate();
+            RateData rateInvert = new RateData();
             String sellStr = StringUtils.getGoodLong(mJsonObject.getString("Sell"));
             double sellLong = Double.parseDouble(sellStr);
             rateInvert.setValue(1 / sellLong);
             rateInvert.setChangeRate(DateUtils.getTodayDate());
-            rateInvert.setCurrencyPair(CurrencyPair.createPair(compareCurrency, baseCurrency));
+            rateInvert.setCurrencyPair(CurrencyPairData.createPair(compareCurrency, baseCurrency));
             rate.setBank(bankName);
-            rateInvert.setKey(Rate.generateKey(rateInvert));
             ratesList.add(rateInvert);
 
         } catch (JSONException e) {

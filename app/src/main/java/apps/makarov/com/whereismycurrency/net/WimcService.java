@@ -3,32 +3,32 @@ package apps.makarov.com.whereismycurrency.net;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
+import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.ResultOperationData;
+import apps.makarov.com.whereismycurrency.models.UserHistoryData;
 import rx.Observable;
 
 public interface WimcService {
 
-    Observable<List<Rate>> getRatesAllBank(CurrencyPair currencyPair);
+    Observable<List<RateData>> getRatesAllBank(CurrencyPairData currencyPair);
 
-    Observable<List<Rate>> getHistoryRates(CurrencyPair currencyPair, Date date);
+    Observable<List<RateData>> getRates(CurrencyPairData currencyPair, Date date);
 
-    Observable<List<UserHistory>> getHistory();
+    Observable<List<UserHistoryData>> getHistory();
 
-    Observable<List<ResultOperation>> getResultOperations();
+    Observable<List<ResultOperationData>> getResultOperations();
 
-    Observable<List<ResultOperation>> getUpdateResultOperations();
+    Observable<List<ResultOperationData>> getUpdateResultOperations();
 
-    ResultOperation getResultOperation(String key);
+    ResultOperationData getResultOperation(String key);
 
-    UserHistory addHistoryItem(CurrencyPair currencyPair, final Date date, double summa, double rateValue);
+    UserHistoryData addHistoryItem(CurrencyPairData currencyPair, final Date date, double summa, double rateValue);
 
-    ResultOperation addResult(Rate rate, UserHistory userHistory);
+    ResultOperationData addResult(RateData rate, UserHistoryData userHistory);
 
-    ResultOperation addResultInHistory(ResultOperation resultOperation);
+    ResultOperationData addResultInHistory(ResultOperationData resultOperation);
 
-    void removeResult(ResultOperation resultOperation);
+    void removeResult(ResultOperationData resultOperation);
 
 }

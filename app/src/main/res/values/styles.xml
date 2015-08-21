@@ -2,11 +2,12 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/primary</item>
-        <item name="android:colorPrimaryDark">@color/primary_dark</item>
-        <item name="android:colorAccent">@color/primary</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/primary</item>
-        <item name="android:colorControlHighlight">@color/primary_light</item>
+        <item name="android:colorControlHighlight">@color/primary_dark</item>
+
+        <item name="android:colorButtonNormal">#2196f3</item>
     </style>
 
     <style name="Toolbar" parent="Theme.AppCompat.NoActionBar">

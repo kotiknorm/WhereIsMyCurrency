@@ -11,12 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.interpreter.BankInterpreter;
-import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.BankData;
 
 /**
  * Created by makarov on 28/06/15.
  */
-public class BankRequest extends WimcRequest<Bank> {
+public class BankRequest extends WimcRequest<BankData> {
 
     public static final String TAG = FixerRequest.class.getSimpleName();
     public static final String BANK_RATES_URL = "http://informer.kovalut.ru/webmaster/xml-table.php?kod=7701";
@@ -32,18 +32,18 @@ public class BankRequest extends WimcRequest<Bank> {
     }
 
     @Override
-    protected List<Bank> parseStringToList(String str) throws JSONException {
+    protected List<BankData> parseStringToList(String str) throws JSONException {
 
         JSONObject jsonObj = XML.toJSONObject(str);
         JSONArray actualRates = jsonObj.getJSONObject("Exchange_Rates").getJSONObject("Actual_Rates").getJSONArray("Bank");
         Log.d(TAG, actualRates.toString());
-        List<Bank> list = new ArrayList<>();
+        List<BankData> list = new ArrayList<>();
 
         for (int i = 0; i < actualRates.length(); i++) {
 
             try {
                 BankInterpreter interpreter = new BankInterpreter(actualRates.getJSONObject(i));
-                Bank bank = interpreter.parse();
+                BankData bank = interpreter.parse();
                 list.add(bank);
             }catch (Exception e){
                 Log.e(TAG, "parse error", e);

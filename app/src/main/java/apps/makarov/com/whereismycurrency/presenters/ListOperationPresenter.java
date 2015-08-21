@@ -11,4 +11,6 @@ public interface ListOperationPresenter {
 
     void onRefresh();
 
+    void onUpdateResults();
+
 }

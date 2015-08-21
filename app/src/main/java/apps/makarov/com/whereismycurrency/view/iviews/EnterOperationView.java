@@ -33,7 +33,7 @@ public interface EnterOperationView extends BaseContextView {
 
     void setDateView(Date date);
 
-    void addOperation(String resultKey);
+    void addOperation(String key);
 
     void showErrorView(String message);
 

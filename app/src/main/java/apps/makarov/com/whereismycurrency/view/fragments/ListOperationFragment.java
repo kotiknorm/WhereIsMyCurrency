@@ -16,8 +16,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.models.ResultOperationData;
 import apps.makarov.com.whereismycurrency.modules.ListOperationModule;
 import apps.makarov.com.whereismycurrency.presenters.ListOperationPresenter;
+import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
 import apps.makarov.com.whereismycurrency.view.iviews.ListOperationView;
 import apps.makarov.com.whereismycurrency.view.iviews.MainView;
@@ -74,20 +76,46 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
     }
 
     @Override
-    public void showResultOperation(String resultKey) {
+    public void showResultOperation(String key) {
         Bundle bundle = new Bundle();
-        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, resultKey);
+        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, key);
         ((MainView) getActivity()).showResultFragment(bundle);
     }
 
     @Override
-    public void setAdapterForRecyclerView(RecyclerView.Adapter adapter) {
-        mRecyclerView.setAdapter(adapter);
+    public void showHistoryList(List<ResultOperationData> rates) {
+        HistoryAdapter historyAdapter = new HistoryAdapter(rates, new HistoryAdapter.OnClickToPresenter() {
+            @Override
+            public void onClick(ResultOperationData operation) {
+                showResultOperation(operation.getKey());
+            }
+        });
+        mRecyclerView.setAdapter(historyAdapter);
     }
 
     @Override
     public void startAddOperation() {
         ((MainView) getActivity()).showEnterOperationFragment(null);
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void showErrorView(String message) {
+        showErrorView(message);
+    }
+
+    @Override
+    public void setVisabileSplash(boolean isShown) {
+
     }
 
     private void initializeHistoryRecyclerView() {

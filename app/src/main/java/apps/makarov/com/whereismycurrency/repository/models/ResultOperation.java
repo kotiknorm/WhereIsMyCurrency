@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.models;
+package apps.makarov.com.whereismycurrency.repository.models;
 
 import java.util.Date;
 
@@ -55,10 +55,6 @@ public class ResultOperation extends RealmObject {
 
     public void setIsHistory(boolean isHistory) {
         this.isHistory = isHistory;
-    }
-
-    public static String generateKey(ResultOperation resultOperation) {
-        return resultOperation.getDate().toString();
     }
 
 }

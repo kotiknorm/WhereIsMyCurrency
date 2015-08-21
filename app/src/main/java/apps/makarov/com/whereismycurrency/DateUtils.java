@@ -3,6 +3,7 @@ package apps.makarov.com.whereismycurrency;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by makarov on 30/06/15.
@@ -28,6 +29,14 @@ public class DateUtils {
 
     public static SimpleDateFormat getWimcFormat(){
         return new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    public static String getDateStr(Date date){
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        return c.get(Calendar.DAY_OF_MONTH) + " " +
+                c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + " " +
+                c.get(Calendar.YEAR);
     }
 
 }

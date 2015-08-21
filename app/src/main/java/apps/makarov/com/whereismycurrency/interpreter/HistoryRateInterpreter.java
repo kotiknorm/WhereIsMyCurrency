@@ -13,9 +13,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.BankData;
+import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
+import apps.makarov.com.whereismycurrency.models.RateData;
 
 /**
  * Created by makarov on 29/06/15.
@@ -25,7 +25,7 @@ import apps.makarov.com.whereismycurrency.models.Rate;
  Interpreter for json to fixer.io rates
  */
 
-public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
+public class HistoryRateInterpreter implements Interpreter<List<RateData>> {
 
     public static final String TAG = HistoryRateInterpreter.class.getSimpleName();
     private final JSONObject mJsonObject;
@@ -35,8 +35,8 @@ public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
     }
 
     @Override
-    public List<Rate> parse() {
-        List<Rate> ratesList = new ArrayList<>();
+    public List<RateData> parse() {
+        List<RateData> ratesList = new ArrayList<>();
 
         try {
             String baseCurrency = mJsonObject.getString("base");
@@ -49,13 +49,12 @@ public class HistoryRateInterpreter implements Interpreter<List<Rate>> {
                 String compareCurrency = iter.next();
                 double value = ratesJsonArray.getDouble(compareCurrency);
 
-                Rate rate = new Rate();
+                RateData rate = new RateData();
                 rate.setValue(value);
                 rate.setChangeRate(date);
-                rate.setBank(Bank.DEFAULT);
-                CurrencyPair pair = CurrencyPair.createPair(baseCurrency, compareCurrency);
+                rate.setBank(BankData.DEFAULT);
+                CurrencyPairData pair = CurrencyPairData.createPair(baseCurrency, compareCurrency);
                 rate.setCurrencyPair(pair);
-                rate.setKey(Rate.generateKey(rate));
                 ratesList.add(rate);
             }
 

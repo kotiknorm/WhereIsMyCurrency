@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.models;
+package apps.makarov.com.whereismycurrency.repository.models;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -9,9 +9,6 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class Bank extends RealmObject {
-
-    public static final String DEFAULT = "DEFAULT";
-    public static final String USER_RATE = "USER_RATE";  // rates from user history
 
     @PrimaryKey
     private String key;
@@ -41,10 +38,5 @@ public class Bank extends RealmObject {
     public void setName(String name) {
         this.name = name;
     }
-
-    public static String generateKey(Bank bank) {
-        return bank.getName();
-    }
-
 
 }

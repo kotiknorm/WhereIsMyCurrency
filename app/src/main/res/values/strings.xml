@@ -4,11 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="win_result">Вы проебались и сейчас можете закрыть операцию потеряв </string>
-    <string name="loser_result">Вы наварили бабла на </string>
-    <string name="title_enter_button">Увидеть результат</string>
-    <string name="title_exit_operation_button">Закрыть операцию</string>
-    <string name="title_remove_operation_button">Удалить операцию</string>
+    <string name="title_enter_button">Добавить операцию</string>
+    <string name="title_exit_operation_button">Закрыть</string>
+    <string name="title_remove_operation_button">Удалить</string>
 
 
     <string name="history_item_title">%1$s %2$s</string>
@@ -21,7 +19,7 @@
 
     <string name="usd">Американский доллар</string>
     <string name="rub">Российский рубль</string>
-    <string name="eur">Европейский евро</string>
+    <string name="eur">Евро</string>
 
 
     <string name="error_not_all_fields">Введите все данные операции</string>

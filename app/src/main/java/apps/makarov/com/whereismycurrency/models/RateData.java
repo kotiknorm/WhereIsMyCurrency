@@ -12,17 +12,15 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by makarov on 26/06/15.
  */
 
-public class Rate extends RealmObject {
+public class RateData  {
 
     private static List<String> codes = new ArrayList<>();
-    private static List<CurrencyPair> listPairCodes = new ArrayList<>();
+    private static List<CurrencyPairData> listPairCodes = new ArrayList<>();
 
     public static final String RUB_CODE = "RUB";
     public static final String EUR_CODE = "EUR";
@@ -36,7 +34,7 @@ public class Rate extends RealmObject {
         for(String baseCodes : codes){
             for(String compareCodes : codes){
                 if(!baseCodes.equals(compareCodes)){
-                    CurrencyPair pair =  CurrencyPair.createPair(baseCodes, compareCodes);
+                    CurrencyPairData pair =  CurrencyPairData.createPair(baseCodes, compareCodes);
                     listPairCodes.add(pair);
                 }
             }
@@ -47,22 +45,20 @@ public class Rate extends RealmObject {
         return Collections.unmodifiableList(codes);
     }
 
-    public static List<CurrencyPair> getPairCodesList(){
+    public static List<CurrencyPairData> getPairCodesList(){
         return Collections.unmodifiableList(listPairCodes);
     }
 
-    @PrimaryKey
-    private String key;  // composite key (generateKey method)
     private double value;
-    private CurrencyPair currencyPair;
+    private CurrencyPairData currencyPair;
     private Date changeRate = DateUtils.getTodayDate(); // today
-    private String bank = Bank.DEFAULT; // bank PK
+    private String bank = BankData.DEFAULT; // bank PK
 
-    public CurrencyPair getCurrencyPair() {
+    public CurrencyPairData getCurrencyPair() {
         return currencyPair;
     }
 
-    public void setCurrencyPair(CurrencyPair currencyPair) {
+    public void setCurrencyPair(CurrencyPairData currencyPair) {
         this.currencyPair = currencyPair;
     }
 
@@ -88,18 +84,6 @@ public class Rate extends RealmObject {
 
     public double getValue() {
         return value;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public static String generateKey(Rate rate) {
-        return rate.getCurrencyPair().getBaseCurrency() + "_" + rate.getCurrencyPair().getCompareCurrency() + "_" + rate.getBank() + "_" + rate.getValue();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

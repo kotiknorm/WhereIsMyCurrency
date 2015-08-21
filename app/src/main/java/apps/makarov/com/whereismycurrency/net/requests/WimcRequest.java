@@ -7,14 +7,13 @@ import org.json.JSONException;
 import java.util.List;
 import java.util.Map;
 
-import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
 
 /**
  * Created by makarov on 28/06/15.
  */
-public abstract class WimcRequest<T extends RealmObject> {
+public abstract class WimcRequest<T> {
 
     enum TYPE {
         GET, POST

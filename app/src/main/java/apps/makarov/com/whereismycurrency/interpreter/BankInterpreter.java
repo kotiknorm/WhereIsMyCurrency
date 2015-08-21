@@ -5,14 +5,14 @@ import org.json.JSONObject;
 
 import java.util.Iterator;
 
-import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.BankData;
+import apps.makarov.com.whereismycurrency.models.RateData;
 
 /**
  * Created by makarov on 28/06/15.
  */
 
-public class BankInterpreter implements Interpreter<Bank> {
+public class BankInterpreter implements Interpreter<BankData> {
 
     private final JSONObject mJsonObject;
 
@@ -21,8 +21,8 @@ public class BankInterpreter implements Interpreter<Bank> {
     }
 
     @Override
-    public Bank parse() {
-        Bank bank = getBaseBankInterpreter();
+    public BankData parse() {
+        BankData bank = getBaseBankInterpreter();
 
         try {
             Iterator<String> iter = mJsonObject.keys();
@@ -30,16 +30,14 @@ public class BankInterpreter implements Interpreter<Bank> {
             while(iter.hasNext()){
                 String compareCurrency = iter.next();
 
-                if(!Rate.getCodesList().contains(compareCurrency))
+                if(!RateData.getCodesList().contains(compareCurrency))
                     continue;
 
-                RateInterpreter parseRate = new RateInterpreter(Rate.RUB_CODE, compareCurrency,
+                RateInterpreter parseRate = new RateInterpreter(RateData.RUB_CODE, compareCurrency,
                         mJsonObject.getJSONObject(compareCurrency), bank.getName());
                 bank.getRates().addAll(parseRate.parse());
 
             }
-
-            bank.setKey(Bank.generateKey(bank));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -47,8 +45,8 @@ public class BankInterpreter implements Interpreter<Bank> {
         return bank;
     }
 
-    private Bank getBaseBankInterpreter() {
-        Bank bank = new Bank();
+    private BankData getBaseBankInterpreter() {
+        BankData bank = new BankData();
 
         try {
             String nameBank = mJsonObject.getString("Name");

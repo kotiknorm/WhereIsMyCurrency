@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.models;
+package apps.makarov.com.whereismycurrency.repository.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -41,15 +41,4 @@ public class CurrencyPair extends RealmObject{
         this.key = key;
     }
 
-    public static String generateKey(CurrencyPair pair) {
-        return pair.getBaseCurrency() + "_" + pair.getCompareCurrency();
-    }
-
-    public static CurrencyPair createPair(String baseCurrency, String compareCurrency){
-        CurrencyPair pair = new CurrencyPair();
-        pair.setBaseCurrency(baseCurrency);
-        pair.setCompareCurrency(compareCurrency);
-        pair.setKey(CurrencyPair.generateKey(pair));
-        return pair;
-    }
 }

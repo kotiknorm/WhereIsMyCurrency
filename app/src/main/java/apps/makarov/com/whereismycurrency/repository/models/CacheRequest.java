@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.models;
+package apps.makarov.com.whereismycurrency.repository.models;
 
 import java.util.Date;
 

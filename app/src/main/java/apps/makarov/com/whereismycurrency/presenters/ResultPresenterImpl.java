@@ -1,13 +1,8 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
-import android.graphics.drawable.Drawable;
-
-import java.util.Date;
-
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
-import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.models.ResultOperationData;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
 
@@ -19,7 +14,7 @@ public class ResultPresenterImpl implements ResultPresenter {
     private ResultView mResultView;
     private WimcService mWimcService;
 
-    private ResultOperation mResultOperation;
+    private ResultOperationData mResultOperation;
 
     public ResultPresenterImpl(ResultView resultView, WimcService wimcService) {
         this.mResultView = resultView;
@@ -47,47 +42,28 @@ public class ResultPresenterImpl implements ResultPresenter {
     }
 
     @Override
-    public void setResult(String resultKey) {
-        mResultOperation = mWimcService.getResultOperation(resultKey);
+    public void setUniqueOperation(String key) {
+        mResultOperation = mWimcService.getResultOperation(key);
 
         double diff = ResultUtils.getDiff(mResultOperation);
-        mResultView.setDiffValue(diff);
+        mResultView.setDiffValue(diff > 0 ? ("+" + diff) : (diff + ""));
 
         if(diff > 0){
-            mResultView.setColorForResult(R.color.positive_color);
+            mResultView.setResultColor(R.color.positive_color);
         }else{
-            mResultView.setColorForResult(R.color.negative_color);
+            mResultView.setResultColor(R.color.negative_color);
         }
 
-        Drawable openBaseIcon = Rate.getCurrencyIcon(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
-        Drawable openCompareIcon = Rate.getCurrencyIcon(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
+        mResultView.setVisibileHistoryBtn(mResultOperation.isHistory() ? false : true);
 
-        mResultView.setOpenBaseIcon(openBaseIcon);
-        mResultView.setOpenCompareIcon(openCompareIcon);
-        mResultView.setExitBaseIcon(openCompareIcon);
-        mResultView.setExitCompareIcon(openBaseIcon);
+        CurrencyPairResultPresenter openPresenter = new CurrencyPairResultPresenterImpl
+                (mResultOperation.getUserHistory().getRate(), mResultOperation.getUserHistory().getValue(), "Открытие операции");
+        CurrencyPairResultPresenter exitPresenter = new CurrencyPairResultPresenterImpl
+                (mResultOperation.getExitRate(), ResultUtils.getFinishFirstOperationValue(mResultOperation), "Закрытие операции");
 
-        double startValue = ResultUtils.getOpenOperaionBaseValue(mResultOperation);
-        double finishFirstOperationValue = ResultUtils.getFinishFirstOperationValue(mResultOperation);
-        double finishOperationValue = ResultUtils.getFinishValue(mResultOperation);
+        mResultView.addOpenOperationResult(openPresenter);
+        mResultView.addExitOperationResult(exitPresenter);
 
-        mResultView.setOpenOperaionBaseValue(startValue);
-        mResultView.setOpenOperaionCompareValue(finishFirstOperationValue);
-        mResultView.setExitOperaionBaseValue(finishFirstOperationValue);
-        mResultView.setExitOperaionCompareValue(finishOperationValue);
-
-        String nameBaseCurrency = Rate.getCurrencyName(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getBaseCurrency());
-        String nameCompareCurrency = Rate.getCurrencyName(mResultView.getContext(), mResultOperation.getUserHistory().getRate().getCurrencyPair().getCompareCurrency());
-
-        mResultView.setOpenOperationBaseCurrencyName(nameBaseCurrency);
-        mResultView.setOpenOperationCompareCurrencyName(nameCompareCurrency);
-        mResultView.setExitOperationBaseCurrencyName(nameCompareCurrency);
-        mResultView.setExitOperationCompareCurrencyName(nameBaseCurrency);
-
-        Date openOperation = mResultOperation.getUserHistory().getRate().getChangeRate();
-        Date exitOperation = mResultOperation.getExitRate().getChangeRate();
-
-        mResultView.setVisibilatyHistoryBtn(mResultOperation.isHistory() ? false : true);
     }
 
     @Override

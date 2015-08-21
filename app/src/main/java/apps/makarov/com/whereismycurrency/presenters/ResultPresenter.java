@@ -13,7 +13,7 @@ public interface ResultPresenter {
 
     void onRefresh();
 
-    void setResult(String resultKey);
+    void setUniqueOperation(String key);
 
     void addResultInHistory();
 

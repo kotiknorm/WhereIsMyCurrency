@@ -8,10 +8,10 @@ import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
+import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.ResultOperationData;
+import apps.makarov.com.whereismycurrency.models.UserHistoryData;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.adapters.CurrencyAdapter;
 import apps.makarov.com.whereismycurrency.view.iviews.EnterOperationView;
@@ -44,8 +44,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
     private Subscription mGetRateSubscription;
     private Subscription mGetOldRateSubscription;
 
-    private static Observable<Rate> mGetRateObservable;
-    private static Observable<Rate> mGetOldRateObservable;
+    private static Observable<RateData> mGetRateObservable;
+    private static Observable<RateData> mGetOldRateObservable;
 
     public EnterOperationPresenterImpl(EnterOperationView hotView, WimcService wimcService) {
         this.mEnterOperationView = hotView;
@@ -54,8 +54,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onResume() {
-        onEnterBaseCurrency(Rate.RUB_CODE);
-        onEnterCompareCurrency(Rate.EUR_CODE);
+        onEnterBaseCurrency(RateData.RUB_CODE);
+        onEnterCompareCurrency(RateData.EUR_CODE);
         onEnterDateOperation(Calendar.getInstance().getTime());
     }
 
@@ -86,13 +86,14 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
             return;
         }
 
-        CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
-        final UserHistory userHistory = mWimcService.addHistoryItem(pair, mDate, mBaseValue, mRate);
+        CurrencyPairData pair = CurrencyPairData.createPair(mBaseCurrency, mCompareCurrency);
+        final UserHistoryData userHistory = mWimcService.addHistoryItem(pair, mDate, mBaseValue, mRate);
+        CurrencyPairData inversePair = CurrencyPairData.createPair(mCompareCurrency, mBaseCurrency);
 
-        mGetRateObservable = getRateObservable(pair);
+        mGetRateObservable = getRateObservable(inversePair, mDate);
 
         mGetRateSubscription = mGetRateObservable
-                .subscribe(new Observer<Rate>() {
+                .subscribe(new Observer<RateData>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted");
@@ -106,12 +107,11 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
                     }
 
                     @Override
-                    public void onNext(Rate rate) {
+                    public void onNext(RateData rate) {
                         Log.d(TAG, "onNext");
 
-                        ResultOperation result = mWimcService.addResult(rate, userHistory);
-                        String key = result.getKey();
-                        mEnterOperationView.addOperation(key);
+                        ResultOperationData result = mWimcService.addResult(rate, userHistory);
+                        mEnterOperationView.addOperation(result.getKey());
                     }
                 });
     }
@@ -147,8 +147,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onEnterCompareCurrency(String currency) {
-        Drawable iconDrawable = Rate.getCurrencyIcon(mEnterOperationView.getContext(), currency);
-        String nameCurrency = Rate.getCurrencyName(mEnterOperationView.getContext(), currency);
+        Drawable iconDrawable = RateData.getCurrencyIcon(mEnterOperationView.getContext(), currency);
+        String nameCurrency = RateData.getCurrencyName(mEnterOperationView.getContext(), currency);
 
         mCompareCurrency = currency;
         mEnterOperationView.setCompareCurrency(nameCurrency, iconDrawable);
@@ -158,8 +158,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onEnterBaseCurrency(String currency) {
-        Drawable iconDrawable = Rate.getCurrencyIcon(mEnterOperationView.getContext(), currency);
-        String nameCurrency = Rate.getCurrencyName(mEnterOperationView.getContext(), currency);
+        Drawable iconDrawable = RateData.getCurrencyIcon(mEnterOperationView.getContext(), currency);
+        String nameCurrency = RateData.getCurrencyName(mEnterOperationView.getContext(), currency);
 
         mBaseCurrency = currency;
         mEnterOperationView.setBaseCurrency(nameCurrency, iconDrawable);
@@ -174,12 +174,12 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     @Override
     public void onOpenCompareCurrencyDialog() {
-        mEnterOperationView.setSellCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getCodesList()));
+        mEnterOperationView.setSellCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), RateData.getCodesList()));
     }
 
     @Override
     public void onOpenBaseCurrencyDialog() {
-        mEnterOperationView.setBuyCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), Rate.getCodesList()));
+        mEnterOperationView.setBuyCurrencyList(new CurrencyAdapter(mEnterOperationView.getContext(), RateData.getCodesList()));
 
     }
 
@@ -192,15 +192,15 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     }
 
-    private Observable<Rate> getOldRateObservable(CurrencyPair currencyPair, Date date) {
+    private Observable<RateData> getOldRateObservable(CurrencyPairData currencyPair, Date date) {
         return mWimcService
-                .getHistoryRates(currencyPair, date)
-                .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
+                .getRates(currencyPair, date)
+                .flatMap(new Func1<List<RateData>, Observable<RateData>>() {
                     @Override
-                    public Observable<Rate> call(final List<Rate> rates) {
-                        return Observable.create(new Observable.OnSubscribe<Rate>() {
+                    public Observable<RateData> call(final List<RateData> rates) {
+                        return Observable.create(new Observable.OnSubscribe<RateData>() {
                             @Override
-                            public void call(Subscriber<? super Rate> subscriber) {
+                            public void call(Subscriber<? super RateData> subscriber) {
                                 try {
                                     // first rate
                                     subscriber.onNext(rates.get(0));
@@ -218,15 +218,15 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
                 .cache();
     }
 
-    private Observable<Rate> getRateObservable(CurrencyPair currencyPair) {
+    private Observable<RateData> getRateObservable(CurrencyPairData currencyPair, Date date) {
         return mWimcService
-                .getRatesAllBank(currencyPair)
-                .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
+                .getRates(currencyPair, date)
+                .flatMap(new Func1<List<RateData>, Observable<RateData>>() {
                     @Override
-                    public Observable<Rate> call(final List<Rate> rates) {
-                        return Observable.create(new Observable.OnSubscribe<Rate>() {
+                    public Observable<RateData> call(final List<RateData> rates) {
+                        return Observable.create(new Observable.OnSubscribe<RateData>() {
                             @Override
-                            public void call(Subscriber<? super Rate> subscriber) {
+                            public void call(Subscriber<? super RateData> subscriber) {
                                 try {
                                     //search min rate
                                     subscriber.onNext(rates.get(0));
@@ -248,11 +248,11 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
         if (mCompareCurrency == null || mBaseCurrency == null || mDate == null)
             return;
 
-        CurrencyPair pair = CurrencyPair.createPair(mBaseCurrency, mCompareCurrency);
+        CurrencyPairData pair = CurrencyPairData.createPair(mBaseCurrency, mCompareCurrency);
 
         mGetOldRateObservable = getOldRateObservable(pair, mDate);
         mGetOldRateSubscription = mGetOldRateObservable
-                .subscribe(new Observer<Rate>() {
+                .subscribe(new Observer<RateData>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted");
@@ -265,7 +265,7 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
                     }
 
                     @Override
-                    public void onNext(Rate rate) {
+                    public void onNext(RateData rate) {
                         Log.d(TAG, "onNext");
                         mEnterOperationView.setOldRate(String.valueOf(rate.getValue()));
                     }

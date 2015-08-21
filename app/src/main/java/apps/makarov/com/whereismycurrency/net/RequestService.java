@@ -31,14 +31,14 @@ public class RequestService {
         return mStore;
     }
 
-    protected <T extends RealmObject> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
+    protected <T> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
         boolean urlInCache = mStore.hasUrlInCache(request.getPath());
 
         return urlInCache ? observableDateFromLocalStore :
                 observableNetwork(request)
-                        .flatMap(new Func1<List<? extends RealmObject>, Observable<Exception>>() {
+                        .flatMap(new Func1<List, Observable<Exception>>() {
                             @Override
-                            public Observable<Exception> call(List<? extends RealmObject> list) {
+                            public Observable<Exception> call(List list) {
                                 return observableSaveObjects(list);
                             }
                         })
@@ -50,16 +50,16 @@ public class RequestService {
                         });
     }
 
-    private Observable<List<? extends RealmObject>> observableNetwork(final WimcRequest request) {
+    private Observable<List> observableNetwork(final WimcRequest request) {
         return getResponse(request)
                 .flatMap(new Func1<Response, Observable<String>>() {
                     @Override
                     public Observable<String> call(Response response) {
                         return responseToString(response);
                     }
-                }).flatMap(new Func1<String, Observable<List<? extends RealmObject>>>() {
+                }).flatMap(new Func1<String, Observable<List>>() {
                     @Override
-                    public Observable<List<? extends RealmObject>> call(String s) {
+                    public Observable<List> call(String s) {
                         return request.observableStringToObjectsList(s);
                     }
                 });

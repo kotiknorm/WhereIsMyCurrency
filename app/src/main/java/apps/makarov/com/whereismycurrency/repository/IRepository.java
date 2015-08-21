@@ -3,11 +3,11 @@ package apps.makarov.com.whereismycurrency.repository;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.repository.models.CurrencyPair;
+import apps.makarov.com.whereismycurrency.repository.models.Bank;
+import apps.makarov.com.whereismycurrency.repository.models.Rate;
+import apps.makarov.com.whereismycurrency.repository.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.repository.models.UserHistory;
 import io.realm.RealmObject;
 
 /**

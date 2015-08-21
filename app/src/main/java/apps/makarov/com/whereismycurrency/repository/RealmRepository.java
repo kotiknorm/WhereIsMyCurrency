@@ -5,12 +5,13 @@ import android.app.Application;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.models.CacheRequest;
-import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.BankData;
+import apps.makarov.com.whereismycurrency.repository.models.CurrencyPair;
+import apps.makarov.com.whereismycurrency.repository.models.Bank;
+import apps.makarov.com.whereismycurrency.repository.models.CacheRequest;
+import apps.makarov.com.whereismycurrency.repository.models.Rate;
+import apps.makarov.com.whereismycurrency.repository.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.repository.models.UserHistory;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
@@ -40,10 +41,10 @@ public class RealmRepository implements IRepository<RealmObject> {
 
         RealmQuery<Rate> query = Realm.getInstance(application)
                 .where(Rate.class).equalTo("currencyPair.key", pair.getKey())
-                .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date)
+                .notEqualTo("bank", BankData.USER_RATE).equalTo("changeRate", date)
                 ;
 
-        if (bankName != Bank.DEFAULT)
+        if (bankName != BankData.DEFAULT)
             query = query.equalTo("bank", bankName);
 
         return query.findAll();
