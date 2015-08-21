@@ -4,12 +4,12 @@ package apps.makarov.com.whereismycurrency.models;
  * Created by makarov on 02/07/15.
  */
 
-public class CurrencyPairData {
+public class CurrencyPair {
 
     private String baseCurrency;
     private String compareCurrency;
 
-    public CurrencyPairData(){
+    public CurrencyPair(){
     }
 
     public String getCompareCurrency() {
@@ -29,8 +29,8 @@ public class CurrencyPairData {
     }
 
 
-    public static CurrencyPairData createPair(String baseCurrency, String compareCurrency){
-        CurrencyPairData pair = new CurrencyPairData();
+    public static CurrencyPair createPair(String baseCurrency, String compareCurrency){
+        CurrencyPair pair = new CurrencyPair();
         pair.setBaseCurrency(baseCurrency);
         pair.setCompareCurrency(compareCurrency);
         return pair;

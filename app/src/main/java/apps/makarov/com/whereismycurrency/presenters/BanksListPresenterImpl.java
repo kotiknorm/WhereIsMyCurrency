@@ -1,6 +1,6 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.BanksView;
 
@@ -14,7 +14,7 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
     private BanksView mBanksView;
     private WimcService mWimcService;
 
-    private RateData mRate;
+    private Rate mRate;
 
     public BanksListPresenterImpl(BanksView banksView, WimcService wimcService) {
         this.mBanksView = banksView;

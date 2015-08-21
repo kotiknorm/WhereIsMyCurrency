@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.models.ResultOperationData;
-import apps.makarov.com.whereismycurrency.view.adapters.sections_adapter.SectionsAdapter;
-import apps.makarov.com.whereismycurrency.view.adapters.sections_adapter.holder.ModelWrapper;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.view.adapters.sections.SectionsAdapter;
+import apps.makarov.com.whereismycurrency.view.adapters.sections.holder.ModelWrapper;
 import apps.makarov.com.whereismycurrency.view.adapters.viewholders.ActiveOperationSectionViewHolderWrapper;
 import apps.makarov.com.whereismycurrency.view.adapters.viewholders.ActiveOperationViewHolderWrapper;
 import apps.makarov.com.whereismycurrency.view.adapters.viewholders.InactiveOperationSectionViewHolderWrapper;
@@ -36,28 +36,28 @@ public class HistoryAdapter extends SectionsAdapter<ViewHolderWrapper> {
 
     private OnClickToPresenter mPresenter;
 
-    public HistoryAdapter(List<ResultOperationData> resultOperations, OnClickToPresenter presenter) {
+    public HistoryAdapter(List<ResultOperation> resultOperations, OnClickToPresenter presenter) {
         super(getHolderWrappers(resultOperations, presenter));
         mPresenter = presenter;
     }
 
-    private static List<ModelWrapper> getHolderWrappers(List<ResultOperationData> historyItems, OnClickToPresenter onClickPresenter) {
-        List<ResultOperationData> mHistoryItems = ResultOperationData.findHistoryOperation(historyItems);
-        List<ResultOperationData> mActiveItems = ResultOperationData.findActiveOperation(historyItems);
+    private static List<ModelWrapper> getHolderWrappers(List<ResultOperation> historyItems, OnClickToPresenter onClickPresenter) {
+        List<ResultOperation> mHistoryItems = ResultOperation.findHistoryOperation(historyItems);
+        List<ResultOperation> mActiveItems = ResultOperation.findActiveOperation(historyItems);
 
         List<ModelWrapper> modelWrapperList = new ArrayList<>();
 
         if (mActiveItems.size() > 0)
             modelWrapperList.add(new ActiveSectionModel("3 august 2015"));
 
-        for (ResultOperationData operation : mActiveItems) {
+        for (ResultOperation operation : mActiveItems) {
             modelWrapperList.add(new ActiveItemModel(operation));
         }
 
         if (mHistoryItems.size() > 0)
             modelWrapperList.add(new InactiveSectionModel());
 
-        for (ResultOperationData operation : mHistoryItems) {
+        for (ResultOperation operation : mHistoryItems) {
             modelWrapperList.add(new InactiveItemModel(operation));
         }
 
@@ -86,21 +86,21 @@ public class HistoryAdapter extends SectionsAdapter<ViewHolderWrapper> {
             holder.setOnClicklistener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mPresenter.onClick((ResultOperationData) object);
+                    mPresenter.onClick((ResultOperation) object);
                 }
             });
     }
 
-    public static class ActiveItemModel implements ModelWrapper<ResultOperationData> {
+    public static class ActiveItemModel implements ModelWrapper<ResultOperation> {
 
-        private final ResultOperationData mOperation;
+        private final ResultOperation mOperation;
 
-        public ActiveItemModel(ResultOperationData operation) {
+        public ActiveItemModel(ResultOperation operation) {
             mOperation = operation;
         }
 
         @Override
-        public ResultOperationData getModel() {
+        public ResultOperation getModel() {
             return mOperation;
         }
 
@@ -110,16 +110,16 @@ public class HistoryAdapter extends SectionsAdapter<ViewHolderWrapper> {
         }
     }
 
-    public static class InactiveItemModel implements ModelWrapper<ResultOperationData> {
+    public static class InactiveItemModel implements ModelWrapper<ResultOperation> {
 
-        private final ResultOperationData mOperation;
+        private final ResultOperation mOperation;
 
-        public InactiveItemModel(ResultOperationData operation) {
+        public InactiveItemModel(ResultOperation operation) {
             mOperation = operation;
         }
 
         @Override
-        public ResultOperationData getModel() {
+        public ResultOperation getModel() {
             return mOperation;
         }
 
@@ -166,7 +166,7 @@ public class HistoryAdapter extends SectionsAdapter<ViewHolderWrapper> {
 
 
     public interface OnClickToPresenter {
-        void onClick(ResultOperationData operation);
+        void onClick(ResultOperation operation);
     }
 
 

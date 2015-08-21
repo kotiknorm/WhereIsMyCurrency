@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.interpreter.HistoryRateInterpreter;
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.mappers.json.HistoryRateJsonMapper;
+import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
  * Created by makarov on 30/06/15.
  */
-public class FixerRequest extends WimcRequest<RateData> {
+public class FixerRequest extends WimcRequest<Rate> {
 
     public static final String TAG = FixerRequest.class.getSimpleName();
     public static final String FIXER_RATES_URL = "http://api.fixer.io";
@@ -55,12 +55,12 @@ public class FixerRequest extends WimcRequest<RateData> {
     }
 
     @Override
-    protected List<RateData> parseStringToList(final String str) throws JSONException {
+    protected List<Rate> parseStringToList(final String str) throws JSONException {
         Log.d(TAG, str);
         JSONObject result = new JSONObject(str);
 
-        HistoryRateInterpreter interpreter = new HistoryRateInterpreter(result);
-        List<RateData> list = interpreter.parse();
+        HistoryRateJsonMapper interpreter = new HistoryRateJsonMapper();
+        List<Rate> list = interpreter.modelToData(result);
         return list;
     }
 

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -29,6 +29,6 @@ public class CurrencyPairHolder {
 
     public void bindCurrencyToView(Context context, String currency) {
         currencyTextView.setText(currency);
-        iconCurrency.setImageDrawable(RateData.getCurrencyIcon(context, currency));
+        iconCurrency.setImageDrawable(Rate.getCurrencyIcon(context, currency));
     }
 }

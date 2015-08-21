@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.view.adapters.sections_adapter;
+package apps.makarov.com.whereismycurrency.view.adapters.sections;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
-import apps.makarov.com.whereismycurrency.view.adapters.sections_adapter.holder.ModelWrapper;
+import apps.makarov.com.whereismycurrency.view.adapters.sections.holder.ModelWrapper;
 import apps.makarov.com.whereismycurrency.view.adapters.viewholders.ViewHolderWrapper;
 
 /**

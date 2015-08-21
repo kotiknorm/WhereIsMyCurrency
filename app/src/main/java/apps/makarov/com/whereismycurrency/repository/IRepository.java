@@ -3,11 +3,11 @@ package apps.makarov.com.whereismycurrency.repository;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.repository.models.Bank;
-import apps.makarov.com.whereismycurrency.repository.models.Rate;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.repository.models.UserHistory;
+import apps.makarov.com.whereismycurrency.repository.models.BankRealm;
+import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
+import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.models.UserHistoryRealm;
 import io.realm.RealmObject;
 
 /**
@@ -16,13 +16,13 @@ import io.realm.RealmObject;
 
 public interface IRepository<T> {
 
-    List<Bank> getBanks();
+    List<BankRealm> getBanks();
 
-    List<Rate> getRates(CurrencyPair currencyPair, Date date, String bankName);
+    List<RateRealm> getRates(CurrencyPairRealm currencyPair, Date date, String bankName);
 
-    List<UserHistory> getUserHistory();
+    List<UserHistoryRealm> getUserHistory();
 
-    List<ResultOperation> getAllResultOperation();
+    List<ResultOperationRealm> getAllResultOperation();
 
     <E extends T> void saveObject(E object);
 
@@ -32,10 +32,10 @@ public interface IRepository<T> {
 
     boolean hasUrlInCache(String url);
 
-    ResultOperation getResultOperation(String key);
+    ResultOperationRealm getResultOperation(String key);
 
-    ResultOperation resultToHistory(ResultOperation resultOperation);
+    ResultOperationRealm resultToHistory(ResultOperationRealm resultOperation);
 
-    ResultOperation removeResult(ResultOperation resultOperation);
+    ResultOperationRealm removeResult(ResultOperationRealm resultOperation);
 }
 

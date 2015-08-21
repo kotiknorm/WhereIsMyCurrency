@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.ResultOperationData;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ListOperationView;
 import rx.Observable;
@@ -40,7 +40,7 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
 
     @Override
     public void onRefresh() {
-        getResultObservable().subscribe(new Observer<List<ResultOperationData>>() {
+        getResultObservable().subscribe(new Observer<List<ResultOperation>>() {
             @Override
             public void onCompleted() {
             }
@@ -54,14 +54,14 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
             }
 
             @Override
-            public void onNext(List<ResultOperationData> rates) {
+            public void onNext(List<ResultOperation> rates) {
                 fillAdapter(rates);
                 mListOperationView.hideProgress();
             }
         });
     }
 
-    private Observable<List<ResultOperationData>> getResultObservable() {
+    private Observable<List<ResultOperation>> getResultObservable() {
         return mWimcService
                 .getResultOperations()
                 .subscribeOn(Schedulers.io())
@@ -69,7 +69,7 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
                 .cache();
     }
 
-    private Observable<List<ResultOperationData>> getUpdateObservable() {
+    private Observable<List<ResultOperation>> getUpdateObservable() {
         return mWimcService
                 .getUpdateResultOperations()
                 .subscribeOn(Schedulers.io())
@@ -79,7 +79,7 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
 
     @Override
     public void onUpdateResults() {
-        getUpdateObservable().subscribe(new Observer<List<ResultOperationData>>() {
+        getUpdateObservable().subscribe(new Observer<List<ResultOperation>>() {
             @Override
             public void onCompleted() {
             }
@@ -89,13 +89,13 @@ public class ListOperationPresenterImpl implements ListOperationPresenter {
             }
 
             @Override
-            public void onNext(List<ResultOperationData> rates) {
+            public void onNext(List<ResultOperation> rates) {
                 fillAdapter(rates);
             }
         });
     }
 
-    private void fillAdapter(List<ResultOperationData> rates){
+    private void fillAdapter(List<ResultOperation> rates){
         if(rates.size() == 0){
             mListOperationView.setVisabileSplash(true);
             return;

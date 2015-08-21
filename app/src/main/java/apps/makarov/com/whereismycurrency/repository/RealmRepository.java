@@ -5,13 +5,13 @@ import android.app.Application;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.models.BankData;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.repository.models.Bank;
-import apps.makarov.com.whereismycurrency.repository.models.CacheRequest;
-import apps.makarov.com.whereismycurrency.repository.models.Rate;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.repository.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.repository.models.BankRealm;
+import apps.makarov.com.whereismycurrency.repository.models.CacheRequestRealm;
+import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
+import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.models.UserHistoryRealm;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
@@ -30,35 +30,35 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
-    public List<Bank> getBanks() {
-        List<Bank> list = Realm.getInstance(application).where(Bank.class).findAll();
+    public List<BankRealm> getBanks() {
+        List<BankRealm> list = Realm.getInstance(application).where(BankRealm.class).findAll();
         Realm.getInstance(application).close();
         return list;
     }
 
     @Override
-    public List<Rate> getRates(CurrencyPair pair, Date date, String bankName) {
+    public List<RateRealm> getRates(CurrencyPairRealm pair, Date date, String bankName) {
 
-        RealmQuery<Rate> query = Realm.getInstance(application)
-                .where(Rate.class).equalTo("currencyPair.key", pair.getKey())
-                .notEqualTo("bank", BankData.USER_RATE).equalTo("changeRate", date)
+        RealmQuery<RateRealm> query = Realm.getInstance(application)
+                .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
+                .notEqualTo("bank", Bank.USER_RATE).equalTo("changeRate", date)
                 ;
 
-        if (bankName != BankData.DEFAULT)
+        if (bankName != Bank.DEFAULT)
             query = query.equalTo("bank", bankName);
 
         return query.findAll();
     }
 
     @Override
-    public List<UserHistory> getUserHistory() {
-        return Realm.getInstance(application).where(UserHistory.class).findAllSorted("date", false);
+    public List<UserHistoryRealm> getUserHistory() {
+        return Realm.getInstance(application).where(UserHistoryRealm.class).findAllSorted("date", false);
     }
 
     @Override
-    public List<ResultOperation> getAllResultOperation() {
+    public List<ResultOperationRealm> getAllResultOperation() {
 
-        RealmResults<ResultOperation> result = Realm.getInstance(application).where(ResultOperation.class)
+        RealmResults<ResultOperationRealm> result = Realm.getInstance(application).where(ResultOperationRealm.class)
                 .findAllSorted("date", false);
 
         result.sort("isHistory", true);
@@ -83,7 +83,7 @@ public class RealmRepository implements IRepository<RealmObject> {
 
     @Override
     public void addUrlToCache(String url) {
-        CacheRequest cacheRequest = new CacheRequest();
+        CacheRequestRealm cacheRequest = new CacheRequestRealm();
         cacheRequest.setUrl(url);
         cacheRequest.setDate(new Date());
 
@@ -94,16 +94,16 @@ public class RealmRepository implements IRepository<RealmObject> {
 
     @Override
     public boolean hasUrlInCache(String url) {
-        return Realm.getInstance(application).where(CacheRequest.class).equalTo("url", url).findFirst() != null;
+        return Realm.getInstance(application).where(CacheRequestRealm.class).equalTo("url", url).findFirst() != null;
     }
 
     @Override
-    public ResultOperation getResultOperation(String key) {
-        return Realm.getInstance(application).where(ResultOperation.class).equalTo("key", key).findFirst();
+    public ResultOperationRealm getResultOperation(String key) {
+        return Realm.getInstance(application).where(ResultOperationRealm.class).equalTo("key", key).findFirst();
     }
 
     @Override
-    public ResultOperation resultToHistory(ResultOperation resultOperation) {
+    public ResultOperationRealm resultToHistory(ResultOperationRealm resultOperation) {
         beginTransaction();
         resultOperation.setIsHistory(true);
         commitTransaction();
@@ -111,7 +111,7 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
-    public ResultOperation removeResult(ResultOperation resultOperation) {
+    public ResultOperationRealm removeResult(ResultOperationRealm resultOperation) {
         removeObject(resultOperation);
         return resultOperation;
     }

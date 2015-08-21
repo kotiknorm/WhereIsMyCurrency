@@ -8,20 +8,20 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by makarov on 01/07/15.
  */
-public class ResultOperation extends RealmObject {
+public class ResultOperationRealm extends RealmObject {
 
     @PrimaryKey
     private String key;
-    private Rate exitRate;
-    private UserHistory userHistory;
+    private RateRealm exitRate;
+    private UserHistoryRealm userHistory;
     private Date date;
     private boolean isHistory;
 
-    public UserHistory getUserHistory() {
+    public UserHistoryRealm getUserHistory() {
         return userHistory;
     }
 
-    public void setUserHistory(UserHistory userHistory) {
+    public void setUserHistory(UserHistoryRealm userHistory) {
         this.userHistory = userHistory;
     }
 
@@ -33,11 +33,11 @@ public class ResultOperation extends RealmObject {
         this.key = key;
     }
 
-    public Rate getExitRate() {
+    public RateRealm getExitRate() {
         return exitRate;
     }
 
-    public void setExitRate(Rate exitRate) {
+    public void setExitRate(RateRealm exitRate) {
         this.exitRate = exitRate;
     }
 

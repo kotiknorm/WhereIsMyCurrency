@@ -8,12 +8,12 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 26/06/15.
  */
 
-public class Bank extends RealmObject {
+public class BankRealm extends RealmObject {
 
     @PrimaryKey
     private String key;
     private String name;
-    private RealmList<Rate> rates = new RealmList<>();
+    private RealmList<RateRealm> rates = new RealmList<>();
 
     public String getKey() {
         return key;
@@ -23,11 +23,11 @@ public class Bank extends RealmObject {
         this.key = key;
     }
 
-    public void setRates(RealmList<Rate> rates) {
+    public void setRates(RealmList<RateRealm> rates) {
         this.rates = rates;
     }
 
-    public RealmList<Rate> getRates() {
+    public RealmList<RateRealm> getRates() {
         return rates;
     }
 

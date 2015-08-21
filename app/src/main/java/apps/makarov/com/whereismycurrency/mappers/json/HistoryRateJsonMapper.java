@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.interpreter;
+package apps.makarov.com.whereismycurrency.mappers.json;
 
 import android.util.Log;
 
@@ -13,9 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.models.BankData;
-import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.mappers.Mapper;
+import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
+import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
  * Created by makarov on 29/06/15.
@@ -25,18 +26,13 @@ import apps.makarov.com.whereismycurrency.models.RateData;
  Interpreter for json to fixer.io rates
  */
 
-public class HistoryRateInterpreter implements Interpreter<List<RateData>> {
+public class HistoryRateJsonMapper implements Mapper<List<Rate>, JSONObject> {
 
-    public static final String TAG = HistoryRateInterpreter.class.getSimpleName();
-    private final JSONObject mJsonObject;
-
-    public HistoryRateInterpreter(JSONObject jsonObject) {
-        this.mJsonObject = jsonObject;
-    }
+    public static final String TAG = HistoryRateJsonMapper.class.getSimpleName();
 
     @Override
-    public List<RateData> parse() {
-        List<RateData> ratesList = new ArrayList<>();
+    public List<Rate> modelToData(JSONObject mJsonObject) {
+        List<Rate> ratesList = new ArrayList<>();
 
         try {
             String baseCurrency = mJsonObject.getString("base");
@@ -49,11 +45,11 @@ public class HistoryRateInterpreter implements Interpreter<List<RateData>> {
                 String compareCurrency = iter.next();
                 double value = ratesJsonArray.getDouble(compareCurrency);
 
-                RateData rate = new RateData();
+                Rate rate = new Rate();
                 rate.setValue(value);
                 rate.setChangeRate(date);
-                rate.setBank(BankData.DEFAULT);
-                CurrencyPairData pair = CurrencyPairData.createPair(baseCurrency, compareCurrency);
+                rate.setBank(Bank.DEFAULT);
+                CurrencyPair pair = CurrencyPair.createPair(baseCurrency, compareCurrency);
                 rate.setCurrencyPair(pair);
                 ratesList.add(rate);
             }
@@ -64,6 +60,12 @@ public class HistoryRateInterpreter implements Interpreter<List<RateData>> {
 
         return ratesList;
     }
+
+    @Override
+    public JSONObject dataToModel(List<Rate> obj) {
+        return null;
+    }
+
 
     private Date parseFixerDate(String dateStr) {
         try {

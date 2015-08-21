@@ -17,10 +17,10 @@ import apps.makarov.com.whereismycurrency.R;
  * Created by makarov on 26/06/15.
  */
 
-public class RateData  {
+public class Rate {
 
     private static List<String> codes = new ArrayList<>();
-    private static List<CurrencyPairData> listPairCodes = new ArrayList<>();
+    private static List<CurrencyPair> listPairCodes = new ArrayList<>();
 
     public static final String RUB_CODE = "RUB";
     public static final String EUR_CODE = "EUR";
@@ -34,7 +34,7 @@ public class RateData  {
         for(String baseCodes : codes){
             for(String compareCodes : codes){
                 if(!baseCodes.equals(compareCodes)){
-                    CurrencyPairData pair =  CurrencyPairData.createPair(baseCodes, compareCodes);
+                    CurrencyPair pair =  CurrencyPair.createPair(baseCodes, compareCodes);
                     listPairCodes.add(pair);
                 }
             }
@@ -45,20 +45,20 @@ public class RateData  {
         return Collections.unmodifiableList(codes);
     }
 
-    public static List<CurrencyPairData> getPairCodesList(){
+    public static List<CurrencyPair> getPairCodesList(){
         return Collections.unmodifiableList(listPairCodes);
     }
 
     private double value;
-    private CurrencyPairData currencyPair;
+    private CurrencyPair currencyPair;
     private Date changeRate = DateUtils.getTodayDate(); // today
-    private String bank = BankData.DEFAULT; // bank PK
+    private String bank = Bank.DEFAULT; // bank PK
 
-    public CurrencyPairData getCurrencyPair() {
+    public CurrencyPair getCurrencyPair() {
         return currencyPair;
     }
 
-    public void setCurrencyPair(CurrencyPairData currencyPair) {
+    public void setCurrencyPair(CurrencyPair currencyPair) {
         this.currencyPair = currencyPair;
     }
 

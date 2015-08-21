@@ -12,7 +12,7 @@ import java.util.Date;
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.presenters.CurrencyPairResultPresenter;
 import apps.makarov.com.whereismycurrency.view.iviews.CurrencyPairResultView;
 import butterknife.Bind;
@@ -99,10 +99,10 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
     }
 
     @Override
-    public void setOperation(RateData rate, double valueCurrency) {
+    public void setOperation(Rate rate, double valueCurrency) {
 
-        Drawable openBaseIcon = RateData.getCurrencyIcon(getContext(), rate.getCurrencyPair().getBaseCurrency());
-        Drawable openCompareIcon = RateData.getCurrencyIcon(getContext(), rate.getCurrencyPair().getCompareCurrency());
+        Drawable openBaseIcon = Rate.getCurrencyIcon(getContext(), rate.getCurrencyPair().getBaseCurrency());
+        Drawable openCompareIcon = Rate.getCurrencyIcon(getContext(), rate.getCurrencyPair().getCompareCurrency());
 
         setBaseIcon(openBaseIcon);
         setCompareIcon(openCompareIcon);
@@ -113,8 +113,8 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         setOperationBaseValue(startValue);
         setOperationCompareValue(finishValue);
 
-        String nameBaseCurrency = RateData.getCurrencyName(getContext(), rate.getCurrencyPair().getBaseCurrency());
-        String nameCompareCurrency = RateData.getCurrencyName(getContext(), rate.getCurrencyPair().getCompareCurrency());
+        String nameBaseCurrency = Rate.getCurrencyName(getContext(), rate.getCurrencyPair().getBaseCurrency());
+        String nameCompareCurrency = Rate.getCurrencyName(getContext(), rate.getCurrencyPair().getCompareCurrency());
 
         setOperationBaseCurrencyName(nameBaseCurrency);
         setOperationCompareCurrencyName(nameCompareCurrency);

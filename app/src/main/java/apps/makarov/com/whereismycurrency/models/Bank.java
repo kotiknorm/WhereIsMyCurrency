@@ -7,19 +7,19 @@ import java.util.List;
  * Created by makarov on 26/06/15.
  */
 
-public class BankData{
+public class Bank {
 
     public static final String DEFAULT = "DEFAULT";
     public static final String USER_RATE = "USER_RATE";  // rates from user history
 
     private String name;
-    private List<RateData> rates = new ArrayList<>();
+    private List<Rate> rates = new ArrayList<>();
 
-    public void setRates(List<RateData> rates) {
+    public void setRates(List<Rate> rates) {
         this.rates = rates;
     }
 
-    public List<RateData> getRates() {
+    public List<Rate> getRates() {
         return rates;
     }
 

@@ -11,15 +11,15 @@ import java.util.Date;
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
-import apps.makarov.com.whereismycurrency.models.RateData;
-import apps.makarov.com.whereismycurrency.models.ResultOperationData;
+import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by makarov on 02/08/15.
  */
-public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOperationData> {
+public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOperation> {
     public static final String TAG = ViewHolderWrapper.class.getSimpleName();
 
     @Bind(R.id.base_value)
@@ -46,14 +46,14 @@ public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOp
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindModelToView(ResultOperationData history) {
+    public void bindModelToView(ResultOperation history) {
 
         historyArea.setVisibility(View.GONE);
 
         baseValueField.setText(ResultUtils.getBaseValueString(itemView.getContext(), history));
-        baseNameCurrencyField.setText(RateData.getCurrencyName(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        baseCurrencyImage.setImageDrawable(RateData.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        compareCurrencyImage.setImageDrawable(RateData.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
+        baseNameCurrencyField.setText(Rate.getCurrencyName(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
 
         diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
         if(ResultUtils.getDiff(history) > 0){

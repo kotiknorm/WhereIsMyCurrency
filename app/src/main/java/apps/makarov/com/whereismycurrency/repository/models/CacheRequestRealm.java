@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 28/06/15.
  */
 
-public class CacheRequest extends RealmObject {
+public class CacheRequestRealm extends RealmObject {
 
     @PrimaryKey
     private String url;

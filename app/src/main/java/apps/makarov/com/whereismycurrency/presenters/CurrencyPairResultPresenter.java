@@ -1,6 +1,6 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.view.iviews.CurrencyPairResultView;
 
 /**
@@ -12,7 +12,7 @@ public interface CurrencyPairResultPresenter {
 
     void onPause();
 
-    void setRate(RateData rate);
+    void setRate(Rate rate);
 
     void setValue(double v);
 

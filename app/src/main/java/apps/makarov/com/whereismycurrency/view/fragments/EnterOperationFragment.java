@@ -31,7 +31,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.modules.EnterOperationModule;
 import apps.makarov.com.whereismycurrency.presenters.EnterOperationPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
@@ -146,7 +146,7 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
                 .adapter(adapter, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        String currency = RateData.getCodesList().get(which);
+                        String currency = Rate.getCodesList().get(which);
                         mEnterOperationPresenter.onEnterBaseCurrency(currency);
                         dialog.dismiss();
                     }
@@ -160,7 +160,7 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
                 .adapter(adapter, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        String currency = RateData.getCodesList().get(which);
+                        String currency = Rate.getCodesList().get(which);
                         mEnterOperationPresenter.onEnterCompareCurrency(currency);
                         dialog.dismiss();
                     }

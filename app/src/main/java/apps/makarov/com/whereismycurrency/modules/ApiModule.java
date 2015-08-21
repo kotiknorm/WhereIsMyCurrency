@@ -31,7 +31,6 @@ public final class ApiModule {
     public static final String TAG = ApiModule.class.getSimpleName();
 
     public static final int DISK_CACHE_SIZE = 50 * 1024 * 1024;
-    public static final int PULL_TOLERANCE = 10;
 
     @Provides
     @Singleton

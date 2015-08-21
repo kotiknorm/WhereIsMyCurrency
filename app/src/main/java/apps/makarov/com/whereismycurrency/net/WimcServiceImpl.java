@@ -9,22 +9,22 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.mappers.BankMapper;
-import apps.makarov.com.whereismycurrency.mappers.CurrencyPairMapper;
-import apps.makarov.com.whereismycurrency.mappers.RateMapper;
-import apps.makarov.com.whereismycurrency.mappers.ResultOperationMapper;
-import apps.makarov.com.whereismycurrency.mappers.UserHistoryMapper;
-import apps.makarov.com.whereismycurrency.models.BankData;
-import apps.makarov.com.whereismycurrency.models.CurrencyPairData;
-import apps.makarov.com.whereismycurrency.models.RateData;
-import apps.makarov.com.whereismycurrency.models.ResultOperationData;
-import apps.makarov.com.whereismycurrency.models.UserHistoryData;
+import apps.makarov.com.whereismycurrency.mappers.realm.BankRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.CurrencyPairRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.ResultOperationRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.UserHistoryRealmMapper;
+import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
+import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.models.UserHistory;
 import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperation;
+import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -38,27 +38,27 @@ import rx.android.schedulers.AndroidSchedulers;
 public class WimcServiceImpl extends RequestService implements WimcService {
 
     @Inject
-    public BankMapper bankMapper;
+    public BankRealmMapper bankRealmMapper;
     @Inject
-    public ResultOperationMapper resultMapper;
+    public ResultOperationRealmMapper resultMapper;
     @Inject
-    public RateMapper rateMapper;
+    public RateRealmMapper rateRealmMapper;
     @Inject
-    public CurrencyPairMapper currencyPairMapper;
+    public CurrencyPairRealmMapper currencyPairRealmMapper;
     @Inject
-    public UserHistoryMapper userHistoryMapper;
+    public UserHistoryRealmMapper userHistoryRealmMapper;
 
     public WimcServiceImpl(OkHttpClient client, IRepository store) {
         super(client, store);
     }
 
     @Override
-    public Observable<List<UserHistoryData>> getHistory() {
-        return Observable.create(new Observable.OnSubscribe<List<UserHistoryData>>() {
+    public Observable<List<UserHistory>> getHistory() {
+        return Observable.create(new Observable.OnSubscribe<List<UserHistory>>() {
             @Override
-            public void call(Subscriber<? super List<UserHistoryData>> subscriber) {
+            public void call(Subscriber<? super List<UserHistory>> subscriber) {
                 try {
-                    List<UserHistoryData> list = getStore().getUserHistory();
+                    List<UserHistory> list = getStore().getUserHistory();
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -71,14 +71,14 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<ResultOperationData>> getResultOperations() {
-        return Observable.create(new Observable.OnSubscribe<List<ResultOperationData>>() {
+    public Observable<List<ResultOperation>> getResultOperations() {
+        return Observable.create(new Observable.OnSubscribe<List<ResultOperation>>() {
             @Override
-            public void call(Subscriber<? super List<ResultOperationData>> subscriber) {
+            public void call(Subscriber<? super List<ResultOperation>> subscriber) {
                 try {
-                    List<ResultOperation> list = getStore().getAllResultOperation();
-                    List<ResultOperationData> resultList = new ArrayList<ResultOperationData>(list.size());
-                    for(ResultOperation item : list){
+                    List<ResultOperationRealm> list = getStore().getAllResultOperation();
+                    List<ResultOperation> resultList = new ArrayList<ResultOperation>(list.size());
+                    for(ResultOperationRealm item : list){
                         resultList.add(resultMapper.modelToData(item));
                     }
 
@@ -93,12 +93,12 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<ResultOperationData>> getUpdateResultOperations() {
-        return Observable.create(new Observable.OnSubscribe<List<ResultOperationData>>() {
+    public Observable<List<ResultOperation>> getUpdateResultOperations() {
+        return Observable.create(new Observable.OnSubscribe<List<ResultOperation>>() {
             @Override
-            public void call(Subscriber<? super List<ResultOperationData>> subscriber) {
+            public void call(Subscriber<? super List<ResultOperation>> subscriber) {
                 try {
-                    List<ResultOperationData> list = getStore().getAllResultOperation();
+                    List<ResultOperation> list = getStore().getAllResultOperation();
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -111,15 +111,15 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<RateData>> getRates(final CurrencyPairData currencyPair, final Date date) {
+    public Observable<List<Rate>> getRates(final CurrencyPair currencyPair, final Date date) {
         final WimcRequest bankRequest = new FixerRequest(currencyPair.getBaseCurrency(), date);
 
-        Observable<List<RateData>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<RateData>>() {
+        Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
-            public void call(Subscriber<? super List<RateData>> subscriber) {
+            public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
-                    CurrencyPair pair = currencyPairMapper.dataToModel(currencyPair);
-                    List<RateData> list = getStore().getRates(pair, date, BankData.DEFAULT);
+                    CurrencyPairRealm pair = currencyPairRealmMapper.dataToModel(currencyPair);
+                    List<Rate> list = getStore().getRates(pair, date, Bank.DEFAULT);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -134,16 +134,16 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public Observable<List<RateData>> getRatesAllBank(final CurrencyPairData currencyPair) {
+    public Observable<List<Rate>> getRatesAllBank(final CurrencyPair currencyPair) {
         final WimcRequest bankRequest = new BankRequest();
 
-        Observable<List<RateData>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<RateData>>() {
+        Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
-            public void call(Subscriber<? super List<RateData>> subscriber) {
+            public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
 //                    getStore().addUrlToCache(bankRequest.getRequest().urlString());
-                    CurrencyPair pair = currencyPairMapper.dataToModel(currencyPair);
-                    List<RateData> list = getStore().getRates(pair, DateUtils.getTodayDate(), BankData.DEFAULT);
+                    CurrencyPairRealm pair = currencyPairRealmMapper.dataToModel(currencyPair);
+                    List<Rate> list = getStore().getRates(pair, DateUtils.getTodayDate(), Bank.DEFAULT);
 
                     subscriber.onNext(list);
                     subscriber.onCompleted();
@@ -158,25 +158,25 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public UserHistoryData addHistoryItem(final CurrencyPairData currencyPair,  final Date date, double summa, double rateValue) {
-        UserHistoryData userHistory = new UserHistoryData();
+    public UserHistory addHistoryItem(final CurrencyPair currencyPair,  final Date date, double summa, double rateValue) {
+        UserHistory userHistory = new UserHistory();
 
-        RateData userRate = new RateData();
+        Rate userRate = new Rate();
         userRate.setCurrencyPair(currencyPair);
         userRate.setValue(rateValue);
-        userRate.setBank(BankData.USER_RATE);
+        userRate.setBank(Bank.USER_RATE);
 
         userHistory.setDate(date);
         userHistory.setValue(summa);
         userHistory.setRate(userRate);
 
-        getStore().saveObject(userHistoryMapper.dataToModel(userHistory));
+        getStore().saveObject(userHistoryRealmMapper.dataToModel(userHistory));
         return userHistory;
     }
 
     @Override
-    public ResultOperationData addResult(RateData rate, UserHistoryData userHistory) {
-        ResultOperationData result = new ResultOperationData();
+    public ResultOperation addResult(Rate rate, UserHistory userHistory) {
+        ResultOperation result = new ResultOperation();
         result.setUserHistory(userHistory);
         result.setExitRate(rate);
         result.setDate(userHistory.getDate());
@@ -185,22 +185,22 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
-    public ResultOperationData addResultInHistory(ResultOperationData resultOperation) {
-        ResultOperation operation = resultMapper.dataToModel(resultOperation);
-        ResultOperation result = getStore().resultToHistory(operation);
+    public ResultOperation addResultInHistory(ResultOperation resultOperation) {
+        ResultOperationRealm operation = resultMapper.dataToModel(resultOperation);
+        ResultOperationRealm result = getStore().resultToHistory(operation);
         return resultMapper.modelToData(result);
     }
 
     @Override
-    public void removeResult(ResultOperationData resultOperation) {
-        ResultOperation operation = resultMapper.dataToModel(resultOperation);
+    public void removeResult(ResultOperation resultOperation) {
+        ResultOperationRealm operation = resultMapper.dataToModel(resultOperation);
         getStore().removeResult(operation);
     }
 
     @Override
-    public ResultOperationData getResultOperation(String key) {
-        ResultOperation operation = getStore().getResultOperation(key);
-        ResultOperationData operationData = resultMapper.modelToData(operation);
+    public ResultOperation getResultOperation(String key) {
+        ResultOperationRealm operation = getStore().getResultOperation(key);
+        ResultOperation operationData = resultMapper.modelToData(operation);
         return operationData;
     }
 

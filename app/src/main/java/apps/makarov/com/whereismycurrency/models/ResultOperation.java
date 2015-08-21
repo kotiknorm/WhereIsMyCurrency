@@ -7,26 +7,26 @@ import java.util.List;
 /**
  * Created by makarov on 01/07/15.
  */
-public class ResultOperationData implements UniqueModel {
+public class ResultOperation implements UniqueModel {
 
-    private RateData exitRate;
-    private UserHistoryData userHistory;
+    private Rate exitRate;
+    private UserHistory userHistory;
     private Date date;
     private boolean isHistory;
 
-    public UserHistoryData getUserHistory() {
+    public UserHistory getUserHistory() {
         return userHistory;
     }
 
-    public void setUserHistory(UserHistoryData userHistory) {
+    public void setUserHistory(UserHistory userHistory) {
         this.userHistory = userHistory;
     }
 
-    public RateData getExitRate() {
+    public Rate getExitRate() {
         return exitRate;
     }
 
-    public void setExitRate(RateData exitRate) {
+    public void setExitRate(Rate exitRate) {
         this.exitRate = exitRate;
     }
 
@@ -46,18 +46,18 @@ public class ResultOperationData implements UniqueModel {
         this.isHistory = isHistory;
     }
 
-    public static List<ResultOperationData> findActiveOperation(List<ResultOperationData> list) {
-        List<ResultOperationData> resultList = new ArrayList<>();
-        for(ResultOperationData operation : list){
+    public static List<ResultOperation> findActiveOperation(List<ResultOperation> list) {
+        List<ResultOperation> resultList = new ArrayList<>();
+        for(ResultOperation operation : list){
             if(!operation.isHistory())
                 resultList.add(operation);
         }
         return resultList;
     }
 
-    public static List<ResultOperationData> findHistoryOperation(List<ResultOperationData> list) {
-        List<ResultOperationData> resultList = new ArrayList<>();
-        for(ResultOperationData operation : list){
+    public static List<ResultOperation> findHistoryOperation(List<ResultOperation> list) {
+        List<ResultOperation> resultList = new ArrayList<>();
+        for(ResultOperation operation : list){
             if(operation.isHistory())
                 resultList.add(operation);
         }

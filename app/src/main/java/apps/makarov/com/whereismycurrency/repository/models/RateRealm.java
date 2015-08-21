@@ -4,7 +4,7 @@ package apps.makarov.com.whereismycurrency.repository.models;
 import java.util.Date;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
-import apps.makarov.com.whereismycurrency.models.BankData;
+import apps.makarov.com.whereismycurrency.models.Bank;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,20 +12,20 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 26/06/15.
  */
 
-public class Rate extends RealmObject {
+public class RateRealm extends RealmObject {
 
     @PrimaryKey
-    private String key;  // composite key (generateKey method)
+    private String key;
     private double value;
-    private CurrencyPair currencyPair;
-    private Date changeRate = DateUtils.getTodayDate(); // today
-    private String bank = BankData.DEFAULT; // bank PK
+    private CurrencyPairRealm currencyPair;
+    private Date changeRate = DateUtils.getTodayDate();
+    private String bank = Bank.DEFAULT; // bank PK
 
-    public CurrencyPair getCurrencyPair() {
+    public CurrencyPairRealm getCurrencyPair() {
         return currencyPair;
     }
 
-    public void setCurrencyPair(CurrencyPair currencyPair) {
+    public void setCurrencyPair(CurrencyPairRealm currencyPair) {
         this.currencyPair = currencyPair;
     }
 

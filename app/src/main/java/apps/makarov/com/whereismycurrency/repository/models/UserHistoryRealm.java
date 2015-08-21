@@ -8,15 +8,15 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by makarov on 28/06/15.
  */
-public class UserHistory extends RealmObject {
+public class UserHistoryRealm extends RealmObject {
 
     @PrimaryKey
     private String key;
-    private Rate rate;
+    private RateRealm rate;
     private double value;
     private Date date;
 
-    public Rate getRate() {
+    public RateRealm getRate() {
         return rate;
     }
 
@@ -28,7 +28,7 @@ public class UserHistory extends RealmObject {
         this.key = key;
     }
 
-    public void setRate(Rate rate) {
+    public void setRate(RateRealm rate) {
         this.rate = rate;
     }
 

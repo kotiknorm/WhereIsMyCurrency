@@ -7,15 +7,12 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 02/07/15.
  */
 
-public class CurrencyPair extends RealmObject{
+public class CurrencyPairRealm extends RealmObject{
 
     @PrimaryKey
     private String key;
     private String baseCurrency;
     private String compareCurrency;
-
-    public CurrencyPair(){
-    }
 
     public String getCompareCurrency() {
         return compareCurrency;

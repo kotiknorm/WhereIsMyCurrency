@@ -1,9 +1,9 @@
 package apps.makarov.com.whereismycurrency.modules;
 
-import apps.makarov.com.whereismycurrency.mappers.BankMapper;
-import apps.makarov.com.whereismycurrency.mappers.CurrencyPairMapper;
-import apps.makarov.com.whereismycurrency.mappers.RateMapper;
-import apps.makarov.com.whereismycurrency.mappers.ResultOperationMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.BankRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.CurrencyPairRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
+import apps.makarov.com.whereismycurrency.mappers.realm.ResultOperationRealmMapper;
 import dagger.Module;
 import dagger.Provides;
 
@@ -23,23 +23,23 @@ public class MappersModule {
     }
 
     @Provides
-    public BankMapper provideBankMapper() {
-        return new BankMapper();
+    public BankRealmMapper provideBankMapper() {
+        return new BankRealmMapper();
     }
 
     @Provides
-    public RateMapper provideRateMapper() {
-        return new RateMapper();
+    public RateRealmMapper provideRateMapper() {
+        return new RateRealmMapper();
     }
 
     @Provides
-    public CurrencyPairMapper provideCurrencyPairMapper() {
-        return new CurrencyPairMapper();
+    public CurrencyPairRealmMapper provideCurrencyPairMapper() {
+        return new CurrencyPairRealmMapper();
     }
 
     @Provides
-    public ResultOperationMapper provideResultOperationMapper() {
-        return new ResultOperationMapper();
+    public ResultOperationRealmMapper provideResultOperationMapper() {
+        return new ResultOperationRealmMapper();
     }
 
 }

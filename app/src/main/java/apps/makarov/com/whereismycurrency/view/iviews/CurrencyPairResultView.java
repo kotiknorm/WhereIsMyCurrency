@@ -1,6 +1,6 @@
 package apps.makarov.com.whereismycurrency.view.iviews;
 
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
 
 /**
@@ -8,7 +8,7 @@ import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
  */
 public interface CurrencyPairResultView extends BaseContextView {
 
-    void setOperation(RateData rate, double value);
+    void setOperation(Rate rate, double value);
 
     void setTitle(String title);
 

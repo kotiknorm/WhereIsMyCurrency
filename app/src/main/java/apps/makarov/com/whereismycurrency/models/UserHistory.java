@@ -5,17 +5,17 @@ import java.util.Date;
 /**
  * Created by makarov on 28/06/15.
  */
-public class UserHistoryData  {
+public class UserHistory {
 
-    private RateData rate;
+    private Rate rate;
     private double value;
     private Date date;
 
-    public RateData getRate() {
+    public Rate getRate() {
         return rate;
     }
 
-    public void setRate(RateData rate) {
+    public void setRate(Rate rate) {
         this.rate = rate;
     }
 

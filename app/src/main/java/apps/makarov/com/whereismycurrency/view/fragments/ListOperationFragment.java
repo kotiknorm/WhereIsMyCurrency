@@ -16,7 +16,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
-import apps.makarov.com.whereismycurrency.models.ResultOperationData;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.modules.ListOperationModule;
 import apps.makarov.com.whereismycurrency.presenters.ListOperationPresenter;
 import apps.makarov.com.whereismycurrency.view.adapters.HistoryAdapter;
@@ -83,10 +83,10 @@ public class ListOperationFragment extends BaseFragment implements ListOperation
     }
 
     @Override
-    public void showHistoryList(List<ResultOperationData> rates) {
+    public void showHistoryList(List<ResultOperation> rates) {
         HistoryAdapter historyAdapter = new HistoryAdapter(rates, new HistoryAdapter.OnClickToPresenter() {
             @Override
-            public void onClick(ResultOperationData operation) {
+            public void onClick(ResultOperation operation) {
                 showResultOperation(operation.getKey());
             }
         });

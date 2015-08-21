@@ -1,6 +1,6 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
-import apps.makarov.com.whereismycurrency.models.RateData;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.view.iviews.CurrencyPairResultView;
 
 /**
@@ -11,10 +11,10 @@ public class CurrencyPairResultPresenterImpl implements CurrencyPairResultPresen
     private CurrencyPairResultView mResultView;
     private double mValueCurrency;
 
-    private RateData mRate;
+    private Rate mRate;
     private String mTitle;
 
-    public CurrencyPairResultPresenterImpl(RateData rate, double valueCurrency, String title) {
+    public CurrencyPairResultPresenterImpl(Rate rate, double valueCurrency, String title) {
         setRate(rate);
         setValue(valueCurrency);
         setTitle(title);
@@ -31,7 +31,7 @@ public class CurrencyPairResultPresenterImpl implements CurrencyPairResultPresen
     }
 
     @Override
-    public void setRate(RateData rate) {
+    public void setRate(Rate rate) {
         mRate = rate;
     }
 
