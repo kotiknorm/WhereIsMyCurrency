@@ -5,6 +5,7 @@ import java.util.Date;
 
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.models.Bank;
+import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 26/06/15.
  */
 
-public class RateRealm extends RealmObject {
+public class RateRealm extends RealmObject implements RateProtocol {
 
     @PrimaryKey
     private String key;

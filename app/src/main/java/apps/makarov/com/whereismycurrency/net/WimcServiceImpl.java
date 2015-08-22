@@ -25,6 +25,7 @@ import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
 import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
 import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -186,20 +187,20 @@ public class WimcServiceImpl extends RequestService implements WimcService {
 
     @Override
     public ResultOperation addResultInHistory(ResultOperation resultOperation) {
-        ResultOperationRealm operation = resultMapper.dataToModel(resultOperation);
-        ResultOperationRealm result = getStore().resultToHistory(operation);
+        ResultOperationProtocol operation = resultMapper.dataToModel(resultOperation);
+        ResultOperationProtocol result = getStore().resultToHistory(operation);
         return resultMapper.modelToData(result);
     }
 
     @Override
     public void removeResult(ResultOperation resultOperation) {
-        ResultOperationRealm operation = resultMapper.dataToModel(resultOperation);
+        ResultOperationProtocol operation = resultMapper.dataToModel(resultOperation);
         getStore().removeResult(operation);
     }
 
     @Override
     public ResultOperation getResultOperation(String key) {
-        ResultOperationRealm operation = getStore().getResultOperation(key);
+        ResultOperationProtocol operation = getStore().getResultOperation(key);
         ResultOperation operationData = resultMapper.modelToData(operation);
         return operationData;
     }

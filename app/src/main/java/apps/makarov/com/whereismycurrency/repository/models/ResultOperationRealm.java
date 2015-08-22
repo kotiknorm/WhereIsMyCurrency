@@ -2,13 +2,14 @@ package apps.makarov.com.whereismycurrency.repository.models;
 
 import java.util.Date;
 
+import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by makarov on 01/07/15.
  */
-public class ResultOperationRealm extends RealmObject {
+public class ResultOperationRealm extends RealmObject implements ResultOperationProtocol {
 
     @PrimaryKey
     private String key;

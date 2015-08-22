@@ -12,6 +12,9 @@ import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
 import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
 import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
 import apps.makarov.com.whereismycurrency.repository.models.UserHistoryRealm;
+import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
@@ -30,14 +33,15 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
-    public List<BankRealm> getBanks() {
+    public List<? extends BankProtocol> getBanks() {
         List<BankRealm> list = Realm.getInstance(application).where(BankRealm.class).findAll();
         Realm.getInstance(application).close();
         return list;
     }
 
+
     @Override
-    public List<RateRealm> getRates(CurrencyPairRealm pair, Date date, String bankName) {
+    public List<? extends RateProtocol> getRates(CurrencyPairRealm pair, Date date, String bankName) {
 
         RealmQuery<RateRealm> query = Realm.getInstance(application)
                 .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
