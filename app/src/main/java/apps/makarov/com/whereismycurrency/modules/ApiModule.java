@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 
 import apps.makarov.com.whereismycurrency.BuildConfig;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
-import apps.makarov.com.whereismycurrency.repository.RealmRepository;
+import apps.makarov.com.whereismycurrency.repository.realm.RealmRepository;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.net.WimcServiceImpl;
 import dagger.Module;

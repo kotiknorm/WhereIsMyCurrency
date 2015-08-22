@@ -3,26 +3,27 @@ package apps.makarov.com.whereismycurrency.repository;
 import java.util.Date;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.repository.models.BankRealm;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
-import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
-import apps.makarov.com.whereismycurrency.repository.models.UserHistoryRealm;
+import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
+import apps.makarov.com.whereismycurrency.repository.protocols.UserHistoryProtocol;
 import io.realm.RealmObject;
 
 /**
  * Created by makarov on 27/06/15.
  */
 
-public interface IRepository<T> {
+public interface IRepository
+        <T, R extends ResultOperationProtocol, M extends CurrencyPairProtocol> {
 
-    List<BankRealm> getBanks();
+    List<? extends BankProtocol> getBanks();
 
-    List<RateRealm> getRates(CurrencyPairRealm currencyPair, Date date, String bankName);
+    List<? extends RateProtocol> getRates(M currencyPair, Date date, String bankName);
 
-    List<UserHistoryRealm> getUserHistory();
+    List<? extends UserHistoryProtocol> getUserHistory();
 
-    List<ResultOperationRealm> getAllResultOperation();
+    List<? extends ResultOperationProtocol> getAllResultOperation();
 
     <E extends T> void saveObject(E object);
 
@@ -32,10 +33,10 @@ public interface IRepository<T> {
 
     boolean hasUrlInCache(String url);
 
-    ResultOperationRealm getResultOperation(String key);
+    R getResultOperation(String key);
 
-    ResultOperationRealm resultToHistory(ResultOperationRealm resultOperation);
+    R resultToHistory(R resultOperation);
 
-    ResultOperationRealm removeResult(ResultOperationRealm resultOperation);
+    R removeResult(R resultOperation);
 }
 

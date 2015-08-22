@@ -1,14 +1,15 @@
-package apps.makarov.com.whereismycurrency.repository.models;
+package apps.makarov.com.whereismycurrency.repository.realm.models;
 
 import java.util.Date;
 
+import apps.makarov.com.whereismycurrency.repository.protocols.UserHistoryProtocol;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by makarov on 28/06/15.
  */
-public class UserHistoryRealm extends RealmObject {
+public class UserHistoryRealm extends RealmObject implements UserHistoryProtocol {
 
     @PrimaryKey
     private String key;

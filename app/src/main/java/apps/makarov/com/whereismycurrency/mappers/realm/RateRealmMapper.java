@@ -2,23 +2,24 @@ package apps.makarov.com.whereismycurrency.mappers.realm;
 
 import apps.makarov.com.whereismycurrency.mappers.Mapper;
 import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.RateRealm;
+import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 
 /**
  * Created by makarov on 11/08/15.
  */
-public class RateRealmMapper implements Mapper<Rate, RateRealm> {
+public class RateRealmMapper implements Mapper<Rate, RateProtocol> {
 
     private CurrencyPairRealmMapper mapper = new CurrencyPairRealmMapper();
 
     @Override
-    public Rate modelToData(RateRealm obj) {
+    public Rate modelToData(RateProtocol obj) {
         return null;
     }
 
     @Override
     public RateRealm dataToModel(Rate rateData) {
-        apps.makarov.com.whereismycurrency.repository.models.RateRealm rate = new RateRealm();
+        RateRealm rate = new RateRealm();
         rate.setBank(rateData.getBank());
         rate.setValue(rateData.getValue());
         rate.setChangeRate(rateData.getChangeRate());
