@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.repository.models;
+package apps.makarov.com.whereismycurrency.repository.realm.models;
 
 import java.util.Date;
 
@@ -9,7 +9,8 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by makarov on 01/07/15.
  */
-public class ResultOperationRealm extends RealmObject implements ResultOperationProtocol {
+public class ResultOperationRealm extends RealmObject
+        implements ResultOperationProtocol<UserHistoryRealm, RateRealm> {
 
     @PrimaryKey
     private String key;

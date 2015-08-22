@@ -23,14 +23,14 @@ import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.ResultOperationRealm;
 import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
-//import apps.makarov.com.whereismycurrency.repository.models.Bank;
+//import apps.makarov.com.whereismycurrency.repository.realm.models.Bank;
 
 /**
  * Created by makarov on 26/06/15.

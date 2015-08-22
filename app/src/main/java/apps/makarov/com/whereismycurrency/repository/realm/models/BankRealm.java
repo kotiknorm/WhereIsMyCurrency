@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.repository.models;
+package apps.makarov.com.whereismycurrency.repository.realm.models;
 
 import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
 import io.realm.RealmList;
@@ -9,7 +9,8 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 26/06/15.
  */
 
-public class BankRealm extends RealmObject implements BankProtocol<RealmList<RateRealm>> {
+public class BankRealm extends RealmObject
+        implements BankProtocol<RateRealm, RealmList<RateRealm>>{
 
     @PrimaryKey
     private String key;
@@ -24,11 +25,12 @@ public class BankRealm extends RealmObject implements BankProtocol<RealmList<Rat
         this.key = key;
     }
 
-    public void setRates(RealmList rates) {
+    @Override
+    public void setRates(RealmList<RateRealm> rates) {
         this.rates = rates;
     }
 
-    public RealmList getRates() {
+    public RealmList<RateRealm> getRates() {
         return rates;
     }
 

@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.repository;
+package apps.makarov.com.whereismycurrency.repository.realm;
 
 import android.app.Application;
 
@@ -6,15 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.models.Bank;
-import apps.makarov.com.whereismycurrency.repository.models.BankRealm;
-import apps.makarov.com.whereismycurrency.repository.models.CacheRequestRealm;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
-import apps.makarov.com.whereismycurrency.repository.models.RateRealm;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
-import apps.makarov.com.whereismycurrency.repository.models.UserHistoryRealm;
-import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
-import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProtocol;
-import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
+import apps.makarov.com.whereismycurrency.repository.realm.models.BankRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.CacheRequestRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.RateRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.UserHistoryRealm;
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmQuery;
@@ -24,7 +22,7 @@ import io.realm.RealmResults;
  * Created by makarov on 27/06/15.
  */
 
-public class RealmRepository implements IRepository<RealmObject> {
+public class RealmRepository implements IRepository<RealmObject, ResultOperationRealm, CurrencyPairRealm> {
 
     private final Application application;
 
@@ -33,7 +31,7 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
-    public List<? extends BankProtocol> getBanks() {
+    public List<BankRealm> getBanks() {
         List<BankRealm> list = Realm.getInstance(application).where(BankRealm.class).findAll();
         Realm.getInstance(application).close();
         return list;
@@ -41,7 +39,7 @@ public class RealmRepository implements IRepository<RealmObject> {
 
 
     @Override
-    public List<? extends RateProtocol> getRates(CurrencyPairRealm pair, Date date, String bankName) {
+    public List<RateRealm> getRates(CurrencyPairRealm pair, Date date, String bankName) {
 
         RealmQuery<RateRealm> query = Realm.getInstance(application)
                 .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
@@ -72,14 +70,14 @@ public class RealmRepository implements IRepository<RealmObject> {
     }
 
     @Override
-    public <E extends RealmObject> void saveObject(E obj) {
+    public void saveObject(RealmObject obj) {
         beginTransaction();
         Realm.getInstance(application).copyToRealmOrUpdate(obj);
         commitTransaction();
     }
 
     @Override
-    public <E extends RealmObject> void removeObject(E obj) {
+    public void removeObject(RealmObject obj) {
         beginTransaction();
         obj.removeFromRealm();
         commitTransaction();

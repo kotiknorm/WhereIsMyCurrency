@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.repository.models;
+package apps.makarov.com.whereismycurrency.repository.realm.models;
 
 import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProtocol;
 import io.realm.RealmObject;

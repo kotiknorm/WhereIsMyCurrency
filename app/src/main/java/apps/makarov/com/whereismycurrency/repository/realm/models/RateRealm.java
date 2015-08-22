@@ -1,4 +1,4 @@
-package apps.makarov.com.whereismycurrency.repository.models;
+package apps.makarov.com.whereismycurrency.repository.realm.models;
 
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
  * Created by makarov on 26/06/15.
  */
 
-public class RateRealm extends RealmObject implements RateProtocol {
+public class RateRealm extends RealmObject implements RateProtocol<CurrencyPairRealm> {
 
     @PrimaryKey
     private String key;

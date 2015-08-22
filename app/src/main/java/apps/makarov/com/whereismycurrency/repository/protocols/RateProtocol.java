@@ -2,16 +2,14 @@ package apps.makarov.com.whereismycurrency.repository.protocols;
 
 import java.util.Date;
 
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
-
 /**
  * Created by makarov on 22/08/15.
  */
-public interface RateProtocol {
+public interface RateProtocol<T extends CurrencyPairProtocol> {
 
-    CurrencyPairRealm getCurrencyPair();
+    CurrencyPairProtocol getCurrencyPair();
 
-    void setCurrencyPair(CurrencyPairProtocol currencyPair);
+    void setCurrencyPair(T currencyPair);
 
     String getBank();
 

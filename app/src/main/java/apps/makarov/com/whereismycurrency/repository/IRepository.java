@@ -14,11 +14,12 @@ import io.realm.RealmObject;
  * Created by makarov on 27/06/15.
  */
 
-public interface IRepository<T> {
+public interface IRepository
+        <T, R extends ResultOperationProtocol, M extends CurrencyPairProtocol> {
 
     List<? extends BankProtocol> getBanks();
 
-    <E extends CurrencyPairProtocol> List<? extends RateProtocol> getRates(E currencyPair, Date date, String bankName);
+    List<? extends RateProtocol> getRates(M currencyPair, Date date, String bankName);
 
     List<? extends UserHistoryProtocol> getUserHistory();
 
@@ -32,10 +33,10 @@ public interface IRepository<T> {
 
     boolean hasUrlInCache(String url);
 
-    <E extends ResultOperationProtocol>E getResultOperation(String key);
+    R getResultOperation(String key);
 
-    <E extends ResultOperationProtocol>E resultToHistory(E resultOperation);
+    R resultToHistory(R resultOperation);
 
-    <E extends ResultOperationProtocol>E removeResult(E resultOperation);
+    R removeResult(R resultOperation);
 }
 

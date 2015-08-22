@@ -2,7 +2,7 @@ package apps.makarov.com.whereismycurrency.mappers.realm;
 
 import apps.makarov.com.whereismycurrency.mappers.Mapper;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
-import apps.makarov.com.whereismycurrency.repository.models.CurrencyPairRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.CurrencyPairRealm;
 import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProtocol;
 
 /**
@@ -16,7 +16,7 @@ public class CurrencyPairRealmMapper implements Mapper<CurrencyPair, CurrencyPai
     }
 
     @Override
-    public CurrencyPairProtocol dataToModel(CurrencyPair currencyPair) {
+    public CurrencyPairRealm dataToModel(CurrencyPair currencyPair) {
         CurrencyPairRealm pair = new CurrencyPairRealm();
         pair.setBaseCurrency(currencyPair.getBaseCurrency());
         pair.setCompareCurrency(currencyPair.getCompareCurrency());

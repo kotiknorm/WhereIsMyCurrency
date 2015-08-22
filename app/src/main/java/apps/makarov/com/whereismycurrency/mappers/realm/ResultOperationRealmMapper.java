@@ -2,7 +2,7 @@ package apps.makarov.com.whereismycurrency.mappers.realm;
 
 import apps.makarov.com.whereismycurrency.mappers.Mapper;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
-import apps.makarov.com.whereismycurrency.repository.models.ResultOperationRealm;
+import apps.makarov.com.whereismycurrency.repository.realm.models.ResultOperationRealm;
 import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
 
 /**

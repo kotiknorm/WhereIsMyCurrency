@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by makarov on 22/08/15.
  */
-public interface BankProtocol<T extends List<? extends RateProtocol>> {
+public interface BankProtocol<E extends RateProtocol, T extends List<E>> {
 
     String getKey();
 
