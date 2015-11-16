@@ -27,7 +27,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // DatePicker Library
-    compile project(':sublimepickerlibrary')
     // Support Libraries:
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:21.0.3'

@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -96,7 +95,7 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
         dateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDatePicker();
+                //openDatePicker();
             }
         });
 
@@ -256,18 +255,18 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
         );
     }
 
-    DatePickerFragment.Callback mFragmentCallback = new DatePickerFragment.Callback() {
-        @Override
-        public void onCancelled() {
-        }
+//    DatePickerFragment.Callback mFragmentCallback = new DatePickerFragment.Callback() {
+//        @Override
+//        public void onCancelled() {
+//        }
+//
+//        @Override
+//        public void onDateTimeRecurrenceSet(Date date) {
+//            onEnterDate(date);
+//        }
+//    };
 
-        @Override
-        public void onDateTimeRecurrenceSet(Date date) {
-            onEnterDate(date);
-        }
-    };
-
-    private Pair<Boolean, SublimeOptions> getDatePickerOptions() {
+    /*private Pair<Boolean, SublimeOptions> getDatePickerOptions() {
         SublimeOptions options = new SublimeOptions();
         int displayOptions = 0;
 
@@ -287,7 +286,7 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
         pickerFrag.setArguments(bundle);
         pickerFrag.setStyle(DialogFragment.STYLE_NO_TITLE, 0);
         pickerFrag.show(getFragmentManager(), DatePickerFragment.DATE_PICKER_TAG);
-    }
+    }*/
 
     private void onEnterDate(Date date) {
         mEnterOperationPresenter.onEnterDateOperation(date);
