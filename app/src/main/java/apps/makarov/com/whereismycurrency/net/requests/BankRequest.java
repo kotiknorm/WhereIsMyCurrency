@@ -43,7 +43,7 @@ public class BankRequest extends WimcRequest<Bank> {
 
             try {
                 BankJsonMapper interpreter = new BankJsonMapper();
-                Bank bank = interpreter.modelToData(actualRates.getJSONObject(i));
+                Bank bank = interpreter.dataToModel(actualRates.getJSONObject(i));
                 list.add(bank);
             }catch (Exception e){
                 Log.e(TAG, "parse error", e);

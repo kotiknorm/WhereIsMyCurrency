@@ -28,7 +28,7 @@ public class RateJsonMapper implements Mapper<List<Rate>, JSONObject> {
     }
 
     @Override
-    public List<Rate> modelToData(JSONObject mJsonObject) {
+    public List<Rate> dataToModel(JSONObject mJsonObject) {
         List<Rate> ratesList = new ArrayList<>();
         try {
             Rate rate = new Rate();
@@ -57,7 +57,7 @@ public class RateJsonMapper implements Mapper<List<Rate>, JSONObject> {
     }
 
     @Override
-    public JSONObject dataToModel(List<Rate> obj) {
+    public JSONObject modelToData(List<Rate> obj) {
         return null;
     }
 }

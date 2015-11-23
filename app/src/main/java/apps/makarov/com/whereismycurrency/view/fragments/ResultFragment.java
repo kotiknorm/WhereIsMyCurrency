@@ -85,7 +85,6 @@ public class ResultFragment extends BaseFragment implements ResultView {
     @Override
     public void setResultColor(int colorRes) {
         diffValueField.setTextColor(getResources().getColor(colorRes));
-
     }
 
     @Override

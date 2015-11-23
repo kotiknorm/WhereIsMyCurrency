@@ -9,10 +9,11 @@ import java.util.List;
  */
 public class ResultOperation implements UniqueModel {
 
+    private String key;
     private Rate exitRate;
     private UserHistory userHistory;
     private Date date;
-    private boolean isHistory;
+    private boolean isHistory ;
 
     public UserHistory getUserHistory() {
         return userHistory;
@@ -64,9 +65,12 @@ public class ResultOperation implements UniqueModel {
         return resultList;
     }
 
-
     @Override
     public String getKey() {
-        return null;
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

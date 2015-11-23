@@ -16,7 +16,7 @@ import apps.makarov.com.whereismycurrency.models.Rate;
 public class BankJsonMapper implements Mapper<Bank, JSONObject> {
 
     @Override
-    public Bank modelToData(JSONObject mJsonObject) {
+    public Bank dataToModel(JSONObject mJsonObject) {
         Bank bank = getBaseBankInterpreter(mJsonObject);
 
         try {
@@ -29,7 +29,7 @@ public class BankJsonMapper implements Mapper<Bank, JSONObject> {
                     continue;
 
                 RateJsonMapper parseRate = new RateJsonMapper(Rate.RUB_CODE, compareCurrency, bank.getName());
-                bank.getRates().addAll(parseRate.modelToData(mJsonObject.getJSONObject(compareCurrency)));
+                bank.getRates().addAll(parseRate.dataToModel(mJsonObject.getJSONObject(compareCurrency)));
 
             }
 
@@ -40,7 +40,7 @@ public class BankJsonMapper implements Mapper<Bank, JSONObject> {
     }
 
     @Override
-    public JSONObject dataToModel(Bank obj) {
+    public JSONObject modelToData(Bank obj) {
         return null;
     }
 

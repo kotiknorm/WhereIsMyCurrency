@@ -5,7 +5,7 @@ package apps.makarov.com.whereismycurrency.mappers;
  */
 public interface Mapper<C, T> {
 
-    C modelToData(T obj);
+    C dataToModel(T objData);
 
-    T dataToModel(C obj);
+    T modelToData(C objModel);
 }

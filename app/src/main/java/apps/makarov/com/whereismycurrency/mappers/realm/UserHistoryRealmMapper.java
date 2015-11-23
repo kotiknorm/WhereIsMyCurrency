@@ -10,20 +10,25 @@ import apps.makarov.com.whereismycurrency.repository.protocols.UserHistoryProtoc
  */
 public class UserHistoryRealmMapper implements Mapper<UserHistory, UserHistoryProtocol> {
 
-    RateRealmMapper rateRealmMapper = new RateRealmMapper();
+    private RateRealmMapper rateRealmMapper = new RateRealmMapper();
 
     @Override
-    public UserHistory modelToData(UserHistoryProtocol obj) {
-        return null;
+    public UserHistory dataToModel(UserHistoryProtocol obj) {
+        UserHistory userHistory = new UserHistory();
+        userHistory.setValue(obj.getValue());
+        userHistory.setRate(rateRealmMapper.dataToModel(obj.getRate()));
+        userHistory.setDate(obj.getDate());
+        //userHistory.setKey(generateKey(obj));
+        return userHistory;
     }
 
     @Override
-    public UserHistoryRealm dataToModel(UserHistory userHistoryData) {
+    public UserHistoryRealm modelToData(UserHistory userHistoryModel) {
         UserHistoryRealm userHistory = new UserHistoryRealm();
-        userHistory.setValue(userHistoryData.getValue());
-        userHistory.setRate(rateRealmMapper.dataToModel(userHistoryData.getRate()));
-        userHistory.setDate(userHistoryData.getDate());
-        userHistory.setKey(generateKey(userHistoryData));
+        userHistory.setValue(userHistoryModel.getValue());
+        userHistory.setRate(rateRealmMapper.modelToData(userHistoryModel.getRate()));
+        userHistory.setDate(userHistoryModel.getDate());
+        userHistory.setKey(generateKey(userHistoryModel));
         return userHistory;
     }
 

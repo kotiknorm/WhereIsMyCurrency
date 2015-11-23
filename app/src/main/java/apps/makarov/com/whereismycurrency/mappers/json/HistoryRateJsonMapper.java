@@ -31,7 +31,7 @@ public class HistoryRateJsonMapper implements Mapper<List<Rate>, JSONObject> {
     public static final String TAG = HistoryRateJsonMapper.class.getSimpleName();
 
     @Override
-    public List<Rate> modelToData(JSONObject mJsonObject) {
+    public List<Rate> dataToModel(JSONObject mJsonObject) {
         List<Rate> ratesList = new ArrayList<>();
 
         try {
@@ -62,7 +62,7 @@ public class HistoryRateJsonMapper implements Mapper<List<Rate>, JSONObject> {
     }
 
     @Override
-    public JSONObject dataToModel(List<Rate> obj) {
+    public JSONObject modelToData(List<Rate> obj) {
         return null;
     }
 

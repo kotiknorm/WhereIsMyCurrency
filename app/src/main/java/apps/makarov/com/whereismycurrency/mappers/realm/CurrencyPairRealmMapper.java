@@ -11,12 +11,15 @@ import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProto
 public class CurrencyPairRealmMapper implements Mapper<CurrencyPair, CurrencyPairProtocol> {
 
     @Override
-    public CurrencyPair modelToData(CurrencyPairProtocol obj) {
-        return null;
+    public CurrencyPair dataToModel(CurrencyPairProtocol obj) {
+        CurrencyPair pair = new CurrencyPair();
+        pair.setBaseCurrency(obj.getBaseCurrency());
+        pair.setCompareCurrency(obj.getCompareCurrency());
+        return pair;
     }
 
     @Override
-    public CurrencyPairRealm dataToModel(CurrencyPair currencyPair) {
+    public CurrencyPairRealm modelToData(CurrencyPair currencyPair) {
         CurrencyPairRealm pair = new CurrencyPairRealm();
         pair.setBaseCurrency(currencyPair.getBaseCurrency());
         pair.setCompareCurrency(currencyPair.getCompareCurrency());

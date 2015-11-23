@@ -25,4 +25,6 @@ public interface ResultOperationProtocol
     boolean isHistory();
 
     void setIsHistory(boolean isHistory);
+
+    E getExitRate();
 }

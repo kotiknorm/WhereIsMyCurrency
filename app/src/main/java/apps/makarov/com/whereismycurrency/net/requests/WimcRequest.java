@@ -4,9 +4,13 @@ import com.squareup.okhttp.Request;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
+import apps.makarov.com.whereismycurrency.models.Rate;
+import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
 

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.mappers.realm.BankRealmMapper;
 import apps.makarov.com.whereismycurrency.mappers.realm.CurrencyPairRealmMapper;
@@ -23,9 +21,11 @@ import apps.makarov.com.whereismycurrency.net.requests.BankRequest;
 import apps.makarov.com.whereismycurrency.net.requests.FixerRequest;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
+import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 import apps.makarov.com.whereismycurrency.repository.realm.models.CurrencyPairRealm;
 import apps.makarov.com.whereismycurrency.repository.realm.models.ResultOperationRealm;
 import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
+import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -38,16 +38,11 @@ import rx.android.schedulers.AndroidSchedulers;
 
 public class WimcServiceImpl extends RequestService implements WimcService {
 
-    @Inject
-    public BankRealmMapper bankRealmMapper;
-    @Inject
-    public ResultOperationRealmMapper resultMapper;
-    @Inject
-    public RateRealmMapper rateRealmMapper;
-    @Inject
-    public CurrencyPairRealmMapper currencyPairRealmMapper;
-    @Inject
-    public UserHistoryRealmMapper userHistoryRealmMapper;
+    protected BankRealmMapper mBankRealmMapper = new BankRealmMapper();
+    protected ResultOperationRealmMapper mResultMapper = new ResultOperationRealmMapper();
+    protected RateRealmMapper mRateRealmMapper = new RateRealmMapper();
+    protected CurrencyPairRealmMapper mCurrencyPairRealmMapper = new CurrencyPairRealmMapper();
+    protected UserHistoryRealmMapper mUserHistoryRealmMapper = new UserHistoryRealmMapper();
 
     public WimcServiceImpl(OkHttpClient client, IRepository store) {
         super(client, store);
@@ -80,7 +75,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
                     List<ResultOperationRealm> list = getStore().getAllResultOperation();
                     List<ResultOperation> resultList = new ArrayList<ResultOperation>(list.size());
                     for(ResultOperationRealm item : list){
-                        resultList.add(resultMapper.modelToData(item));
+                        resultList.add(mResultMapper.dataToModel(item));
                     }
 
                     subscriber.onNext(resultList);
@@ -119,10 +114,15 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
-                    CurrencyPairRealm pair = currencyPairRealmMapper.dataToModel(currencyPair);
-                    List<Rate> list = getStore().getRates(pair, date, Bank.DEFAULT);
+                    CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
 
-                    subscriber.onNext(list);
+                    List<RealmObject> list = getStore().getRates(pair, date, Bank.DEFAULT);
+                    List<Rate> resultList = new ArrayList<Rate>(list.size());
+                    for (RealmObject item : list) {
+                        resultList.add(mRateRealmMapper.dataToModel((RateProtocol) item));
+                    }
+
+                    subscriber.onNext(resultList);
                     subscriber.onCompleted();
                 } catch (Throwable e) {
                     subscriber.onError(e);
@@ -143,7 +143,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
 //                    getStore().addUrlToCache(bankRequest.getRequest().urlString());
-                    CurrencyPairRealm pair = currencyPairRealmMapper.dataToModel(currencyPair);
+                    CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
                     List<Rate> list = getStore().getRates(pair, DateUtils.getTodayDate(), Bank.DEFAULT);
 
                     subscriber.onNext(list);
@@ -171,7 +171,7 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         userHistory.setValue(summa);
         userHistory.setRate(userRate);
 
-        getStore().saveObject(userHistoryRealmMapper.dataToModel(userHistory));
+        getStore().saveObject(mUserHistoryRealmMapper.modelToData(userHistory));
         return userHistory;
     }
 
@@ -181,27 +181,31 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         result.setUserHistory(userHistory);
         result.setExitRate(rate);
         result.setDate(userHistory.getDate());
-        getStore().saveObject(result);
+        result.setIsHistory(false);
+
+        ResultOperationProtocol resultRealm = mResultMapper.modelToData(result);
+
+        getStore().saveObject(resultRealm);
         return result;
     }
 
     @Override
     public ResultOperation addResultInHistory(ResultOperation resultOperation) {
-        ResultOperationProtocol operation = resultMapper.dataToModel(resultOperation);
+        ResultOperationProtocol operation = mResultMapper.modelToData(resultOperation);
         ResultOperationProtocol result = getStore().resultToHistory(operation);
-        return resultMapper.modelToData(result);
+        return mResultMapper.dataToModel(result);
     }
 
     @Override
     public void removeResult(ResultOperation resultOperation) {
-        ResultOperationProtocol operation = resultMapper.dataToModel(resultOperation);
+        ResultOperationProtocol operation = mResultMapper.modelToData(resultOperation);
         getStore().removeResult(operation);
     }
 
     @Override
     public ResultOperation getResultOperation(String key) {
         ResultOperationProtocol operation = getStore().getResultOperation(key);
-        ResultOperation operationData = resultMapper.modelToData(operation);
+        ResultOperation operationData = mResultMapper.dataToModel(operation);
         return operationData;
     }
 

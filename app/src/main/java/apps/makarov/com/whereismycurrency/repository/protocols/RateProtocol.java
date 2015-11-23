@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public interface RateProtocol<T extends CurrencyPairProtocol> {
 
-    CurrencyPairProtocol getCurrencyPair();
+    T getCurrencyPair();
 
     void setCurrencyPair(T currencyPair);
 

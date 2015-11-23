@@ -8,23 +8,33 @@ import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 /**
  * Created by makarov on 11/08/15.
  */
+/*
+ было вот так public class RateRealmMapper implements Mapper<Rate, **RateProtocol> {
+ */
 public class RateRealmMapper implements Mapper<Rate, RateProtocol> {
 
     private CurrencyPairRealmMapper mapper = new CurrencyPairRealmMapper();
 
     @Override
-    public Rate modelToData(RateProtocol obj) {
-        return null;
-    }
-
-    @Override
-    public RateRealm dataToModel(Rate rateData) {
-        RateRealm rate = new RateRealm();
+    public Rate dataToModel(RateProtocol rateData) {
+        Rate rate = new Rate();
         rate.setBank(rateData.getBank());
         rate.setValue(rateData.getValue());
         rate.setChangeRate(rateData.getChangeRate());
-        rate.setKey(generateKey(rateData));
+        //rate.setKey(generateKey(rateData));
         rate.setCurrencyPair(mapper.dataToModel(rateData.getCurrencyPair()));
+
+        return rate;
+    }
+
+    @Override
+    public RateRealm modelToData(Rate rateModel) {
+        RateRealm rate = new RateRealm();
+        rate.setBank(rateModel.getBank());
+        rate.setValue(rateModel.getValue());
+        rate.setChangeRate(rateModel.getChangeRate());
+        rate.setKey(generateKey(rateModel));
+        rate.setCurrencyPair(mapper.modelToData(rateModel.getCurrencyPair()));
 
         return rate;
     }

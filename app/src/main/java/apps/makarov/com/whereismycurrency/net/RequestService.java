@@ -4,8 +4,11 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import io.realm.RealmObject;
@@ -21,6 +24,8 @@ public class RequestService {
 
     private OkHttpClient mClient;
     private IRepository mStore;
+
+    protected RateRealmMapper mRateRealmMapper = new RateRealmMapper();
 
     public RequestService(OkHttpClient client, IRepository store) {
         this.mClient = client;
@@ -39,7 +44,12 @@ public class RequestService {
                         .flatMap(new Func1<List, Observable<Exception>>() {
                             @Override
                             public Observable<Exception> call(List list) {
-                                return observableSaveObjects(list);
+
+                                List<RealmObject> resultList = new ArrayList<RealmObject>(list.size());
+                                for (Object item : list) {
+                                    resultList.add(mRateRealmMapper.modelToData((Rate) item));
+                                }
+                                return observableSaveObjects(resultList);
                             }
                         })
                         .flatMap(new Func1<Exception, Observable<List<T>>>() {

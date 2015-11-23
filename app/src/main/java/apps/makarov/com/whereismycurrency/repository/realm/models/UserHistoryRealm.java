@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by makarov on 28/06/15.
  */
-public class UserHistoryRealm extends RealmObject implements UserHistoryProtocol {
+public class UserHistoryRealm extends RealmObject implements UserHistoryProtocol<RateRealm> {
 
     @PrimaryKey
     private String key;

@@ -14,15 +14,21 @@ public class ResultOperationRealmMapper implements Mapper<ResultOperation, Resul
     private RateRealmMapper rateRealmMapper = new RateRealmMapper();
 
     @Override
-    public ResultOperation modelToData(ResultOperationProtocol obj) {
-        return null;
+    public ResultOperation dataToModel(ResultOperationProtocol obj) {
+        ResultOperation pair = new ResultOperation();
+        pair.setExitRate(rateRealmMapper.dataToModel(obj.getExitRate()));
+        pair.setUserHistory(userHistoryRealmMapper.dataToModel(obj.getUserHistory()));
+        pair.setIsHistory(obj.isHistory());
+        pair.setDate(obj.getDate());
+        pair.setKey(generateKey(pair));
+        return pair;
     }
 
     @Override
-    public ResultOperationProtocol dataToModel(ResultOperation resultOperation) {
+    public ResultOperationProtocol modelToData(ResultOperation resultOperation) {
         ResultOperationRealm pair = new ResultOperationRealm();
-        pair.setExitRate(rateRealmMapper.dataToModel(resultOperation.getExitRate()));
-        pair.setUserHistory(userHistoryRealmMapper.dataToModel(resultOperation.getUserHistory()));
+        pair.setExitRate(rateRealmMapper.modelToData(resultOperation.getExitRate()));
+        pair.setUserHistory(userHistoryRealmMapper.modelToData(resultOperation.getUserHistory()));
         pair.setIsHistory(resultOperation.isHistory());
         pair.setDate(resultOperation.getDate());
         pair.setKey(generateKey(resultOperation));

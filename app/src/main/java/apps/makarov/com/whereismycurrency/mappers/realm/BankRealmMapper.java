@@ -11,15 +11,18 @@ import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
 public class BankRealmMapper implements Mapper<Bank, BankProtocol> {
 
     @Override
-    public Bank modelToData(BankProtocol obj) {
-        return null;
+    public Bank dataToModel(BankProtocol bankData) {
+        Bank bank = new Bank();
+        bank.setName(bankData.getName());
+        //bank.setKey(generateKey(bankData));
+        return bank;
     }
 
     @Override
-    public BankProtocol dataToModel(Bank bankData) {
+    public BankProtocol modelToData(Bank bankModel) {
         BankRealm bank = new BankRealm();
-        bank.setName(bankData.getName());
-        bank.setKey(generateKey(bankData));
+        bank.setName(bankModel.getName());
+        bank.setKey(generateKey(bankModel));
         return bank;
     }
 

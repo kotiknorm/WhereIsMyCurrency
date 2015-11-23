@@ -60,7 +60,7 @@ public class FixerRequest extends WimcRequest<Rate> {
         JSONObject result = new JSONObject(str);
 
         HistoryRateJsonMapper interpreter = new HistoryRateJsonMapper();
-        List<Rate> list = interpreter.modelToData(result);
+        List<Rate> list = interpreter.dataToModel(result);
         return list;
     }
 
