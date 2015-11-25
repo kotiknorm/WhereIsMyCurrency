@@ -2,7 +2,6 @@ package apps.makarov.com.whereismycurrency.repository.realm;
 
 import android.app.Application;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +49,18 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
         if (bankName != Bank.DEFAULT)
             query = query.equalTo("bank", bankName);
 
+        return query.findAll();
+    }
+
+    @Override
+    public List<RateRealm> getRatesByCurrencyPair(CurrencyPairRealm pair, Date date) {
+
+        RealmQuery<RateRealm> query = Realm.getInstance(application)
+                .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
+                .notEqualTo("bank", Bank.USER_RATE)
+                ;
+        // TODO Fixed date (temp)
+                //.equalTo("changeRate", date)
         return query.findAll();
     }
 

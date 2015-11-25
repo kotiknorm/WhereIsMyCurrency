@@ -7,6 +7,7 @@
     <string name="title_enter_button">Добавить операцию</string>
     <string name="title_exit_operation_button">Закрыть</string>
     <string name="title_remove_operation_button">Удалить</string>
+    <string name="title_list_banks_button">Банки</string>
 
 
     <string name="history_item_title">%1$s %2$s</string>

@@ -15,6 +15,8 @@ public interface WimcService {
 
     Observable<List<Rate>> getRates(CurrencyPair currencyPair, Date date);
 
+    Observable<List<Rate>> getAllRatesByCurrencyPair(CurrencyPair currencyPair);
+
     Observable<List<UserHistory>> getHistory();
 
     Observable<List<ResultOperation>> getResultOperations();

@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:background="@drawable/ripple_test">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/lvToDoList"
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
@@ -141,18 +142,21 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <include
+            <android.support.v7.widget.RecyclerView
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/bank_item_layout" />
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:id="@+id/banks_list" />
 
-        </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

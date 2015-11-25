@@ -18,4 +18,6 @@ public interface ResultPresenter {
     void addResultInHistory();
 
     void removeResult();
+
+    void openListBanks();
 }

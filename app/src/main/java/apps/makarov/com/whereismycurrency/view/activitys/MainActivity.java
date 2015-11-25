@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.view.fragments.BanksListFragment;
 import apps.makarov.com.whereismycurrency.view.fragments.EnterOperationFragment;
 import apps.makarov.com.whereismycurrency.view.fragments.ListOperationFragment;
 import apps.makarov.com.whereismycurrency.view.fragments.ResultFragment;
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void showListOperationFragment(Bundle bundle) {
         Fragment newFragment = new ListOperationFragment();
+        newFragment.setArguments(bundle);
+        setFragment(newFragment, true);
+    }
+
+    @Override
+    public void showListBanksFragment(Bundle bundle) {
+        Fragment newFragment = new BanksListFragment();
         newFragment.setArguments(bundle);
         setFragment(newFragment, true);
     }

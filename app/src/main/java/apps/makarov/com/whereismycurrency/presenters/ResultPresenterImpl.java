@@ -78,5 +78,8 @@ public class ResultPresenterImpl implements ResultPresenter {
         mResultView.onRemovedResult();
     }
 
-
+    @Override
+    public void openListBanks(){
+        mResultView.showListBanks(mResultOperation.getKey());
+    }
 }

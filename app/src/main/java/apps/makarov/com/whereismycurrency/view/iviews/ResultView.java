@@ -18,6 +18,8 @@ public interface ResultView extends BaseContextView {
 
     void onRemovedResult();
 
+    void showListBanks(String key);
+
     void addOpenOperationResult(CurrencyPairResultPresenter pairResultPresenter);
 
     void addExitOperationResult(CurrencyPairResultPresenter pairResultPresenter);

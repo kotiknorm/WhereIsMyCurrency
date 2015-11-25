@@ -21,6 +21,8 @@ public interface IRepository
 
     List<? extends RateProtocol> getRates(M currencyPair, Date date, String bankName);
 
+    List<? extends RateProtocol> getRatesByCurrencyPair(M currencyPair, Date date);
+
     List<? extends UserHistoryProtocol> getUserHistory();
 
     List<? extends ResultOperationProtocol> getAllResultOperation();

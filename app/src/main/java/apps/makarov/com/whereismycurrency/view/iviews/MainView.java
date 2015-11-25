@@ -13,4 +13,6 @@ public interface MainView {
 
     void showListOperationFragment(Bundle bundle);
 
+    void showListBanksFragment(Bundle bundle);
+
 }

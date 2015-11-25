@@ -135,6 +135,30 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     }
 
     @Override
+    public Observable<List<Rate>> getAllRatesByCurrencyPair(final CurrencyPair currencyPair){
+        return Observable.create(new Observable.OnSubscribe<List<Rate>>() {
+            @Override
+            public void call(Subscriber<? super List<Rate>> subscriber) {
+                try {
+                    CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
+
+                    List<RealmObject> list = getStore().getRatesByCurrencyPair(pair, DateUtils.getTodayDate());
+                    List<Rate> resultList = new ArrayList<Rate>(list.size());
+                    for (RealmObject item : list) {
+                        resultList.add(mRateRealmMapper.dataToModel((RateProtocol) item));
+                    }
+
+                    subscriber.onNext(resultList);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Observable<List<Rate>> getRatesAllBank(final CurrencyPair currencyPair) {
         final WimcRequest bankRequest = new BankRequest();
 

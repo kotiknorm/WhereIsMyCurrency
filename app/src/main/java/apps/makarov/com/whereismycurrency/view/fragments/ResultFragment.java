@@ -19,6 +19,7 @@ import apps.makarov.com.whereismycurrency.modules.ResultModule;
 import apps.makarov.com.whereismycurrency.presenters.CurrencyPairResultPresenter;
 import apps.makarov.com.whereismycurrency.presenters.ResultPresenter;
 import apps.makarov.com.whereismycurrency.view.base.BaseFragment;
+import apps.makarov.com.whereismycurrency.view.iviews.MainView;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,10 +39,13 @@ public class ResultFragment extends BaseFragment implements ResultView {
     TextView diffValueField;
 
     @Bind(R.id.exit_operation_btn)
-    Button exitOperaionBtn;
+    Button exitOperationBtn;
 
     @Bind(R.id.remove_operation_btn)
-    Button removeOperaionBtn;
+    Button removeOperationBtn;
+
+    @Bind(R.id.open_list_banks_btn)
+    Button openListBanksBtn;
 
     @Bind(R.id.container)
     LinearLayout framesContainer;
@@ -60,17 +64,24 @@ public class ResultFragment extends BaseFragment implements ResultView {
         String key = getResultKeyExtra(getArguments());
         mResultPresenter.setUniqueOperation(key);
 
-        exitOperaionBtn.setOnClickListener(new View.OnClickListener() {
+        exitOperationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mResultPresenter.addResultInHistory();
             }
         });
 
-        removeOperaionBtn.setOnClickListener(new View.OnClickListener() {
+        removeOperationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mResultPresenter.removeResult();
+            }
+        });
+
+        openListBanksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mResultPresenter.openListBanks();
             }
         });
 
@@ -89,17 +100,24 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     @Override
     public void setVisibileHistoryBtn(boolean isShown) {
-        exitOperaionBtn.setVisibility(isShown ? View.VISIBLE : View.GONE);
+        exitOperationBtn.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onAddedResultToHistory() {
-        exitOperaionBtn.setVisibility(View.GONE);
+        exitOperationBtn.setVisibility(View.GONE);
     }
 
     @Override
     public void onRemovedResult() {
         getFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void showListBanks(String key) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ResultFragment.RESULT_KEY_EXTRA, key);
+        ((MainView) getActivity()).showListBanksFragment(bundle);
     }
 
     @Override

@@ -5,9 +5,11 @@ package apps.makarov.com.whereismycurrency.presenters;
  */
 public interface BanksListPresenter {
 
-    void onResume();
+    void onResume(String key);
 
     void onPause();
+
+    void onRefresh(String key);
 
     void setRate(String resultKey);
 
