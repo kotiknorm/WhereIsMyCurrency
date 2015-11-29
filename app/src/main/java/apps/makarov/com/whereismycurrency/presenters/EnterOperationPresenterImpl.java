@@ -220,7 +220,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
 
     private Observable<Rate> getRateObservable(CurrencyPair currencyPair, Date date) {
         return mWimcService
-                .getRates(currencyPair, date)
+                //.getRates(currencyPair, date)
+                .getRatesAllBank(currencyPair)
                 .flatMap(new Func1<List<Rate>, Observable<Rate>>() {
                     @Override
                     public Observable<Rate> call(final List<Rate> rates) {

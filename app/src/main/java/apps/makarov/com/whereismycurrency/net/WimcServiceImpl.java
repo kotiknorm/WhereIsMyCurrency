@@ -29,6 +29,7 @@ import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 //import apps.makarov.com.whereismycurrency.repository.realm.models.Bank;
 
@@ -116,10 +117,10 @@ public class WimcServiceImpl extends RequestService implements WimcService {
                 try {
                     CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
 
-                    List<RealmObject> list = getStore().getRates(pair, date, Bank.DEFAULT);
-                    List<Rate> resultList = new ArrayList<Rate>(list.size());
-                    for (RealmObject item : list) {
-                        resultList.add(mRateRealmMapper.dataToModel((RateProtocol) item));
+                    List<RateProtocol> list = getStore().getRates(pair, date, Bank.DEFAULT);
+                    List<Rate> resultList = new ArrayList<>(list.size());
+                    for (RateProtocol item : list) {
+                        resultList.add(mRateRealmMapper.dataToModel(item));
                     }
 
                     subscriber.onNext(resultList);
@@ -131,21 +132,37 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
 
-        return getObservableRequest(bankRequest, localStoreObservable);
+        Func1<List, List> func = new Func1<List, List>() {
+            @Override
+            public List call(List rates) {
+
+                List<RealmObject> resultList = new ArrayList<>(rates.size());
+                for (Object item : rates) {
+                    resultList.add(mRateRealmMapper.modelToData((Rate) item));
+                }
+
+                observableSaveObjects(resultList);
+
+                return rates;
+            }
+        };
+
+        return getObservableRequest(bankRequest, localStoreObservable, func);
     }
 
     @Override
     public Observable<List<Rate>> getAllRatesByCurrencyPair(final CurrencyPair currencyPair){
+
         return Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
                     CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
 
-                    List<RealmObject> list = getStore().getRatesByCurrencyPair(pair, DateUtils.getTodayDate());
-                    List<Rate> resultList = new ArrayList<Rate>(list.size());
-                    for (RealmObject item : list) {
-                        resultList.add(mRateRealmMapper.dataToModel((RateProtocol) item));
+                    List<RateProtocol> list = getStore().getRatesByCurrencyPair(pair, DateUtils.getTodayDate());
+                    List<Rate> resultList = new ArrayList<>(list.size());
+                    for (RateProtocol item : list) {
+                        resultList.add(mRateRealmMapper.dataToModel(item));
                     }
 
                     subscriber.onNext(resultList);
@@ -162,15 +179,20 @@ public class WimcServiceImpl extends RequestService implements WimcService {
     public Observable<List<Rate>> getRatesAllBank(final CurrencyPair currencyPair) {
         final WimcRequest bankRequest = new BankRequest();
 
-        Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
+        final Observable<List<Rate>> localStoreObservable = Observable.create(new Observable.OnSubscribe<List<Rate>>() {
             @Override
             public void call(Subscriber<? super List<Rate>> subscriber) {
                 try {
 //                    getStore().addUrlToCache(bankRequest.getRequest().urlString());
                     CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
-                    List<Rate> list = getStore().getRates(pair, DateUtils.getTodayDate(), Bank.DEFAULT);
 
-                    subscriber.onNext(list);
+                    List<RateProtocol> list = getStore().getRates(pair, DateUtils.getTodayDate(), Bank.DEFAULT);
+                    List<Rate> resultList = new ArrayList<>(list.size());
+                    for (RateProtocol item : list) {
+                        resultList.add(mRateRealmMapper.dataToModel(item));
+                    }
+
+                    subscriber.onNext(resultList);
                     subscriber.onCompleted();
                 } catch (Throwable e) {
                     subscriber.onError(e);
@@ -179,7 +201,22 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         }).observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread());
 
-        return getObservableRequest(bankRequest, localStoreObservable);
+        Func1<List, List> func = new Func1<List, List>() {
+            @Override
+            public List call(List rates) {
+
+                List<RealmObject> resultList = new ArrayList<>(rates.size());
+                for (Object item : rates) {
+                    resultList.add(mBankRealmMapper.modelToData((Bank) item));
+                }
+
+                observableSaveObjects(resultList);
+
+                return rates;
+            }
+        };
+
+        return getObservableRequest(bankRequest, localStoreObservable, func);
     }
 
     @Override
@@ -241,6 +278,24 @@ public class WimcServiceImpl extends RequestService implements WimcService {
 //            }
 //        };
 //    }
+
+
+    private Observable<Exception> observableSaveRate(final List<Rate> list) {
+        return Observable.create(new Observable.OnSubscribe<Exception>() {
+            @Override
+            public void call(Subscriber<? super Exception> subscriber) {
+                try {
+                    for (Rate object : list) {
+                        getStore().saveObject(object);
+                    }
+                    subscriber.onNext(null);
+                    subscriber.onCompleted();
+                } catch (Throwable e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
+    }
 
 
 }

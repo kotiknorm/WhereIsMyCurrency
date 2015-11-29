@@ -8,10 +8,10 @@ import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
 /**
  * Created by makarov on 11/08/15.
  */
-public class BankRealmMapper implements Mapper<Bank, BankProtocol> {
+public class BankRealmMapper implements Mapper<Bank, BankRealm> {
 
     @Override
-    public Bank dataToModel(BankProtocol bankData) {
+    public Bank dataToModel(BankRealm bankData) {
         Bank bank = new Bank();
         bank.setName(bankData.getName());
         //bank.setKey(generateKey(bankData));
@@ -19,7 +19,7 @@ public class BankRealmMapper implements Mapper<Bank, BankProtocol> {
     }
 
     @Override
-    public BankProtocol modelToData(Bank bankModel) {
+    public BankRealm modelToData(Bank bankModel) {
         BankRealm bank = new BankRealm();
         bank.setName(bankModel.getName());
         bank.setKey(generateKey(bankModel));

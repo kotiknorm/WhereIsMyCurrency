@@ -79,7 +79,7 @@ public class ResultPresenterImpl implements ResultPresenter {
     }
 
     @Override
-    public void openListBanks(){
-        mResultView.showListBanks(mResultOperation.getKey());
+    public void openBanksList(){
+        mResultView.showBanksList(mResultOperation.getKey());
     }
 }

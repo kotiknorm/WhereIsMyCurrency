@@ -2,13 +2,11 @@ package apps.makarov.com.whereismycurrency.presenters;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.models.UserHistory;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.BanksView;
 import rx.Observable;
@@ -25,8 +23,8 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
 
     private BanksView mBanksView;
     private WimcService mWimcService;
-
-    private Rate mRate;
+    private String mKey;
+    private ResultOperation mHistory;
 
     public BanksListPresenterImpl(BanksView banksView, WimcService wimcService) {
         this.mBanksView = banksView;
@@ -34,8 +32,8 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
     }
 
     @Override
-    public void onResume(String key) {
-        onRefresh(key);
+    public void onResume() {
+        onRefresh();
     }
 
     @Override
@@ -44,10 +42,9 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
     }
 
     @Override
-    public void onRefresh(String key) {
+    public void onRefresh() {
 
-        UserHistory userHistory = mWimcService.getResultOperation(key).getUserHistory();
-        CurrencyPair pair = mWimcService.getResultOperation(key).getExitRate().getCurrencyPair();
+        CurrencyPair pair = mHistory.getExitRate().getCurrencyPair();
 
         getRateObservable(pair).subscribe(new Observer<List<Rate>>() {
             @Override
@@ -77,20 +74,13 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
     @Override
     public void setRate(String resultKey) {
         // здесь вся логика заполнения списка  полей вью элемента
-        UserHistory userHistory = mWimcService.getResultOperation(resultKey).getUserHistory();
-        mRate = mWimcService.getResultOperation(resultKey).getExitRate();
-        CurrencyPair currencyPair = mRate.getCurrencyPair();
+        mKey = resultKey;
+        mHistory = mWimcService.getResultOperation(mKey);
 
-        //List<Rate> list = mWimcService.getRatesAllBank(currencyPair);
-        List<Rate> list = new ArrayList<>();
-        for(int i = 0; i <= 10; i++){
-            Rate rate = new Rate();
-            rate.setBank("MyBank" + i);
-            rate.setCurrencyPair(currencyPair);
-            rate.setValue(333.33);
-            list.add(rate);
-        }
-        mBanksView.setAdapterForRecyclerView(list);
+        mBanksView.bindModelToView(mHistory);
+
+        //onRefresh();
+        //fillAdapter(list);
     }
 
     private void fillAdapter(List<Rate> banks){

@@ -8,6 +8,8 @@ import java.util.Iterator;
 import apps.makarov.com.whereismycurrency.mappers.Mapper;
 import apps.makarov.com.whereismycurrency.models.Bank;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.repository.protocols.BankProtocol;
+import apps.makarov.com.whereismycurrency.repository.realm.models.BankRealm;
 
 /**
  * Created by makarov on 28/06/15.

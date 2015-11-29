@@ -9,8 +9,8 @@ import java.util.List;
 
 import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
 import apps.makarov.com.whereismycurrency.models.Rate;
-import apps.makarov.com.whereismycurrency.repository.IRepository;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
+import apps.makarov.com.whereismycurrency.repository.IRepository;
 import io.realm.RealmObject;
 import rx.Observable;
 import rx.Subscriber;
@@ -36,25 +36,17 @@ public class RequestService {
         return mStore;
     }
 
-    protected <T> Observable<List<T>> getObservableRequest(final WimcRequest request, final Observable<List<T>> observableDateFromLocalStore) {
+    protected <T> Observable<List<T>> getObservableRequest(
+            final WimcRequest request,
+            final Observable<List<T>> observableDateFromLocalStore,
+            final Func1<List, List> func) {
         boolean urlInCache = mStore.hasUrlInCache(request.getPath());
 
         return urlInCache ? observableDateFromLocalStore :
-                observableNetwork(request)
-                        .flatMap(new Func1<List, Observable<Exception>>() {
+                observableNetwork(request).map(func)
+                        .flatMap(new Func1<List, Observable<List<T>>>() {
                             @Override
-                            public Observable<Exception> call(List list) {
-
-                                List<RealmObject> resultList = new ArrayList<RealmObject>(list.size());
-                                for (Object item : list) {
-                                    resultList.add(mRateRealmMapper.modelToData((Rate) item));
-                                }
-                                return observableSaveObjects(resultList);
-                            }
-                        })
-                        .flatMap(new Func1<Exception, Observable<List<T>>>() {
-                            @Override
-                            public Observable<List<T>> call(Exception e) {
+                            public Observable<List<T>> call(List list) {
                                 return observableDateFromLocalStore;
                             }
                         });
@@ -107,21 +99,10 @@ public class RequestService {
         });
     }
 
-    private Observable<Exception> observableSaveObjects(final List<? extends RealmObject> list) {
-        return Observable.create(new Observable.OnSubscribe<Exception>() {
-            @Override
-            public void call(Subscriber<? super Exception> subscriber) {
-                try {
-                    for (RealmObject object : list) {
-                        mStore.saveObject(object);
-                    }
-                    subscriber.onNext(null);
-                    subscriber.onCompleted();
-                } catch (Throwable e) {
-                    subscriber.onError(e);
-                }
-            }
-        });
+    protected void observableSaveObjects(final List<? extends RealmObject> list) {
+        for (RealmObject object : list) {
+            mStore.saveObject(object);
+        }
     }
 
 }

@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +17,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.modules.BanksListModule;
 import apps.makarov.com.whereismycurrency.presenters.BanksListPresenter;
 import apps.makarov.com.whereismycurrency.view.adapters.BankAdapter;
@@ -37,14 +41,27 @@ public class BanksListFragment extends BaseFragment implements BanksView {
     @Bind(R.id.banks_list)
     RecyclerView mRecyclerView;
 
+    @Bind(R.id.base_value)
+    TextView baseValueField;
+    @Bind(R.id.base_name_currency)
+    TextView baseNameCurrencyField;
+    @Bind(R.id.base_currency_image)
+    ImageView baseCurrencyImage;
+    @Bind(R.id.compare_currency_image)
+    ImageView compareCurrencyImage;
+    @Bind(R.id.diff_base_currency)
+    TextView diffBaseCurrencyValue;
+    @Bind(R.id.balance_field)
+    TextView balanceField;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View hotView = LayoutInflater.from(getContext()).inflate(R.layout.list_banks_fragment, container, false);
+        View hotView = LayoutInflater.from(getContext()).inflate(R.layout.banks_list_fragment, container, false);
 
         ButterKnife.bind(this, hotView);
 
-        //String key = getResultKeyExtra(getArguments());
-        //mBanksListPresenter.setRate(key);
+        String key = getResultKeyExtra(getArguments());
+        mBanksListPresenter.setRate(key);
 
         return hotView;
     }
@@ -58,8 +75,7 @@ public class BanksListFragment extends BaseFragment implements BanksView {
     @Override
     public void onResume() {
         super.onResume();
-        String key = getResultKeyExtra(getArguments());
-        mBanksListPresenter.onResume(key);
+        mBanksListPresenter.onResume();
     }
 
     @Override
@@ -72,6 +88,20 @@ public class BanksListFragment extends BaseFragment implements BanksView {
     public void setAdapterForRecyclerView(List<Rate> banks) {
         BankAdapter bankAdapter = new BankAdapter(banks);
         mRecyclerView.setAdapter(bankAdapter);
+    }
+
+    @Override
+    public void bindModelToView(ResultOperation history) {
+
+        baseValueField.setText(ResultUtils.getBaseValueString(this.getContext(), history));
+        baseNameCurrencyField.setText(Rate.getCurrencyName(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
+
+        diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
+
+        balanceField.setText(ResultUtils.getFinishValueStr(this.getContext(), history));
+
     }
 
     @Override

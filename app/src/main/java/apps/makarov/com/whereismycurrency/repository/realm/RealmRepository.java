@@ -57,8 +57,8 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
 
         RealmQuery<RateRealm> query = Realm.getInstance(application)
                 .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
-                .notEqualTo("bank", Bank.USER_RATE)
-                ;
+                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT);
+
         // TODO Fixed date (temp)
                 //.equalTo("changeRate", date)
         return query.findAll();

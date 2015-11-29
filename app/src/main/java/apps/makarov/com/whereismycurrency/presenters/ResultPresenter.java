@@ -19,5 +19,5 @@ public interface ResultPresenter {
 
     void removeResult();
 
-    void openListBanks();
+    void openBanksList();
 }

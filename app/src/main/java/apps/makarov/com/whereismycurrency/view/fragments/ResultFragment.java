@@ -37,15 +37,12 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     @Bind(R.id.diff_operation)
     TextView diffValueField;
-
     @Bind(R.id.exit_operation_btn)
     Button exitOperationBtn;
-
     @Bind(R.id.remove_operation_btn)
     Button removeOperationBtn;
-
-    @Bind(R.id.open_list_banks_btn)
-    Button openListBanksBtn;
+    @Bind(R.id.open_banks_list_btn)
+    Button openBanksListBtn;
 
     @Bind(R.id.container)
     LinearLayout framesContainer;
@@ -78,10 +75,10 @@ public class ResultFragment extends BaseFragment implements ResultView {
             }
         });
 
-        openListBanksBtn.setOnClickListener(new View.OnClickListener() {
+        openBanksListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mResultPresenter.openListBanks();
+                mResultPresenter.openBanksList();
             }
         });
 
@@ -114,7 +111,7 @@ public class ResultFragment extends BaseFragment implements ResultView {
     }
 
     @Override
-    public void showListBanks(String key) {
+    public void showBanksList(String key) {
         Bundle bundle = new Bundle();
         bundle.putString(ResultFragment.RESULT_KEY_EXTRA, key);
         ((MainView) getActivity()).showListBanksFragment(bundle);
