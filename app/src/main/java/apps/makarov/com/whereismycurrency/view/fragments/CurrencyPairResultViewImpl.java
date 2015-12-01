@@ -41,6 +41,9 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
     @Bind(R.id.title)
     TextView titleField;
 
+    @Bind(R.id.open_date)
+    TextView dateField;
+
     @Bind(R.id.open_operation_base_currency_name)
     TextView operationBaseCurrencyName;
     @Bind(R.id.open_operation_compare_currency_name)
@@ -69,12 +72,12 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         baseIcon.setImageDrawable(drawableRes);
     }
 
-    private void setOperationCompareValue(double operaionCompareValue) {
-        compareValue.setText(operaionCompareValue + "");
+    private void setOperationCompareValue(double operationCompareValue) {
+        compareValue.setText(operationCompareValue + "");
     }
 
-    public void setOperationBaseValue(double operaionBaseValue) {
-        baseValue.setText(operaionBaseValue + "");
+    public void setOperationBaseValue(double operationBaseValue) {
+        baseValue.setText(operationBaseValue + "");
     }
 
     private void setOperationCompareCurrencyName(String value) {
@@ -90,7 +93,8 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
 
     }
 
-    private void setDate(String value) {
+    private void setDate(String date) {
+        dateField.setText(date);
     }
 
     @Override

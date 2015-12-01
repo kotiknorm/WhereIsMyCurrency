@@ -4,11 +4,8 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import apps.makarov.com.whereismycurrency.mappers.realm.RateRealmMapper;
-import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.net.requests.WimcRequest;
 import apps.makarov.com.whereismycurrency.repository.IRepository;
 import io.realm.RealmObject;
@@ -25,25 +22,23 @@ public class RequestService {
     private OkHttpClient mClient;
     private IRepository mStore;
 
-    protected RateRealmMapper mRateRealmMapper = new RateRealmMapper();
-
     public RequestService(OkHttpClient client, IRepository store) {
         this.mClient = client;
         this.mStore = store;
     }
 
-    protected IRepository getStore(){
+    protected IRepository getStore() {
         return mStore;
     }
 
-    protected <T> Observable<List<T>> getObservableRequest(
-            final WimcRequest request,
-            final Observable<List<T>> observableDateFromLocalStore,
-            final Func1<List, List> func) {
+    protected <T> Observable<List<T>> getObservableRequest(final WimcRequest request,
+            final Observable<List<T>> observableDateFromLocalStore, final Func1<List, List> func) {
+
         boolean urlInCache = mStore.hasUrlInCache(request.getPath());
 
         return urlInCache ? observableDateFromLocalStore :
-                observableNetwork(request).map(func)
+                observableNetwork(request)
+                        .map(func)
                         .flatMap(new Func1<List, Observable<List<T>>>() {
                             @Override
                             public Observable<List<T>> call(List list) {

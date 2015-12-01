@@ -13,6 +13,6 @@ public interface BanksView {
 
     void bindModelToView(ResultOperation history);
 
-    void setVisabileSplash(boolean isShown);
+    void setVisibleSplash(boolean isShown);
 
 }

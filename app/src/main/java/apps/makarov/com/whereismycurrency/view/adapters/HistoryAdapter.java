@@ -83,7 +83,7 @@ public class HistoryAdapter extends SectionsAdapter<ViewHolderWrapper> {
     protected void createdListeners(ViewHolderWrapper holder, final Object object, int type) {
         if (type == ACTIVE_TYPE || type == INACTIVE_TYPE
                 )
-            holder.setOnClicklistener(new View.OnClickListener() {
+            holder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mPresenter.onClick((ResultOperation) object);

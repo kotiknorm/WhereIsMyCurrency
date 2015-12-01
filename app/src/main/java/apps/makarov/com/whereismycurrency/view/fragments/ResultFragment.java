@@ -37,6 +37,8 @@ public class ResultFragment extends BaseFragment implements ResultView {
 
     @Bind(R.id.diff_operation)
     TextView diffValueField;
+    @Bind(R.id.exit_date)
+    TextView exitDateField;
     @Bind(R.id.exit_operation_btn)
     Button exitOperationBtn;
     @Bind(R.id.remove_operation_btn)
@@ -86,6 +88,11 @@ public class ResultFragment extends BaseFragment implements ResultView {
     }
 
     @Override
+    public void setExitDate(String textData){
+        exitDateField.setText("Закрытие операции на " + textData);
+    }
+
+    @Override
     public void setDiffValue(String diff) {
         diffValueField.setText(diff);
     }
@@ -96,13 +103,19 @@ public class ResultFragment extends BaseFragment implements ResultView {
     }
 
     @Override
-    public void setVisibileHistoryBtn(boolean isShown) {
+    public void setVisibleHistoryTextDate(boolean isShown){
+        exitDateField.setVisibility(isShown ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void setVisibleHistoryBtn(boolean isShown) {
         exitOperationBtn.setVisibility(isShown ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onAddedResultToHistory() {
         exitOperationBtn.setVisibility(View.GONE);
+        exitDateField.setVisibility(View.VISIBLE);
     }
 
     @Override

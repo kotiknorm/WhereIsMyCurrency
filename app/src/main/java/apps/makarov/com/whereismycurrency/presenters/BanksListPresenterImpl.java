@@ -78,18 +78,15 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
         mHistory = mWimcService.getResultOperation(mKey);
 
         mBanksView.bindModelToView(mHistory);
-
-        //onRefresh();
-        //fillAdapter(list);
     }
 
     private void fillAdapter(List<Rate> banks){
         if(banks.size() == 0){
-            mBanksView.setVisabileSplash(true);
+            mBanksView.setVisibleSplash(true);
             return;
         }
 
-        mBanksView.setVisabileSplash(false);
+        mBanksView.setVisibleSplash(false);
         mBanksView.setAdapterForRecyclerView(banks);
     }
 }

@@ -86,9 +86,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Закрытии операции на 23.07.2015"
+                    android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:id="@+id/textView30"
+                    android:id="@+id/exit_date"
                     android:textSize="12dp"
                     android:textColor="@android:color/black" />
 

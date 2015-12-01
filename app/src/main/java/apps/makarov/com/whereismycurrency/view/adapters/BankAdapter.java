@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import apps.makarov.com.whereismycurrency.R;
+import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
 
 /**
@@ -21,22 +22,20 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder
 
     public static class BankViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView mBaseValue;
+        public TextView mNameBank;
+        public TextView mDiffBase;
+        public TextView mDiffBalance;
         public TextView mDiffBaseCurrency;
         public TextView mBalanceField;
-        public TextView mTextView;
-        public TextView mChangeBalance;
-        public TextView mResidueBalance;
 
         public BankViewHolder(View v) {
             super(v);
 
-            mBaseValue = (TextView) v.findViewById(R.id.base_value);
+            mNameBank = (TextView) v.findViewById(R.id.name_bank);
+            mDiffBase = (TextView) v.findViewById(R.id.diff_base);
+            mDiffBalance = (TextView) v.findViewById(R.id.diff_balance);
             mDiffBaseCurrency = (TextView) v.findViewById(R.id.diff_base_currency);
             mBalanceField = (TextView) v.findViewById(R.id.balance_field);
-            mTextView = (TextView) v.findViewById(R.id.textView);
-            mChangeBalance = (TextView) v.findViewById(R.id.change_balance);
-            mResidueBalance = (TextView) v.findViewById(R.id.residue_balance);
         }
     }
 
@@ -57,13 +56,12 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder
     @Override
     public void onBindViewHolder(BankViewHolder holder, int position) {
 
-        holder.mBaseValue.setText(mListBanks.get(position).getBank());
+        holder.mNameBank.setText(mListBanks.get(position).getBank());
 
-        //holder.mDiffBaseCurrency.setText(mListBanks.get(position).getCurrencyPair().getBaseCurrency());
-        //holder.mBalanceField.setText(mListBanks.get(position).getCurrencyPair().getCompareCurrency());
-        //holder.mTextView.setText(mListBanks.get(position).getChangeRate().toString());
-        //holder.mChangeBalance.setText((int) mListBanks.get(position).getValue());
         //holder.mResidueBalance.setText(mListBanks.get(position).);
+
+        //holder.mBalanceField.setText(ResultUtils.getFinishValueStr(this, mListBanks.get(position).);
+        //holder.mDiffBaseCurrency.setText(ResultUtils.getDiffStr(mListBanks.get(position).);
     }
 
     @Override

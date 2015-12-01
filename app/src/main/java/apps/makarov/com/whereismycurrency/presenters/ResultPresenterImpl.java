@@ -1,5 +1,8 @@
 package apps.makarov.com.whereismycurrency.presenters;
 
+import java.util.Date;
+
+import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
@@ -54,7 +57,8 @@ public class ResultPresenterImpl implements ResultPresenter {
             mResultView.setResultColor(R.color.negative_color);
         }
 
-        mResultView.setVisibileHistoryBtn(mResultOperation.isHistory() ? false : true);
+        mResultView.setVisibleHistoryBtn(mResultOperation.isHistory() ? false : true);
+        mResultView.setVisibleHistoryTextDate(mResultOperation.isHistory() ? false : true);
 
         CurrencyPairResultPresenter openPresenter = new CurrencyPairResultPresenterImpl
                 (mResultOperation.getUserHistory().getRate(), mResultOperation.getUserHistory().getValue(), "Открытие операции");
@@ -64,6 +68,10 @@ public class ResultPresenterImpl implements ResultPresenter {
         mResultView.addOpenOperationResult(openPresenter);
         mResultView.addExitOperationResult(exitPresenter);
 
+        Date exitDate = mResultOperation.getExitRate().getChangeRate();
+        String exitDateStr = DateUtils.getDateStr(exitDate);
+
+        mResultView.setExitDate(exitDateStr);
     }
 
     @Override

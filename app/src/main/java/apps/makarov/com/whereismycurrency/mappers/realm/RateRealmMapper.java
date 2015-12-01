@@ -21,7 +21,6 @@ public class RateRealmMapper implements Mapper<Rate, RateProtocol> {
         rate.setBank(rateData.getBank());
         rate.setValue(rateData.getValue());
         rate.setChangeRate(rateData.getChangeRate());
-        //rate.setKey(generateKey(rateData));
         rate.setCurrencyPair(mapper.dataToModel(rateData.getCurrencyPair()));
 
         return rate;

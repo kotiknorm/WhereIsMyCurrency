@@ -99,13 +99,12 @@ public class BanksListFragment extends BaseFragment implements BanksView {
         compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
 
         diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
-
         balanceField.setText(ResultUtils.getFinishValueStr(this.getContext(), history));
 
     }
 
     @Override
-    public void setVisabileSplash(boolean isShown) {
+    public void setVisibleSplash(boolean isShown) {
 
     }
 

@@ -11,5 +11,4 @@ public interface CurrencyPairResultView extends BaseContextView {
     void setOperation(Rate rate, double value);
 
     void setTitle(String title);
-
 }

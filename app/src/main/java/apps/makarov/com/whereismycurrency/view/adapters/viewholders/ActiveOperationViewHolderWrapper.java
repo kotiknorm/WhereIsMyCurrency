@@ -75,7 +75,7 @@ public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOp
     }
 
     @Override
-    public void setOnClicklistener(final View.OnClickListener listener) {
+    public void setOnClickListener(final View.OnClickListener listener) {
         itemView.setOnClickListener(listener);
     }
 

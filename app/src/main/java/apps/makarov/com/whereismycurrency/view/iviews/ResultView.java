@@ -8,11 +8,15 @@ import apps.makarov.com.whereismycurrency.view.base.BaseContextView;
  */
 public interface ResultView extends BaseContextView {
 
+    void setExitDate(String textData);
+
     void setDiffValue(String diff);
 
     void setResultColor(int colorRes);
 
-    void setVisibileHistoryBtn(boolean isShown);
+    void setVisibleHistoryTextDate(boolean isShown);
+
+    void setVisibleHistoryBtn(boolean isShown);
 
     void onAddedResultToHistory();
 

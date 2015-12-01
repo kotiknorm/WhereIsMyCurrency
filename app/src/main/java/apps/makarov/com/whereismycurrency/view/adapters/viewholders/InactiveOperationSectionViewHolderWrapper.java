@@ -32,7 +32,7 @@ public class InactiveOperationSectionViewHolderWrapper extends ViewHolderWrapper
     }
 
     @Override
-    public void setOnClicklistener(View.OnClickListener listener) {
+    public void setOnClickListener(View.OnClickListener listener) {
 
     }
 

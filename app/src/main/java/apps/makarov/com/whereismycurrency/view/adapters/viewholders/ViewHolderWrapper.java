@@ -17,6 +17,6 @@ public abstract class ViewHolderWrapper<T> extends RecyclerView.ViewHolder {
 
     public abstract void bindModelToView(T history);
 
-    public abstract void setOnClicklistener(View.OnClickListener listener);
+    public abstract void setOnClickListener(View.OnClickListener listener);
 
 }
