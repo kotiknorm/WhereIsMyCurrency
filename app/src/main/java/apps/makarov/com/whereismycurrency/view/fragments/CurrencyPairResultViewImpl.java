@@ -126,6 +126,6 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         Date openOperation = rate.getChangeRate();
         setDate(DateUtils.getDateStr(openOperation));
 
-        setRate(rate.getValue() + "");
+        setRate(String.format("%.4f", rate.getValue()) + "");
     }
 }
