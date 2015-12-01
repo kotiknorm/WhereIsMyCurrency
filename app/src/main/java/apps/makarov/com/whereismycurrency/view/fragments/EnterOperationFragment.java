@@ -196,9 +196,9 @@ public class EnterOperationFragment extends BaseFragment implements EnterOperati
         Calendar c = Calendar.getInstance();
         c.setTime(date);
 
-        dateMonth.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH));
+        dateMonth.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH) + "  ");
         dateDay.setText(c.get(Calendar.DAY_OF_MONTH) + "");
-        dateYear.setText(c.get(Calendar.YEAR) + "");
+        dateYear.setText(c.get(Calendar.YEAR) + " ");
     }
 
     @Override
