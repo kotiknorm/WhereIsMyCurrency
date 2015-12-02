@@ -51,9 +51,12 @@ public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOp
         historyArea.setVisibility(View.GONE);
 
         baseValueField.setText(ResultUtils.getBaseValueString(itemView.getContext(), history));
-        baseNameCurrencyField.setText(Rate.getCurrencyName(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
+        baseNameCurrencyField.setText(Rate.getCurrencyName(itemView.getContext(),
+                history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(),
+                history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
+        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(),
+                history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
 
         diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
         if(ResultUtils.getDiff(history) > 0){

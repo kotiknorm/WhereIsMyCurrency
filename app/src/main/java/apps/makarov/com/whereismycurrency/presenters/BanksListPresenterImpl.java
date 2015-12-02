@@ -24,6 +24,7 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
     private BanksView mBanksView;
     private WimcService mWimcService;
     private String mKey;
+
     private ResultOperation mHistory;
 
     public BanksListPresenterImpl(BanksView banksView, WimcService wimcService) {
@@ -88,5 +89,10 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
 
         mBanksView.setVisibleSplash(false);
         mBanksView.setAdapterForRecyclerView(banks);
+    }
+
+    @Override
+    public ResultOperation getHistory() {
+        return mHistory;
     }
 }

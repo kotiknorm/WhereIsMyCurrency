@@ -12,6 +12,7 @@ import java.util.List;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.Rate;
+import apps.makarov.com.whereismycurrency.models.ResultOperation;
 
 /**
  * Created by makarov on 24.11.15.
@@ -19,28 +20,31 @@ import apps.makarov.com.whereismycurrency.models.Rate;
 public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder> {
 
     private List<Rate> mListBanks = new ArrayList<>();
+    private ResultOperation mHistory;
 
     public static class BankViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView mNameBank;
-        public TextView mDiffBase;
-        public TextView mDiffBalance;
-        public TextView mDiffBaseCurrency;
-        public TextView mBalanceField;
+        public TextView nameBank;
+        public TextView diffBaseCurrencyValue;
+        public TextView balanceField;
+        public TextView diffBase;
+        public TextView diffBalance;
+
 
         public BankViewHolder(View v) {
             super(v);
 
-            mNameBank = (TextView) v.findViewById(R.id.name_bank);
-            mDiffBase = (TextView) v.findViewById(R.id.diff_base);
-            mDiffBalance = (TextView) v.findViewById(R.id.diff_balance);
-            mDiffBaseCurrency = (TextView) v.findViewById(R.id.diff_base_currency);
-            mBalanceField = (TextView) v.findViewById(R.id.balance_field);
+            nameBank = (TextView) v.findViewById(R.id.name_bank);
+            diffBaseCurrencyValue = (TextView) v.findViewById(R.id.diff_base_currency);
+            balanceField = (TextView) v.findViewById(R.id.balance_field);
+            diffBase = (TextView) v.findViewById(R.id.diff_base);
+            diffBalance = (TextView) v.findViewById(R.id.diff_balance);
         }
     }
 
-    public BankAdapter(List<Rate> listBanks) {
+    public BankAdapter(List<Rate> listBanks, ResultOperation history) {
         mListBanks = listBanks;
+        mHistory = history;
     }
 
     @Override
@@ -56,12 +60,14 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder
     @Override
     public void onBindViewHolder(BankViewHolder holder, int position) {
 
-        holder.mNameBank.setText(mListBanks.get(position).getBank());
+        holder.nameBank.setText(mListBanks.get(position).getBank());
 
-        //holder.mResidueBalance.setText(mListBanks.get(position).);
-
-        //holder.mBalanceField.setText(ResultUtils.getFinishValueStr(this, mListBanks.get(position).);
-        //holder.mDiffBaseCurrency.setText(ResultUtils.getDiffStr(mListBanks.get(position).);
+        holder.balanceField.setText
+                ("остаток " + ResultUtils.getFinishValueStr(mHistory, mListBanks.get(position)));
+        holder.diffBaseCurrencyValue.setText
+                (ResultUtils.getDiffStr(mHistory, mListBanks.get(position)));
+        holder.diffBase.setText(String.valueOf(mListBanks.get(position).getValue()));
+        holder.diffBalance.setText(ResultUtils.getDiffStrRateValue(mHistory, mListBanks.get(position)));
     }
 
     @Override

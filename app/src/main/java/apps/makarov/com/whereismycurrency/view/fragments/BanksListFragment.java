@@ -86,7 +86,7 @@ public class BanksListFragment extends BaseFragment implements BanksView {
 
     @Override
     public void setAdapterForRecyclerView(List<Rate> banks) {
-        BankAdapter bankAdapter = new BankAdapter(banks);
+        BankAdapter bankAdapter = new BankAdapter(banks, mBanksListPresenter.getHistory());
         mRecyclerView.setAdapter(bankAdapter);
     }
 
