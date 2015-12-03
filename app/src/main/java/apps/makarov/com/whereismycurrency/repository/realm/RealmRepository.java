@@ -46,8 +46,10 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
                 ;
         // TODO Fixed date (temp)
                 //.equalTo("changeRate", date)
-        if (bankName != Bank.DEFAULT)
+
+        if (!bankName.equals(Bank.DEFAULT)) {
             query = query.equalTo("bank", bankName);
+        }
 
         return query.findAll();
     }
@@ -57,10 +59,9 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
 
         RealmQuery<RateRealm> query = Realm.getInstance(application)
                 .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
-                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT);
+                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT)
+                .equalTo("changeRate", date);
 
-        // TODO Fixed date (temp)
-                //.equalTo("changeRate", date)
         return query.findAll();
     }
 
@@ -69,10 +70,9 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
 
         RealmQuery<RateRealm> query = Realm.getInstance(application)
                 .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
-                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT);
+                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT)
+                .equalTo("changeRate", date);
 
-        // TODO Fixed date (temp)
-        //.equalTo("changeRate", date)
         return query.findAll().size();
     }
 

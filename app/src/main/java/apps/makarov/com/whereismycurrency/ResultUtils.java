@@ -74,7 +74,7 @@ public class ResultUtils {
     }
 
     public static double getFinishValue(ResultOperation operation, Rate rate) {
-        double value = operation.getUserHistory().getValue() * rate.getValue() * operation.getExitRate().getValue();
+        double value = operation.getUserHistory().getValue() * rate.getValue() * operation.getUserHistory().getRate().getValue();
         return BigDecimal.valueOf(value).setScale(2, BigDecimal.ROUND_HALF_DOWN).doubleValue();
     }
 
@@ -94,7 +94,7 @@ public class ResultUtils {
 
     public static String getDiffStrRateValue(ResultOperation operation, Rate rate){
 
-        double diff = getDiffRateValue(operation, rate);
+        double diff = rate.getValue() - operation.getExitRate().getValue() ;
 
         return diff > 0 ? "+" + diff : diff + "";
     }

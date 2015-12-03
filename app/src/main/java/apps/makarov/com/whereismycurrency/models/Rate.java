@@ -25,11 +25,13 @@ public class Rate {
     public static final String RUB_CODE = "RUB";
     public static final String EUR_CODE = "EUR";
     public static final String USD_CODE = "USD";
+    public static final String GBP_CODE = "GBP";
 
     static {
         codes.add(RUB_CODE);
         codes.add(EUR_CODE);
         codes.add(USD_CODE);
+        codes.add(GBP_CODE);
 
         for(String baseCodes : codes){
             for(String compareCodes : codes){
@@ -95,6 +97,8 @@ public class Rate {
                 return context.getDrawable(R.drawable.rub);
             case USD_CODE:
                 return context.getDrawable(R.drawable.usd);
+            case GBP_CODE:
+                return context.getDrawable(R.drawable.gbp);
             default:
                 return context.getDrawable(R.drawable.eur);
         }
@@ -109,6 +113,8 @@ public class Rate {
                 return context.getString(R.string.rub);
             case USD_CODE:
                 return context.getString(R.string.usd);
+            case GBP_CODE:
+                return context.getString(R.string.gbp);
             default:
                 return context.getString(R.string.eur);
         }

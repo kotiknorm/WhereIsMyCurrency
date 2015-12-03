@@ -1,5 +1,8 @@
 package apps.makarov.com.whereismycurrency.mappers.json;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +37,7 @@ public class RateJsonMapper implements Mapper<List<Rate>, JSONObject> {
             Rate rate = new Rate();
             String buyStr = StringUtils.getGoodLong(mJsonObject.getString("Buy"));
             double buyLong = Double.parseDouble(buyStr);
-            rate.setValue(buyLong);
+            rate.setValue(1 / buyLong);
             rate.setChangeRate(DateUtils.getTodayDate());
             rate.setCurrencyPair(CurrencyPair.createPair(baseCurrency, compareCurrency));
             rate.setBank(bankName);
@@ -43,10 +46,10 @@ public class RateJsonMapper implements Mapper<List<Rate>, JSONObject> {
             Rate rateInvert = new Rate();
             String sellStr = StringUtils.getGoodLong(mJsonObject.getString("Sell"));
             double sellLong = Double.parseDouble(sellStr);
-            rateInvert.setValue(1 / sellLong);
+            rateInvert.setValue(sellLong);
             rateInvert.setChangeRate(DateUtils.getTodayDate());
             rateInvert.setCurrencyPair(CurrencyPair.createPair(compareCurrency, baseCurrency));
-            rate.setBank(bankName);
+            rateInvert.setBank(bankName);
             ratesList.add(rateInvert);
 
         } catch (JSONException e) {
