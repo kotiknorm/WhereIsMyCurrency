@@ -5,6 +5,7 @@ import java.util.Date;
 import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
+import apps.makarov.com.whereismycurrency.models.CurrencyPair;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
@@ -47,6 +48,9 @@ public class ResultPresenterImpl implements ResultPresenter {
     @Override
     public void setUniqueOperation(String key) {
         mResultOperation = mWimcService.getResultOperation(key);
+
+        CurrencyPair pair = mResultOperation.getExitRate().getCurrencyPair();
+        mResultView.setVisibleBanksBtn(mWimcService.getSizeAllRatesByCurrencyPair(pair) > 0 ? true : false);
 
         double diff = ResultUtils.getDiff(mResultOperation);
         mResultView.setDiffValue(diff > 0 ? ("+" + diff) : (diff + ""));

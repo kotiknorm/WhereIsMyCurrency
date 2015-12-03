@@ -33,4 +33,5 @@ public interface WimcService {
 
     void removeResult(ResultOperation resultOperation);
 
+    int getSizeAllRatesByCurrencyPair(final CurrencyPair currencyPair);
 }

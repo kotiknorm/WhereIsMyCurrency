@@ -113,6 +113,11 @@ public class ResultFragment extends BaseFragment implements ResultView {
     }
 
     @Override
+    public void setVisibleBanksBtn(boolean isShown) {
+        openBanksListBtn.setVisibility(isShown ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
     public void onAddedResultToHistory() {
         exitOperationBtn.setVisibility(View.GONE);
         exitDateField.setVisibility(View.VISIBLE);

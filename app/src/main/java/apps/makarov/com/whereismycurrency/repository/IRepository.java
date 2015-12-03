@@ -8,6 +8,7 @@ import apps.makarov.com.whereismycurrency.repository.protocols.CurrencyPairProto
 import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 import apps.makarov.com.whereismycurrency.repository.protocols.ResultOperationProtocol;
 import apps.makarov.com.whereismycurrency.repository.protocols.UserHistoryProtocol;
+import apps.makarov.com.whereismycurrency.repository.realm.models.CurrencyPairRealm;
 import io.realm.RealmObject;
 
 /**
@@ -22,6 +23,8 @@ public interface IRepository
     List<? extends RateProtocol> getRates(M currencyPair, Date date, String bankName);
 
     List<? extends RateProtocol> getRatesByCurrencyPair(M currencyPair, Date date);
+
+    int getSizeRatesByCurrencyPair(CurrencyPairRealm pair, Date date);
 
     List<? extends UserHistoryProtocol> getUserHistory();
 

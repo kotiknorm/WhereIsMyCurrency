@@ -18,6 +18,8 @@ public interface ResultView extends BaseContextView {
 
     void setVisibleHistoryBtn(boolean isShown);
 
+    void setVisibleBanksBtn(boolean isShown);
+
     void onAddedResultToHistory();
 
     void onRemovedResult();

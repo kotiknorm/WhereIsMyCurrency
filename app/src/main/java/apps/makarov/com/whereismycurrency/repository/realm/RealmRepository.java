@@ -65,6 +65,18 @@ public class RealmRepository implements IRepository<RealmObject, ResultOperation
     }
 
     @Override
+    public int getSizeRatesByCurrencyPair(CurrencyPairRealm pair, Date date) {
+
+        RealmQuery<RateRealm> query = Realm.getInstance(application)
+                .where(RateRealm.class).equalTo("currencyPair.key", pair.getKey())
+                .notEqualTo("bank", Bank.USER_RATE).notEqualTo("bank", Bank.DEFAULT);
+
+        // TODO Fixed date (temp)
+        //.equalTo("changeRate", date)
+        return query.findAll().size();
+    }
+
+    @Override
     public List<UserHistoryRealm> getUserHistory() {
         return Realm.getInstance(application).where(UserHistoryRealm.class).findAllSorted("date", false);
     }

@@ -297,6 +297,12 @@ public class WimcServiceImpl extends RequestService implements WimcService {
         });
     }
 
+    @Override
+    public int getSizeAllRatesByCurrencyPair(final CurrencyPair currencyPair){
+        CurrencyPairRealm pair = mCurrencyPairRealmMapper.modelToData(currencyPair);
+
+        return getStore().getSizeRatesByCurrencyPair(pair, DateUtils.getTodayDate());
+    }
 
 }
 
