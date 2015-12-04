@@ -15,7 +15,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="20"
@@ -28,80 +28,35 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_exit_operation_button"
-                android:id="@+id/exit_operation_btn"
-                android:textColor="@android:color/black"
-                android:textSize="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_marginRight="2dp"
-                android:visibility="visible"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical|left" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_remove_operation_button"
-                android:id="@+id/remove_operation_btn"
-                android:textColor="@android:color/black"
-                android:textSize="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="2dp"
-                android:visibility="visible"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical|right" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_list_banks_button"
-                android:id="@+id/open_banks_list_btn"
-                android:textColor="@android:color/black"
-                android:textSize="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_marginLeft="2dp"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical|left" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right">
+            android:layout_gravity="center_horizontal">
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical|right">
+                android:layout_gravity="center"
+                android:layout_marginTop="45dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@id/exit_operation_btn"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_vertical|center_horizontal"
                     android:text=""
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:id="@+id/exit_date"
-                    android:textSize="12dp"
+                    android:textSize="14dp"
                     android:textColor="@android:color/black" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     android:id="@+id/diff_operation"
-                    android:textSize="36dp"
+                    android:textSize="54dp"
                     android:textIsSelectable="false"
                     android:textColor="@android:color/black"
                     android:text="-16 RUB" />
@@ -217,6 +172,55 @@
                 </LinearLayout>
 
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_exit_operation_button"
+                android:id="@+id/exit_operation_btn"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginRight="2dp"
+                android:visibility="visible"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_remove_operation_button"
+                android:id="@+id/remove_operation_btn"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:visibility="visible"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_list_banks_button"
+                android:id="@+id/open_banks_list_btn"
+                android:textColor="@android:color/black"
+                android:textSize="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginLeft="2dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>
 
     </LinearLayout>

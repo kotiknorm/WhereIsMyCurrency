@@ -74,7 +74,6 @@ public class BanksListPresenterImpl  implements BanksListPresenter {
 
     @Override
     public void setRate(String resultKey) {
-        // здесь вся логика заполнения списка  полей вью элемента
         mKey = resultKey;
         mHistory = mWimcService.getResultOperation(mKey);
 

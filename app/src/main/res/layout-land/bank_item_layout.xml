@@ -56,7 +56,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:id="@+id/diff_balance"
                 android:textSize="12sp"
-                android:textColor="@color/negative_color" />
+                android:textColor="@color/positive_color" />
 
         </LinearLayout>
 

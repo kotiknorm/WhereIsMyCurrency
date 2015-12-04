@@ -88,6 +88,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:id="@+id/open_operation_base_currency_name"
                         android:textSize="12dp"
+                        android:gravity="center_vertical|center_horizontal"
                         android:textColor="@android:color/white" />
 
                     <LinearLayout
@@ -170,6 +171,7 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                         android:id="@+id/open_operation_compare_currency_name"
                         android:textSize="12dp"
+                        android:gravity="center_vertical|center_horizontal"
                         android:textColor="@android:color/white" />
 
                     <LinearLayout

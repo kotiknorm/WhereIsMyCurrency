@@ -8,9 +8,7 @@ import apps.makarov.com.whereismycurrency.repository.protocols.RateProtocol;
 /**
  * Created by makarov on 11/08/15.
  */
-/*
- было вот так public class RateRealmMapper implements Mapper<Rate, **RateProtocol> {
- */
+
 public class RateRealmMapper implements Mapper<Rate, RateProtocol> {
 
     private CurrencyPairRealmMapper mapper = new CurrencyPairRealmMapper();

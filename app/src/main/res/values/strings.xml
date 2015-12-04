@@ -18,7 +18,7 @@
 
     <string name="currency_dialog_title">Выберите валюту продажи</string>
 
-    <string name="gbp">Британский фунт стерлинг</string>
+    <string name="gbp">Британский фунт</string>
     <string name="usd">Американский доллар</string>
     <string name="rub">Российский рубль</string>
     <string name="eur">Евро</string>

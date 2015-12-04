@@ -18,7 +18,6 @@ public class UserHistoryRealmMapper implements Mapper<UserHistory, UserHistoryPr
         userHistory.setValue(obj.getValue());
         userHistory.setRate(rateRealmMapper.dataToModel(obj.getRate()));
         userHistory.setDate(obj.getDate());
-        //userHistory.setKey(generateKey(obj));
         return userHistory;
     }
 
