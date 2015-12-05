@@ -6,6 +6,7 @@ import apps.makarov.com.whereismycurrency.DateUtils;
 import apps.makarov.com.whereismycurrency.R;
 import apps.makarov.com.whereismycurrency.ResultUtils;
 import apps.makarov.com.whereismycurrency.models.CurrencyPair;
+import apps.makarov.com.whereismycurrency.models.Rate;
 import apps.makarov.com.whereismycurrency.models.ResultOperation;
 import apps.makarov.com.whereismycurrency.net.WimcService;
 import apps.makarov.com.whereismycurrency.view.iviews.ResultView;
@@ -18,7 +19,10 @@ public class ResultPresenterImpl implements ResultPresenter {
     private ResultView mResultView;
     private WimcService mWimcService;
 
-    private ResultOperation mResultOperation;
+    private final String OPEN_TITLE_TEXT = "Открытие операции";
+    private final String EXIT_TITLE_TEXT = "Закрытие операции";
+
+    private ResultOperation mHistory;
 
     public ResultPresenterImpl(ResultView resultView, WimcService wimcService) {
         this.mResultView = resultView;
@@ -47,13 +51,18 @@ public class ResultPresenterImpl implements ResultPresenter {
 
     @Override
     public void setUniqueOperation(String key) {
-        mResultOperation = mWimcService.getResultOperation(key);
+        mHistory = mWimcService.getResultOperation(key);
 
-        CurrencyPair pair = mResultOperation.getExitRate().getCurrencyPair();
+        double value = mHistory.getUserHistory().getValue();
+        Rate historyRate = mHistory.getUserHistory().getRate();
+        Rate rate = mHistory.getExitRate();
+
+        CurrencyPair pair = rate.getCurrencyPair();
         mResultView.setVisibleBanksBtn(mWimcService.getSizeAllRatesByCurrencyPair(pair) > 0 ? true : false);
 
-        double diff = ResultUtils.getDiff(mResultOperation);
-        mResultView.setDiffValue(diff > 0 ? ("+" + diff) : (diff + ""));
+        double diff = ResultUtils.getProfitClosingOperation(value, historyRate, rate);
+        mResultView.setDiffValue(diff > 0 ?
+                ("+" + ResultUtils.getStrRoundSignificant(diff)) : ResultUtils.getStrRoundSignificant(diff));
 
         if(diff > 0){
             mResultView.setResultColor(R.color.positive_color);
@@ -61,18 +70,18 @@ public class ResultPresenterImpl implements ResultPresenter {
             mResultView.setResultColor(R.color.negative_color);
         }
 
-        mResultView.setVisibleHistoryBtn(mResultOperation.isHistory() ? false : true);
-        mResultView.setVisibleHistoryTextDate(mResultOperation.isHistory() ? false : true);
+        mResultView.setVisibleHistoryBtn(mHistory.isHistory() ? false : true);
+        mResultView.setVisibleHistoryTextDate(mHistory.isHistory() ? false : true);
 
         CurrencyPairResultPresenter openPresenter = new CurrencyPairResultPresenterImpl
-                (mResultOperation.getUserHistory().getRate(), mResultOperation.getUserHistory().getValue(), "Открытие операции");
+                (historyRate, value, OPEN_TITLE_TEXT);
         CurrencyPairResultPresenter exitPresenter = new CurrencyPairResultPresenterImpl
-                (mResultOperation.getExitRate(), ResultUtils.getFinishFirstOperationValue(mResultOperation), "Закрытие операции");
+                (rate, ResultUtils.getFinishResultOperation(value, historyRate), EXIT_TITLE_TEXT);
 
         mResultView.addOpenOperationResult(openPresenter);
         mResultView.addExitOperationResult(exitPresenter);
 
-        Date exitDate = mResultOperation.getExitRate().getChangeRate();
+        Date exitDate = rate.getChangeRate();
         String exitDateStr = DateUtils.getDateStr(exitDate);
 
         mResultView.setExitDate(exitDateStr);
@@ -80,18 +89,18 @@ public class ResultPresenterImpl implements ResultPresenter {
 
     @Override
     public void addResultInHistory() {
-        mResultOperation = mWimcService.addResultInHistory(mResultOperation);
+        mHistory = mWimcService.addResultInHistory(mHistory);
         mResultView.onAddedResultToHistory();
     }
 
     @Override
     public void removeResult() {
-        mWimcService.removeResult(mResultOperation);
+        mWimcService.removeResult(mHistory);
         mResultView.onRemovedResult();
     }
 
     @Override
     public void openBanksList(){
-        mResultView.showBanksList(mResultOperation.getKey());
+        mResultView.showBanksList(mHistory.getKey());
     }
 }

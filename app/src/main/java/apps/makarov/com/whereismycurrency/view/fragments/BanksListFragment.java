@@ -93,13 +93,20 @@ public class BanksListFragment extends BaseFragment implements BanksView {
     @Override
     public void bindModelToView(ResultOperation history) {
 
-        baseValueField.setText(ResultUtils.getBaseValueString(this.getContext(), history));
-        baseNameCurrencyField.setText(Rate.getCurrencyName(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(this.getContext(), history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
+        double value = history.getUserHistory().getValue();
+        Rate historyRate = history.getUserHistory().getRate();
+        Rate rate = history.getExitRate();
 
-        diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
-        balanceField.setText(ResultUtils.getFinishValueStr(this.getContext(), history));
+        baseValueField.setText(ResultUtils.getStrBaseValue(this.getContext(), value, historyRate));
+        baseNameCurrencyField.setText(Rate.getCurrencyName
+                (this.getContext(), historyRate.getCurrencyPair().getBaseCurrency()));
+        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon
+                (this.getContext(), historyRate.getCurrencyPair().getBaseCurrency()));
+        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon
+                (this.getContext(), historyRate.getCurrencyPair().getCompareCurrency()));
+
+        diffBaseCurrencyValue.setText(ResultUtils.getStrProfitClosingOperation(value, historyRate, rate));
+        balanceField.setText(ResultUtils.getStrFinishBalance(this.getContext(), value, historyRate, rate));
 
     }
 

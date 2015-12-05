@@ -202,7 +202,8 @@ public class EnterOperationPresenterImpl implements EnterOperationPresenter {
                             @Override
                             public void call(Subscriber<? super Rate> subscriber) {
                                 try {
-                                    // first rate
+                                    // first rate!
+                                    // rates с max exitRateValue и notDefaultBank
                                     subscriber.onNext(rates.get(0));
                                     subscriber.onCompleted();
 

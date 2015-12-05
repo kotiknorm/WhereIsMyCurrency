@@ -72,12 +72,12 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         baseIcon.setImageDrawable(drawableRes);
     }
 
-    private void setOperationCompareValue(double operationCompareValue) {
-        compareValue.setText(operationCompareValue + "");
+    private void setOperationCompareValue(String operationCompareValue) {
+        compareValue.setText(operationCompareValue);
     }
 
-    public void setOperationBaseValue(double operationBaseValue) {
-        baseValue.setText(operationBaseValue + "");
+    public void setOperationBaseValue(String operationBaseValue) {
+        baseValue.setText(operationBaseValue);
     }
 
     private void setOperationCompareCurrencyName(String value) {
@@ -111,8 +111,8 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         setBaseIcon(openBaseIcon);
         setCompareIcon(openCompareIcon);
 
-        double startValue = ResultUtils.getStartOperationValue(valueCurrency);
-        double finishValue = ResultUtils.getFinishOperationValue(rate, valueCurrency);
+        String startValue = ResultUtils.getStrRoundSignificant(valueCurrency);
+        String finishValue = ResultUtils.getStrRoundSignificant(ResultUtils.getFinishResultOperation(valueCurrency, rate));
 
         setOperationBaseValue(startValue);
         setOperationCompareValue(finishValue);
@@ -126,6 +126,6 @@ public class CurrencyPairResultViewImpl extends RelativeLayout implements Curren
         Date openOperation = rate.getChangeRate();
         setDate(DateUtils.getDateStr(openOperation));
 
-        setRate(ResultUtils.getRoundRateValue(rate.getValue()));
+        setRate(ResultUtils.getStrRoundNotSignificant(rate.getValue()));
     }
 }

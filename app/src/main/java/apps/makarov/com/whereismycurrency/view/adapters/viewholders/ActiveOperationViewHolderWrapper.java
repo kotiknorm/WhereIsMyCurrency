@@ -48,27 +48,32 @@ public class ActiveOperationViewHolderWrapper extends ViewHolderWrapper<ResultOp
 
     public void bindModelToView(ResultOperation history) {
 
+        double value = history.getUserHistory().getValue();
+        Rate historyRate = history.getUserHistory().getRate();
+        Rate rate = history.getExitRate();
+
         historyArea.setVisibility(View.GONE);
 
-        baseValueField.setText(ResultUtils.getBaseValueString(itemView.getContext(), history));
-        baseNameCurrencyField.setText(Rate.getCurrencyName(itemView.getContext(),
-                history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(),
-                history.getUserHistory().getRate().getCurrencyPair().getBaseCurrency()));
-        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon(itemView.getContext(),
-                history.getUserHistory().getRate().getCurrencyPair().getCompareCurrency()));
+        baseValueField.setText(ResultUtils.getStrBaseValue(itemView.getContext(), value, historyRate));
+        baseNameCurrencyField.setText(Rate.getCurrencyName
+                (itemView.getContext(), historyRate.getCurrencyPair().getBaseCurrency()));
+        baseCurrencyImage.setImageDrawable(Rate.getCurrencyIcon
+                (itemView.getContext(), historyRate.getCurrencyPair().getBaseCurrency()));
+        compareCurrencyImage.setImageDrawable(Rate.getCurrencyIcon
+                (itemView.getContext(), historyRate.getCurrencyPair().getCompareCurrency()));
 
-        diffBaseCurrencyValue.setText(ResultUtils.getDiffStr(history));
-        if(ResultUtils.getDiff(history) > 0){
+        diffBaseCurrencyValue.setText(ResultUtils.getStrProfitClosingOperation(value, historyRate, rate));
+
+        if(ResultUtils.getProfitClosingOperation(value, historyRate, rate) > 0){
             diffBaseCurrencyValue.setTextColor(itemView.getContext().getResources().getColor(R.color.positive_color));
         }else{
             diffBaseCurrencyValue.setTextColor(itemView.getContext().getResources().getColor(R.color.negative_color));
         }
 
-        balanceField.setText(ResultUtils.getFinishValueStr(itemView.getContext(), history));
+        balanceField.setText(ResultUtils.getStrFinishBalance(itemView.getContext(), value, historyRate, rate));
 
         Date openDate = history.getUserHistory().getDate();
-        Date exitDate = history.getExitRate().getChangeRate();
+        Date exitDate = rate.getChangeRate();
 
         String openDateStr = DateUtils.getDateStr(openDate);
         String exitDateStr = DateUtils.getDateStr(exitDate);

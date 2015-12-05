@@ -60,14 +60,18 @@ public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder
     @Override
     public void onBindViewHolder(BankViewHolder holder, int position) {
 
-        holder.nameBank.setText(mListBanks.get(position).getBank());
+        double value = mHistory.getUserHistory().getValue();
+        Rate historyRate = mHistory.getUserHistory().getRate();
+        Rate rate = mListBanks.get(position);
+
+        holder.nameBank.setText(rate.getBank());
 
         holder.balanceField.setText
-                ("остаток " + ResultUtils.getFinishValueStr(mHistory, mListBanks.get(position)));
+                (ResultUtils.getStrFinishBalance(holder.itemView.getContext(), value, historyRate, rate));
         holder.diffBaseCurrencyValue.setText
-                (ResultUtils.getDiffStr(mHistory, mListBanks.get(position)));
-        holder.diffBase.setText(String.valueOf(mListBanks.get(position).getValue()));
-        holder.diffBalance.setText(ResultUtils.getDiffStrRateValue(mHistory, mListBanks.get(position)));
+                (ResultUtils.getStrProfitClosingOperation(value, historyRate, rate));
+        holder.diffBase.setText(ResultUtils.getStrRoundSignificant(rate.getValue()));
+        holder.diffBalance.setText(ResultUtils.getStrDiffRateValue(mHistory.getExitRate(), rate));
     }
 
     @Override
